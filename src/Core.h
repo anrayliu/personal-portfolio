@@ -1,17 +1,26 @@
 #ifndef CORE_H
 #define CORE_H
 
-#include <memory>
-#include <string>
-#include <SDL2/SDL.h>
 #include "Config.h"
 #include "Timer.h"
 
+#include <memory>
+#include <string>
+#include <SDL2/SDL.h>
 
 using std::string;
 
+
 class Core {
+    void draw_background();
 public:
+    SDL_Rect top_bar;
+    SDL_Rect bottom_bar;
+    SDL_Rect left_bar;
+    SDL_Rect file_tree;
+    SDL_Rect file_viewer;
+    SDL_Rect tab_bar;
+
     Config conf;
     Timer timer;
 

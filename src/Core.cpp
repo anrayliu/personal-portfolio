@@ -1,14 +1,22 @@
 #include "Core.h"
-#include <format>
 #include "SDL2/SDL_image.h"
+
+#include <format>
 
 #ifdef __EMSCRIPTEN__
 #include "emscripten.h"
 #endif
 
+
 Core::Core(Config &config):
     conf(config),
-    quit(false), win(nullptr, SDL_DestroyWindow), renderer(nullptr, SDL_DestroyRenderer)
+    quit(false), win(nullptr, SDL_DestroyWindow), renderer(nullptr, SDL_DestroyRenderer),
+    top_bar{},
+    bottom_bar{},
+    left_bar{},
+    file_tree{},
+    file_viewer{},
+    tab_bar{}
 {
     init_sdl();
 }
@@ -28,6 +36,41 @@ void Core::init() {
     if (!renderer) {
         throw std::runtime_error(std::format("Error creating renderer {}", SDL_GetError()));
     }
+
+    SDL_RenderSetLogicalSize(renderer.get(), 1920, 917);
+
+    top_bar = {0, 0, conf.window_w, 36};
+    bottom_bar = {top_bar.x, conf.window_h - 27, top_bar.w, 27};
+    left_bar = {top_bar.x, top_bar.y + top_bar.h, 36, conf.window_h - top_bar.h - bottom_bar.h};
+    file_tree = {left_bar.x + left_bar.w, left_bar.y, 200, left_bar.h};
+    tab_bar = {file_tree.x + file_tree.w, left_bar.y, conf.window_w - left_bar.w - file_tree.w, 36};
+    file_viewer = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
+}
+
+void Core::draw_background() {
+    // draw filled rects
+    SDL_SetRenderDrawColor(renderer.get(), 60, 63, 65, 0);
+    SDL_RenderFillRect(renderer.get(), &top_bar);
+
+    SDL_SetRenderDrawColor(renderer.get(), 43, 45, 48, 0);
+    SDL_RenderFillRect(renderer.get(), &bottom_bar);
+    SDL_RenderFillRect(renderer.get(), &left_bar);
+    SDL_RenderFillRect(renderer.get(), &file_tree);
+
+    SDL_SetRenderDrawColor(renderer.get(), 30, 31, 34, 0);
+    SDL_RenderFillRect(renderer.get(), &tab_bar);
+    SDL_RenderFillRect(renderer.get(), &file_viewer);
+
+    // draw outlines
+
+    SDL_SetRenderDrawColor(renderer.get(), 57, 59, 64, 0);
+
+    SDL_RenderDrawRect(renderer.get(), &top_bar);
+    SDL_RenderDrawRect(renderer.get(), &bottom_bar);
+    SDL_RenderDrawRect(renderer.get(), &left_bar);
+    SDL_RenderDrawRect(renderer.get(), &file_tree);
+    SDL_RenderDrawRect(renderer.get(), &tab_bar);
+    SDL_RenderDrawRect(renderer.get(), &file_viewer);
 }
 
 void Core::init_sdl() {
@@ -42,9 +85,10 @@ void Core::quit_sdl() {
 
 void Core::update() {
     // clear screen
-    SDL_SetRenderDrawColor(renderer.get(), 255, 0, 0, 0);
-
+    SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
     SDL_RenderClear(renderer.get());
+
+    draw_background();
 
     SDL_RenderPresent(renderer.get());
 }
@@ -87,8 +131,8 @@ void mainloop(void* arg) {
 
 int main(int argc, char* argv[]) {
     Config config{
-        1280,
-        720,
+        1920,
+        917,
         60.0,
     };
 
