@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Minimal Emscripten</title>
+    <style>
+        body { margin: 0; padding: 0; }
+        canvas { display: block; width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script type='text/javascript'>
+    var Module = {
+        canvas: (function() {
+            var canvas = document.getElementById('canvas');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            return canvas;
+        })()
+    };
+</script>
+{{{ SCRIPT }}}
+</body>
+</html>

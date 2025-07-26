@@ -1,0 +1,5 @@
+cmake-build-debug/*
+!cmake-build-debug/*.dll
+.idea/
+emsdk/
+wasm_output.*
