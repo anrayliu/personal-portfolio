@@ -51,7 +51,12 @@ void Core::init() {
     tab_bar = {file_tree.x + file_tree.w, left_bar.y, conf.window_w - left_bar.w - file_tree.w, 36};
     file_viewer = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
 
-    top_level = std::make_unique<DirButton>(nullptr);
+    std::shared_ptr<SDL_Texture> collapse = load_texture(renderer.get(), "../assets/collapse.png", FILE_BUTTON_H, FILE_BUTTON_H);
+    std::shared_ptr<SDL_Texture> expand = load_texture(renderer.get(), "../assets/expand.png", FILE_BUTTON_H, FILE_BUTTON_H);
+    std::shared_ptr<SDL_Texture> directory = load_texture(renderer.get(), "../assets/directory.png", FILE_BUTTON_H, FILE_BUTTON_H);
+    std::shared_ptr<SDL_Texture> file = load_texture(renderer.get(), "../assets/file.png", FILE_BUTTON_H, FILE_BUTTON_H);
+
+    top_level = std::make_unique<DirButton>(directory);
 
     auto* work_exp = new DirButton(nullptr);
     auto stat_can = new FileButton(nullptr);
@@ -142,6 +147,38 @@ void Core::quit_sdl() {
     SDL_Quit();
 }
 
+std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer* renderer, const string &path, int w, int h) {
+    // load image texture
+
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(IMG_LoadTexture(renderer, path.c_str()), SDL_DestroyTexture);
+    if (!texture) {
+        throw std::runtime_error(std::format("Error loading texture {}", IMG_GetError()));
+    }
+
+    // lossy texture resampling
+
+    Uint32 pixel_format;
+    SDL_QueryTexture(texture.get(), &pixel_format, nullptr, nullptr, nullptr);
+
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> new_texture(
+        SDL_CreateTexture(renderer, pixel_format, SDL_TEXTUREACCESS_TARGET, w, h), SDL_DestroyTexture);
+    if (!new_texture) {
+        throw std::runtime_error(std::format("Error creating texture {}", IMG_GetError()));
+    }
+
+    SDL_SetRenderTarget(renderer, new_texture.get());
+
+    SDL_Rect dest{0, 0, w, h};
+    SDL_RenderCopy(renderer, texture.get(), nullptr, &dest);
+
+    SDL_SetTextureBlendMode(texture.get(), SDL_BLENDMODE_BLEND);
+
+    // reset render target
+    SDL_SetRenderTarget(renderer, nullptr);
+
+    return std::move(new_texture);
+}
+
 void Core::update() {
     // clear screen
     SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
@@ -222,7 +259,7 @@ int main(int argc, char* argv[]) {
     }
 
     // quit after core object is cleaned up
-    // to prevent sefault
+    // to prevent segfault
     Core::quit_sdl();
 
     return 0;

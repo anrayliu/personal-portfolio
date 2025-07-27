@@ -2,11 +2,17 @@
 
 #include <iostream>
 
+#include "Config.h"
 
-Button::Button(SDL_Texture* icon) : icon(icon), click(false) {}
+
+Button::Button(std::shared_ptr<SDL_Texture> icon) : icon(icon), click(false) {}
 
 Button::~Button() {
-    SDL_DestroyTexture(icon);
+    // textures are shared among all buttons, last one frees the texture
+
+    if (icon.use_count() == 1) {
+        SDL_DestroyTexture(icon.get());
+    }
 }
 
 void Button::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
@@ -18,7 +24,7 @@ bool Button::collidepoint(const SDL_Rect &rect, int x, int y) {
     return x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h;
 }
 
-DirButton::DirButton(SDL_Texture* icon) : Button(icon), collapsed(false) {}
+DirButton::DirButton(std::shared_ptr<SDL_Texture> icon) : Button(icon), collapsed(false) {}
 
 DirButton::~DirButton() {
     for (Button* button: files) {
@@ -42,7 +48,7 @@ void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
     }
 }
 
-FileButton::FileButton(SDL_Texture* icon) : Button(icon) {}
+FileButton::FileButton(std::shared_ptr<SDL_Texture> icon) : Button(icon) {}
 
 FileButton::~FileButton() {}
 

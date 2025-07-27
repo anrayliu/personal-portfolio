@@ -45,6 +45,7 @@ public:
 
     static void init_sdl();
     static void quit_sdl();
+    static std::shared_ptr<SDL_Texture> load_texture(SDL_Renderer* renderer, const string &path, int w, int h);
 
     explicit Core(Config &config);
 
