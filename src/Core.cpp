@@ -12,7 +12,7 @@
 
 Core::Core(Config &config):
     conf(config),
-    quit(false), win(nullptr, SDL_DestroyWindow), renderer(nullptr, SDL_DestroyRenderer),
+    quit(false), win(nullptr, SDL_DestroyWindow), renderer(nullptr, SDL_DestroyRenderer), font(nullptr, TTF_CloseFont),
     top_bar{},
     bottom_bar{},
     left_bar{},
