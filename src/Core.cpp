@@ -213,7 +213,10 @@ int main(int argc, char* argv[]) {
     #endif
 
     #ifndef __EMSCRIPTEN__
-        while(!core.quit) mainloop(&core);
+        while(!core.quit) {
+            mainloop(&core);
+            core.timer.tick(core.conf.fps);
+        }
     #endif
 
     Core::quit_sdl();
