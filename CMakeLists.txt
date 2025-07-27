@@ -17,6 +17,8 @@ add_executable(LearnSDL ${SRC_FILES}
         src/Timer.cpp
         src/Timer.h
         src/Config.h
+        src/Button.cpp
+        src/Button.h
 )
 
 target_link_libraries(${PROJECT_NAME} mingw32 SDL2main SDL2 SDL2_image SDL2_ttf)
