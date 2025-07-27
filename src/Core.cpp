@@ -105,6 +105,10 @@ void Core::draw_background() {
     SDL_RenderDrawRect(renderer.get(), &file_viewer);
 }
 
+void Core::draw_file_view() {
+
+}
+
 void Core::recursive_align(int x, int y, int w, int h, int* offset, Button *button) {
     button->rect = {x, y + *offset, w, h};
     *offset += FILE_BUTTON_H + FILE_BUTTON_SPACING_Y;
@@ -188,7 +192,19 @@ void Core::update() {
 
     draw_background();
 
-    int offset = 0;
+    if (!dragging && click && abs(file_tree.x + file_tree.w - mousex) <= 10) {
+        dragging = true;
+    }
+    if (dragging) {
+        file_tree.w = mousex - left_bar.w;
+        tab_bar.x = file_viewer.x = file_tree.x + file_tree.w;
+        tab_bar.w = file_viewer.w = conf.window_w - left_bar.w - file_tree.w;
+        if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
+            dragging = false;
+        }
+    }
+
+    int offset = 10;
     recursive_align(file_tree.x + FILE_BUTTON_SPACING_X, file_tree.y + FILE_BUTTON_SPACING_X,
                     file_tree.w - FILE_BUTTON_SPACING_X * 2, FILE_BUTTON_H, &offset, top_level.get());
 
@@ -200,11 +216,10 @@ void Core::update() {
 void mainloop(void* arg) {
     static Core* core = static_cast<Core*>(arg);
 
-    static SDL_Event event;
-
     SDL_GetMouseState(&core->mousex, &core->mousey);
     core->click = false;
 
+    static SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_MOUSEBUTTONDOWN:
