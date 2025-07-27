@@ -1,7 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define FILE_BUTTON_W 100
 #define FILE_BUTTON_H 32
 #define FILE_BUTTON_SPACING_Y 5
 #define FILE_BUTTON_SPACING_X 15
