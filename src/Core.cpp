@@ -51,29 +51,39 @@ void Core::init() {
     tab_bar = {file_tree.x + file_tree.w, left_bar.y, conf.window_w - left_bar.w - file_tree.w, TAB_BAR_H};
     file_viewer = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
 
-    std::shared_ptr<SDL_Texture> collapse = load_texture(renderer.get(), "../assets/collapse.png", FILE_BUTTON_H, FILE_BUTTON_H);
-    std::shared_ptr<SDL_Texture> expand = load_texture(renderer.get(), "../assets/expand.png", FILE_BUTTON_H, FILE_BUTTON_H);
-    std::shared_ptr<SDL_Texture> directory = load_texture(renderer.get(), "../assets/directory.png", FILE_BUTTON_H, FILE_BUTTON_H);
-    std::shared_ptr<SDL_Texture> file = load_texture(renderer.get(), "../assets/file.png", FILE_BUTTON_H, FILE_BUTTON_H);
+    std::shared_ptr<SDL_Texture> collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", FILE_BUTTON_H, FILE_BUTTON_H);
+    std::shared_ptr<SDL_Texture> expand_icon = load_texture(renderer.get(), "../assets/expand.png", FILE_BUTTON_H, FILE_BUTTON_H);
+    std::shared_ptr<SDL_Texture> dir_icon = load_texture(renderer.get(), "../assets/directory.png", FILE_BUTTON_H, FILE_BUTTON_H);
+    std::shared_ptr<SDL_Texture> file_icon = load_texture(renderer.get(), "../assets/file.png", FILE_BUTTON_H, FILE_BUTTON_H);
 
-    top_level = std::make_unique<DirButton>(collapse, expand);
+    auto text = load_text(renderer.get(), font.get(), "Anray Liu");
+    top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, text);
 
-    auto work_exp = new DirButton(collapse, expand);
-    auto stat_can = new FileButton(nullptr);
-    work_exp->add_file(stat_can);
+    text = load_text(renderer.get(), font.get(), "Work Experience");
+    auto work_exp = new DirButton(collapse_icon, expand_icon, text);
 
-    auto projects = new DirButton(collapse, expand);
-    auto pyvidplayer = new FileButton(nullptr);
-    work_exp->add_file(pyvidplayer);
+    text = load_text(renderer.get(), font.get(), "Cloud Engineer @ Statistics Canada");
+    auto stats_can = new FileButton(file_icon, text);
 
-    auto server = new FileButton(nullptr);
+    work_exp->add_file(stats_can);
+
+    text = load_text(renderer.get(), font.get(), "Projects");
+    auto projects = new DirButton(collapse_icon, expand_icon, text);
+
+    text = load_text(renderer.get(), font.get(), "Pyvidplayer2");
+    auto pyvidplayer = new FileButton(file_icon, text);
+
+    text = load_text(renderer.get(), font.get(), "Home Server");
+    auto server = new FileButton(file_icon, text);
+
+    projects->add_file(pyvidplayer);
     projects->add_file(server);
 
-    auto readme = new FileButton(nullptr);
+    text = load_text(renderer.get(), font.get(), "README");
+    auto readme = new FileButton(file_icon, text);
 
     top_level->add_dir(work_exp);
     top_level->add_dir(projects);
-
     top_level->add_file(readme);
 
 }
@@ -186,6 +196,18 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer* renderer, const st
     return std::move(new_texture);
 }
 
+std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_Renderer *renderer, TTF_Font *font,
+    const string &text) {
+
+    SDL_Color color{207, 206, 196};
+
+    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(TTF_RenderText_Solid(font, text.c_str(), color),
+                                                                  SDL_FreeSurface);
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(SDL_CreateTextureFromSurface(renderer, surf.get()), SDL_DestroyTexture);
+
+    return std::move(texture);
+}
+
 void Core::update() {
     // clear screen
     SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
@@ -215,12 +237,12 @@ void Core::update() {
 }
 
 void mainloop(void* arg) {
-    static Core* core = static_cast<Core*>(arg);
+    Core* core = static_cast<Core*>(arg);
 
     SDL_GetMouseState(&core->mousex, &core->mousey);
     core->click = false;
 
-    static SDL_Event event;
+    SDL_Event event;
     while (SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_MOUSEBUTTONDOWN:
