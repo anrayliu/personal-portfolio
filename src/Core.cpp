@@ -39,7 +39,7 @@ void Core::init() {
         throw std::runtime_error(std::format("Error creating renderer {}", SDL_GetError()));
     }
 
-    font.reset(TTF_OpenFont("../assets/arial.ttf", 30));
+    font.reset(TTF_OpenFont("../assets/jetbrains-mono.ttf", 30));
     if (!font) {
         throw std::runtime_error(std::format("Error creating font {}", SDL_GetError()));
     }
