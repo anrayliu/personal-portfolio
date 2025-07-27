@@ -199,26 +199,30 @@ void mainloop(void* arg) {
 }
 
 int main(int argc, char* argv[]) {
-    Config config{
-        1920,
-        917,
-        60.0,
-    };
+    {
+        Config config{
+            1920,
+            917,
+            60.0,
+        };
 
-    Core core(config);
-    core.init();
+        Core core(config);
+        core.init();
 
-    #ifdef __EMSCRIPTEN__
-    emscripten_set_main_loop_arg(mainloop, &core, 0, 1);
-    #endif
+        #ifdef __EMSCRIPTEN__
+                emscripten_set_main_loop_arg(mainloop, &core, 0, 1);
+        #endif
 
-    #ifndef __EMSCRIPTEN__
-        while(!core.quit) {
-            mainloop(&core);
-            core.timer.tick(core.conf.fps);
-        }
-    #endif
+        #ifndef __EMSCRIPTEN__
+                while(!core.quit) {
+                    mainloop(&core);
+                    core.timer.tick(core.conf.fps);
+                }
+        #endif
+    }
 
+    // quit after core object is cleaned up
+    // to prevent sefault
     Core::quit_sdl();
 
     return 0;
