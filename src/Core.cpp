@@ -56,15 +56,16 @@ void Core::init() {
     std::shared_ptr<SDL_Texture> directory = load_texture(renderer.get(), "../assets/directory.png", FILE_BUTTON_H, FILE_BUTTON_H);
     std::shared_ptr<SDL_Texture> file = load_texture(renderer.get(), "../assets/file.png", FILE_BUTTON_H, FILE_BUTTON_H);
 
-    top_level = std::make_unique<DirButton>(directory);
+    top_level = std::make_unique<DirButton>(collapse, expand);
 
-    auto* work_exp = new DirButton(nullptr);
+    auto work_exp = new DirButton(collapse, expand);
     auto stat_can = new FileButton(nullptr);
     work_exp->add_file(stat_can);
 
-    auto projects = new DirButton(nullptr);
+    auto projects = new DirButton(collapse, expand);
     auto pyvidplayer = new FileButton(nullptr);
     work_exp->add_file(pyvidplayer);
+
     auto server = new FileButton(nullptr);
     projects->add_file(server);
 
@@ -116,7 +117,7 @@ void Core::recursive_align(int x, int y, int w, int h, int* offset, Button *butt
     auto dir = dynamic_cast<DirButton*>(button);
     if (dir && !dir->collapsed) {
         for (auto &file : dir->files) {
-            recursive_align(x + FILE_BUTTON_TAB, y, w, h, offset, file);
+            recursive_align(x + FILE_BUTTON_TAB, y, w - FILE_BUTTON_TAB, h, offset, file);
         }
     }
 }

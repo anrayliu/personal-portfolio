@@ -1,16 +1,13 @@
 #include "Button.h"
-
-#include <iostream>
-
 #include "Config.h"
 
 
-Button::Button(std::shared_ptr<SDL_Texture> icon) : icon(icon), click(false) {}
+Button::Button(const std::shared_ptr<SDL_Texture> &icon) : icon(icon), rect{}, click(false) {}
 
 Button::~Button() {
     // textures are shared among all buttons, last one frees the texture
 
-    if (icon.use_count() == 1) {
+    if (icon && icon.use_count() == 1) {
         SDL_DestroyTexture(icon.get());
     }
 }
@@ -24,11 +21,19 @@ bool Button::collidepoint(const SDL_Rect &rect, int x, int y) {
     return x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h;
 }
 
-DirButton::DirButton(std::shared_ptr<SDL_Texture> icon) : Button(icon), collapsed(false) {}
+DirButton::DirButton(const std::shared_ptr<SDL_Texture> &collapse_icon, const std::shared_ptr<SDL_Texture> &expand_icon)
+: Button(nullptr), collapsed(false), collapse_icon(collapse_icon), expand_icon(expand_icon) {}
 
 DirButton::~DirButton() {
     for (Button* button: files) {
         delete button;
+    }
+
+    if (collapse_icon && collapse_icon.use_count() == 1) {
+        SDL_DestroyTexture(icon.get());
+    }
+    if (expand_icon && expand_icon.use_count() == 1) {
+        SDL_DestroyTexture(icon.get());
     }
 }
 
@@ -48,10 +53,10 @@ void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
     }
 
     SDL_Rect dest = {rect.x, rect.y, FILE_BUTTON_H, FILE_BUTTON_H};
-    SDL_RenderCopy(renderer, icon.get(), nullptr, &dest);
+    SDL_RenderCopy(renderer, collapsed ? expand_icon.get() : collapse_icon.get(), nullptr, &dest);
 }
 
-FileButton::FileButton(std::shared_ptr<SDL_Texture> icon) : Button(icon) {}
+FileButton::FileButton(const std::shared_ptr<SDL_Texture> &icon) : Button(icon) {}
 
 FileButton::~FileButton() {}
 

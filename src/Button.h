@@ -14,7 +14,7 @@ public:
     SDL_Rect rect;
     bool click;
 
-    Button(std::shared_ptr<SDL_Texture> icon);
+    Button(const std::shared_ptr<SDL_Texture> &icon);
     virtual ~Button();
 
     virtual void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down);
@@ -23,7 +23,7 @@ public:
 
 class FileButton : public Button {
 public:
-    FileButton(std::shared_ptr<SDL_Texture> icon);
+    FileButton(const std::shared_ptr<SDL_Texture> &icon);
     ~FileButton();
 
     void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down) override;
@@ -35,7 +35,10 @@ public:
     bool collapsed;
     std::vector<Button*> files;
 
-    DirButton(std::shared_ptr<SDL_Texture> icon);
+    std::shared_ptr<SDL_Texture> collapse_icon;
+    std::shared_ptr<SDL_Texture> expand_icon;
+
+    DirButton(const std::shared_ptr<SDL_Texture> &collapse_icon, const std::shared_ptr<SDL_Texture> &expand_icon);
     ~DirButton();
 
     void add_file(FileButton* button);
