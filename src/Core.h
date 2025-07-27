@@ -41,6 +41,7 @@ public:
 
     std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> win;
     std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> renderer;
+    std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font;
 
     static void init_sdl();
     static void quit_sdl();

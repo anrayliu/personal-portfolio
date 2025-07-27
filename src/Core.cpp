@@ -39,6 +39,10 @@ void Core::init() {
         throw std::runtime_error(std::format("Error creating renderer {}", SDL_GetError()));
     }
 
+    font.reset(TTF_OpenFont("../assets/arial.ttf", 30));
+    if (!font) {
+        throw std::runtime_error(std::format("Error creating font {}", SDL_GetError()));
+    }
 
     top_bar = {0, 0, conf.window_w, 36};
     bottom_bar = {top_bar.x, conf.window_h - 27, top_bar.w, 27};
@@ -121,9 +125,20 @@ void Core::init_sdl() {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         throw std::runtime_error(std::format("Error initializing SDL {}", SDL_GetError()));
     }
+
+    constexpr int img_flags = IMG_INIT_JPG | IMG_INIT_PNG;
+    if ((IMG_Init(img_flags) & img_flags) != img_flags) {
+        throw std::runtime_error(std::format("Error initializing SDL_IMG {}", SDL_GetError()));
+    }
+
+    if (TTF_Init()) {
+        throw std::runtime_error(std::format("Error initializing SDL_TTF {}", SDL_GetError()));
+    }
 }
 
 void Core::quit_sdl() {
+    TTF_Quit();
+    IMG_Quit();
     SDL_Quit();
 }
 
