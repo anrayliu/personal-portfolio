@@ -46,6 +46,9 @@ void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
     if (click) {
         collapsed = !collapsed;
     }
+
+    SDL_Rect dest = {rect.x, rect.y, FILE_BUTTON_H, FILE_BUTTON_H};
+    SDL_RenderCopy(renderer, icon.get(), nullptr, &dest);
 }
 
 FileButton::FileButton(std::shared_ptr<SDL_Texture> icon) : Button(icon) {}
