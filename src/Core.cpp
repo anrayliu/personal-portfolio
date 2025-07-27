@@ -56,31 +56,24 @@ void Core::init() {
     std::shared_ptr<SDL_Texture> dir_icon = load_texture(renderer.get(), "../assets/directory.png", FILE_BUTTON_H, FILE_BUTTON_H);
     std::shared_ptr<SDL_Texture> file_icon = load_texture(renderer.get(), "../assets/file.png", FILE_BUTTON_H, FILE_BUTTON_H);
 
-    auto text = load_text(renderer.get(), font.get(), "Anray Liu");
-    top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, text);
+    top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Anray Liu");
 
-    text = load_text(renderer.get(), font.get(), "Work Experience");
-    auto work_exp = new DirButton(collapse_icon, expand_icon, text);
+    auto work_exp = new DirButton(collapse_icon, expand_icon, renderer.get(), font.get(), "Work Experience");
 
-    text = load_text(renderer.get(), font.get(), "Cloud Engineer @ Statistics Canada");
-    auto stats_can = new FileButton(file_icon, text);
+    auto stats_can = new FileButton(file_icon, renderer.get(), font.get(), "Cloud Engineer @ Statistics Canada");
 
     work_exp->add_file(stats_can);
 
-    text = load_text(renderer.get(), font.get(), "Projects");
-    auto projects = new DirButton(collapse_icon, expand_icon, text);
+    auto projects = new DirButton(collapse_icon, expand_icon, renderer.get(), font.get(), "Projects");
 
-    text = load_text(renderer.get(), font.get(), "Pyvidplayer2");
-    auto pyvidplayer = new FileButton(file_icon, text);
+    auto pyvidplayer = new FileButton(file_icon, renderer.get(), font.get(), "Pyvidplayer2");
 
-    text = load_text(renderer.get(), font.get(), "Home Server");
-    auto server = new FileButton(file_icon, text);
+    auto server = new FileButton(file_icon, renderer.get(), font.get(), "Home Server");
 
     projects->add_file(pyvidplayer);
     projects->add_file(server);
 
-    text = load_text(renderer.get(), font.get(), "README");
-    auto readme = new FileButton(file_icon, text);
+    auto readme = new FileButton(file_icon, renderer.get(), font.get(), "README");
 
     top_level->add_dir(work_exp);
     top_level->add_dir(projects);
@@ -199,9 +192,10 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer* renderer, const st
 std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_Renderer *renderer, TTF_Font *font,
     const string &text) {
 
-    SDL_Color color{207, 206, 196};
+    SDL_Color bg{207, 206, 196};
+    SDL_Color fg{43, 45, 48};
 
-    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(TTF_RenderText_Solid(font, text.c_str(), color),
+    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(TTF_RenderText_Shaded(font, text.c_str(), bg, fg),
                                                                   SDL_FreeSurface);
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(SDL_CreateTextureFromSurface(renderer, surf.get()), SDL_DestroyTexture);
 

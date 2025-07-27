@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "SDL2/SDL.h"
+#include "SDL2/SDL_ttf.h"
 
 
 class Button {
@@ -18,7 +19,7 @@ public:
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> text_texture;
     int texture_width;
 
-    Button(const std::shared_ptr<SDL_Texture> &icon, std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> &text_texture);
+    Button(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
     virtual ~Button();
 
     virtual void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down);
@@ -26,7 +27,7 @@ public:
 
 class FileButton : public Button {
 public:
-    FileButton(const std::shared_ptr<SDL_Texture> &icon, std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> &text_texture);
+    FileButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
     ~FileButton();
 
     void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down) override;
@@ -40,7 +41,7 @@ public:
     std::shared_ptr<SDL_Texture> collapse_icon;
     std::shared_ptr<SDL_Texture> expand_icon;
 
-    DirButton(const std::shared_ptr<SDL_Texture> &collapse_icon, const std::shared_ptr<SDL_Texture> &expand_icon, std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> &text_texture);
+    DirButton(const std::shared_ptr<SDL_Texture> &collapse_icon, const std::shared_ptr<SDL_Texture> &expand_icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
     ~DirButton();
 
     void add_file(FileButton* button);

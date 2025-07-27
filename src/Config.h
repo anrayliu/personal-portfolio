@@ -5,7 +5,7 @@
 #define FILE_BUTTON_SPACING_Y 5
 #define FILE_BUTTON_SPACING_X 15
 #define FILE_BUTTON_TAB 45
-#define FONT_SIZE 30
+#define FONT_SIZE 20
 #define TOP_BAR_H 54
 #define BOTTOM_BAR_H 41
 #define LEFT_BAR_W 54
