@@ -19,7 +19,7 @@ Button::~Button() {
 }
 
 void Button::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
-    click = mouse_down && collidepoint(rect, mousex, mousey);
+    click = mouse_down && mousex >= LEFT_BAR_W && mousex <= rect.x + rect.w && mousey >= rect.y && mousey <= rect.y + rect.h;
 
     SDL_Rect src = {0, 0, rect.w - rect.h, rect.h};
     SDL_Rect dest = {rect.x + FILE_BUTTON_H, rect.y, std::min(rect.w - rect.h, texture_width), FILE_BUTTON_H};
