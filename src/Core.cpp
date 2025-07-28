@@ -78,7 +78,6 @@ void Core::init() {
     top_level->add_dir(work_exp);
     top_level->add_dir(projects);
     top_level->add_file(readme);
-
 }
 
 void Core::draw_background() {
@@ -176,12 +175,13 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer* renderer, const st
         throw std::runtime_error(std::format("Error creating texture {}", IMG_GetError()));
     }
 
+    SDL_SetTextureBlendMode(new_texture.get(), SDL_BLENDMODE_BLEND);
+    SDL_SetTextureBlendMode(texture.get(), SDL_BLENDMODE_BLEND);
+
     SDL_SetRenderTarget(renderer, new_texture.get());
 
     SDL_Rect dest{0, 0, w, h};
     SDL_RenderCopy(renderer, texture.get(), nullptr, &dest);
-
-    SDL_SetTextureBlendMode(texture.get(), SDL_BLENDMODE_BLEND);
 
     // reset render target
     SDL_SetRenderTarget(renderer, nullptr);
