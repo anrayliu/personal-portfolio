@@ -67,8 +67,6 @@ void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
 
 FileButton::FileButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) : Button(icon, renderer, font, text) {}
 
-FileButton::~FileButton() {}
-
 void FileButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
     Button::update(renderer, mousex, mousey, mouse_down);
 

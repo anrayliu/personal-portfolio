@@ -25,10 +25,16 @@ public:
     virtual void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down);
 };
 
+class TabButton : public Button {
+public:
+    TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
+
+    void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down) override;
+};
+
 class FileButton : public Button {
 public:
     FileButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
-    ~FileButton();
 
     void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down) override;
 };
