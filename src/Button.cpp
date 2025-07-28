@@ -20,7 +20,10 @@ Button::~Button() {
 
 void Button::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
     click = mouse_down && collidepoint(rect, mousex, mousey);
-    SDL_RenderDrawRect(renderer, &rect);
+
+    SDL_Rect src = {0, 0, rect.w - rect.h, rect.h};
+    SDL_Rect dest = {rect.x + FILE_BUTTON_H, rect.y, std::min(rect.w - rect.h, texture_width), FILE_BUTTON_H};
+    SDL_RenderCopy(renderer, text_texture.get(), &src, &dest);
 }
 
 bool Button::collidepoint(const SDL_Rect &rect, int x, int y) {
@@ -60,10 +63,6 @@ void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
 
     SDL_Rect dest = {rect.x, rect.y, FILE_BUTTON_H, FILE_BUTTON_H};
     SDL_RenderCopy(renderer, collapsed ? expand_icon.get() : collapse_icon.get(), nullptr, &dest);
-
-    SDL_Rect src = {0, 0, rect.w - rect.h, rect.h};
-    dest = {dest.x + dest.w + 10, dest.y, std::min(rect.w - rect.h, texture_width), dest.h};
-    SDL_RenderCopy(renderer, text_texture.get(), &src, &dest);
 }
 
 FileButton::FileButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) : Button(icon, renderer, font, text) {}
@@ -72,4 +71,7 @@ FileButton::~FileButton() {}
 
 void FileButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
     Button::update(renderer, mousex, mousey, mouse_down);
+
+    SDL_Rect dest = {rect.x, rect.y, FILE_BUTTON_H, FILE_BUTTON_H};
+    SDL_RenderCopy(renderer, icon.get(), nullptr, &dest);
 }
