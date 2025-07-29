@@ -140,7 +140,7 @@ void Core::init_sdl() {
         throw std::runtime_error(std::format("Error initializing SDL {}", SDL_GetError()));
     }
 
-    constexpr int img_flags = IMG_INIT_JPG | IMG_INIT_PNG;
+    constexpr int img_flags = IMG_INIT_PNG;
     if ((IMG_Init(img_flags) & img_flags) != img_flags) {
         throw std::runtime_error(std::format("Error initializing SDL_IMG {}", SDL_GetError()));
     }
