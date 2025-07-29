@@ -48,7 +48,7 @@ public:
     std::shared_ptr<SDL_Texture> expand_icon;
 
     DirButton(const std::shared_ptr<SDL_Texture> &collapse_icon, const std::shared_ptr<SDL_Texture> &expand_icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
-    ~DirButton();
+    ~DirButton() override;
 
     void add_file(FileButton* button);
     void add_dir(DirButton* button);

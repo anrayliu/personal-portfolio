@@ -5,7 +5,7 @@
 
 
 Button::Button(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text)
-: icon(icon), rect{}, click(false), text_texture(nullptr, SDL_DestroyTexture), texture_width(0) {
+: icon(icon), rect{}, click(false), text(text), text_texture(nullptr, SDL_DestroyTexture), texture_width(0) {
     text_texture = Core::load_text(renderer, font, text);
     TTF_SizeText(font, text.c_str(), &texture_width, nullptr);
 }
@@ -68,6 +68,17 @@ void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
 FileButton::FileButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) : Button(icon, renderer, font, text) {}
 
 void FileButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
+    Button::update(renderer, mousex, mousey, mouse_down);
+
+    SDL_Rect dest = {rect.x, rect.y, FILE_BUTTON_H, FILE_BUTTON_H};
+    SDL_RenderCopy(renderer, icon.get(), nullptr, &dest);
+}
+
+TabButton::TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) : Button(icon, renderer, font, text) {
+    // text_texture = Core::load_text(renderer, font, text, {43, 45, 48});
+}
+
+void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
     Button::update(renderer, mousex, mousey, mouse_down);
 
     SDL_Rect dest = {rect.x, rect.y, FILE_BUTTON_H, FILE_BUTTON_H};

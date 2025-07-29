@@ -37,6 +37,8 @@ public:
 
     std::unique_ptr<DirButton> top_level;
 
+    std::vector<TabButton*> tabs;
+
     Config conf;
     Timer timer;
 
@@ -52,6 +54,7 @@ public:
     static std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> load_text(SDL_Renderer* renderer, TTF_Font* font, const string &text);
 
     explicit Core(Config &config);
+    ~Core();
 
     void init();
     void update();

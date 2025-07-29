@@ -10,6 +10,7 @@
 #define BOTTOM_BAR_H 41
 #define LEFT_BAR_W 54
 #define TAB_BAR_H 54
+#define TAB_W 300
 #define WINDOW_MIN 50
 
 struct Config {

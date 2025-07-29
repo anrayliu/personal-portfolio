@@ -1,6 +1,5 @@
 #include "Core.h"
 #include "SDL2/SDL_image.h"
-
 #include <format>
 #include <iostream>
 #include <memory>
@@ -21,6 +20,12 @@ Core::Core(Config &config):
     tab_bar{}, top_level(nullptr)
 {
     init_sdl();
+}
+
+Core::~Core() {
+    for (const TabButton* tb : tabs) {
+        delete tb;
+    }
 }
 
 void Core::init() {
@@ -128,9 +133,26 @@ void Core::recursive_update(Button *button) {
     button->update(renderer.get(), mousex, mousey, click);
 
     auto dir = dynamic_cast<DirButton *>(button);
-    if (dir && !dir->collapsed) {
-        for (Button *sub_button: dir->files) {
-            recursive_update(sub_button);
+    if (dir) {
+        if (!dir->collapsed) {
+            for (Button *sub_button: dir->files) {
+                recursive_update(sub_button);
+            }
+        }
+    } else {
+        // is a file button
+        if (button->click) {
+            bool add = true;
+            for (TabButton* &tab: tabs) {
+                if (tab->text == button->text) {
+                    add = false;
+                    break;
+                }
+            }
+            if (add) {
+                auto* tb = new TabButton(nullptr, renderer.get(), font.get(), button->text);
+                tabs.push_back(tb);
+            }
         }
     }
 }
@@ -226,6 +248,15 @@ void Core::update() {
                     file_tree.w - FILE_BUTTON_SPACING_X * 2, FILE_BUTTON_H, &offset, top_level.get());
 
     recursive_update(top_level.get());
+
+    int w = tabs.size() == 0 ? TAB_W : std::min(TAB_W, file_viewer.w / static_cast<int>(tabs.size()));
+
+    for (int i = 0; i < tabs.size(); i++) {
+        tabs[i]->rect = {tab_bar.x + i * w, tab_bar.y, w, tab_bar.h};
+        tabs[i]->update(renderer.get(), mousex, mousey, click);
+
+        SDL_RenderDrawRect(renderer.get(), &tabs[i]->rect);
+    }
 
     SDL_RenderPresent(renderer.get());
 }
