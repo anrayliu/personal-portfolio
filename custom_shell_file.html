@@ -6,10 +6,15 @@
     <style>
         body { margin: 0; padding: 0; }
         canvas { display: block; width: 100%; height: 100%; }
+        #webpage-iframe {
+            position: fixed;
+            border: none;
+        }
     </style>
 </head>
 <body>
 <canvas id="canvas"></canvas>
+<iframe id="webpage-iframe" src="html/test.html"></iframe>
 <script type='text/javascript'>
     var Module = {
         canvas: (function() {
