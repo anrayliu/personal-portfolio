@@ -9,8 +9,16 @@
 #endif
 
 
-Core::Core(const Config &config):
-    conf(config),
+// global config
+
+Config conf{
+    "Anray Liu",
+    1920,
+    917,
+    60.0,
+};
+
+Core::Core():
     quit(false), win(nullptr, SDL_DestroyWindow), renderer(nullptr, SDL_DestroyRenderer), font(nullptr, TTF_CloseFont),
     top_bar{},
     bottom_bar{},
@@ -44,22 +52,22 @@ void Core::init() {
         throw std::runtime_error(std::format("Error creating renderer {}", SDL_GetError()));
     }
 
-    font.reset(TTF_OpenFont("../assets/jetbrains-mono.ttf", FONT_SIZE));
+    font.reset(TTF_OpenFont("../assets/jetbrains-mono.ttf", conf.font_size));
     if (!font) {
         throw std::runtime_error(std::format("Error creating font {}", SDL_GetError()));
     }
 
-    top_bar = {0, 0, conf.window_w, TOP_BAR_H};
-    bottom_bar = {top_bar.x, conf.window_h - BOTTOM_BAR_H, top_bar.w, BOTTOM_BAR_H};
-    left_bar = {top_bar.x, top_bar.y + top_bar.h, LEFT_BAR_W, conf.window_h - top_bar.h - bottom_bar.h};
-    file_tree = {left_bar.x + left_bar.w, left_bar.y, FILE_TREE_W, left_bar.h};
-    tab_bar = {file_tree.x + file_tree.w, left_bar.y, conf.window_w - left_bar.w - file_tree.w, TAB_BAR_H};
+    top_bar = {0, 0, conf.window_w, conf.top_bar_h};
+    bottom_bar = {top_bar.x, conf.window_h - conf.bottom_bar_h, top_bar.w, conf.bottom_bar_h};
+    left_bar = {top_bar.x, top_bar.y + top_bar.h, conf.left_bar_w, conf.window_h - top_bar.h - bottom_bar.h};
+    file_tree = {left_bar.x + left_bar.w, left_bar.y, conf.file_tree_w, left_bar.h};
+    tab_bar = {file_tree.x + file_tree.w, left_bar.y, conf.window_w - left_bar.w - file_tree.w, conf.tab_bar_h};
     file_viewer = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
 
-    std::shared_ptr<SDL_Texture> collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", FILE_BUTTON_H, FILE_BUTTON_H);
-    std::shared_ptr<SDL_Texture> expand_icon = load_texture(renderer.get(), "../assets/expand.png", FILE_BUTTON_H, FILE_BUTTON_H);
-    std::shared_ptr<SDL_Texture> dir_icon = load_texture(renderer.get(), "../assets/directory.png", FILE_BUTTON_H, FILE_BUTTON_H);
-    std::shared_ptr<SDL_Texture> file_icon = load_texture(renderer.get(), "../assets/file.png", FILE_BUTTON_H, FILE_BUTTON_H);
+    std::shared_ptr<SDL_Texture> collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", conf.file_button_h, conf.file_button_h);
+    std::shared_ptr<SDL_Texture> expand_icon = load_texture(renderer.get(), "../assets/expand.png", conf.file_button_h, conf.file_button_h);
+    std::shared_ptr<SDL_Texture> dir_icon = load_texture(renderer.get(), "../assets/directory.png", conf.file_button_h, conf.file_button_h);
+    std::shared_ptr<SDL_Texture> file_icon = load_texture(renderer.get(), "../assets/file.png", conf.file_button_h, conf.file_button_h);
 
     top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Anray Liu");
 
@@ -122,12 +130,12 @@ void Core::draw_file_view() {
 
 void Core::recursive_align(int x, int y, int w, int h, int* offset, Button *button) {
     button->rect = {x, y + *offset, w, h};
-    *offset += FILE_BUTTON_H + FILE_BUTTON_SPACING_Y;
+    *offset += conf.file_button_h + conf.file_button_spacing_y;
 
     auto dir = dynamic_cast<DirButton*>(button);
     if (dir && !dir->collapsed) {
         for (auto &file : dir->files) {
-            recursive_align(x + FILE_BUTTON_TAB, y, w - FILE_BUTTON_TAB, h, offset, file);
+            recursive_align(x + conf.file_button_tab, y, w - conf.file_button_tab, h, offset, file);
         }
     }
 }
@@ -262,12 +270,12 @@ void Core::update() {
     }
 
     int offset = 10;
-    recursive_align(file_tree.x + FILE_BUTTON_SPACING_X, file_tree.y + FILE_BUTTON_SPACING_X,
-                    file_tree.w - FILE_BUTTON_SPACING_X * 2, FILE_BUTTON_H, &offset, top_level.get());
+    recursive_align(file_tree.x + conf.file_button_spacing_x, file_tree.y + conf.file_button_spacing_x,
+                    file_tree.w - conf.file_button_spacing_x * 2, conf.file_button_h, &offset, top_level.get());
 
     recursive_update(top_level.get());
 
-    int w = tabs.size() == 0 ? TAB_W : std::min(TAB_W, file_viewer.w / static_cast<int>(tabs.size()));
+    int w = tabs.size() == 0 ? conf.tab_w : std::min(conf.tab_w, file_viewer.w / static_cast<int>(tabs.size()));
 
     for (int i = 0; i < tabs.size(); i++) {
         tabs[i]->rect = {tab_bar.x + i * w, tab_bar.y, w, tab_bar.h};
@@ -322,14 +330,7 @@ void mainloop(void* arg) {
 
 int main(int argc, char* argv[]) {
     {
-        Config config{
-            "Anray Liu",
-            1920,
-            917,
-            60.0,
-        };
-
-        Core core(config);
+        Core core;
         core.init();
 
         #ifdef __EMSCRIPTEN__
@@ -339,7 +340,7 @@ int main(int argc, char* argv[]) {
         #ifndef __EMSCRIPTEN__
                 while(!core.quit) {
                     mainloop(&core);
-                    core.timer.tick(core.conf.fps);
+                    core.timer.tick(conf.fps);
                 }
         #endif
     }

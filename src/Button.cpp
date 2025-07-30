@@ -4,6 +4,8 @@
 #include "SDL2/SDL_ttf.h"
 
 
+extern Config conf;
+
 Button::Button(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text)
 : icon(icon), rect{}, click(false), text(text), text_texture(nullptr, SDL_DestroyTexture), texture_width(0) {
     text_texture = Core::load_text(renderer, font, text);
@@ -19,10 +21,10 @@ Button::~Button() {
 }
 
 void Button::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
-    click = mouse_down && mousex >= LEFT_BAR_W && mousex <= rect.x + rect.w && mousey >= rect.y && mousey <= rect.y + rect.h;
+    click = mouse_down && mousex >= conf.left_bar_w && mousex <= rect.x + rect.w && mousey >= rect.y && mousey <= rect.y + rect.h;
 
     SDL_Rect src = {0, 0, rect.w - rect.h, rect.h};
-    SDL_Rect dest = {rect.x + FILE_BUTTON_H, rect.y, std::min(rect.w - rect.h, texture_width), FILE_BUTTON_H};
+    SDL_Rect dest = {rect.x + conf.file_button_h, rect.y, std::min(rect.w - rect.h, texture_width), conf.file_button_h};
     SDL_RenderCopy(renderer, text_texture.get(), &src, &dest);
 }
 
@@ -61,7 +63,7 @@ void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
         collapsed = !collapsed;
     }
 
-    SDL_Rect dest = {rect.x, rect.y, FILE_BUTTON_H, FILE_BUTTON_H};
+    SDL_Rect dest = {rect.x, rect.y, conf.file_button_h, conf.file_button_h};
     SDL_RenderCopy(renderer, collapsed ? expand_icon.get() : collapse_icon.get(), nullptr, &dest);
 }
 
@@ -70,7 +72,7 @@ FileButton::FileButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* r
 void FileButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
     Button::update(renderer, mousex, mousey, mouse_down);
 
-    SDL_Rect dest = {rect.x, rect.y, FILE_BUTTON_H, FILE_BUTTON_H};
+    SDL_Rect dest = {rect.x, rect.y, conf.file_button_h, conf.file_button_h};
     SDL_RenderCopy(renderer, icon.get(), nullptr, &dest);
 }
 
@@ -81,6 +83,6 @@ TabButton::TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* ren
 void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
     Button::update(renderer, mousex, mousey, mouse_down);
 
-    SDL_Rect dest = {rect.x, rect.y, FILE_BUTTON_H, FILE_BUTTON_H};
+    SDL_Rect dest = {rect.x, rect.y, conf.file_button_h, conf.file_button_h};
     SDL_RenderCopy(renderer, icon.get(), nullptr, &dest);
 }

@@ -42,7 +42,6 @@ public:
 
     std::vector<TabButton*> tabs;
 
-    Config conf;
     Timer timer;
 
     bool quit;
@@ -56,7 +55,7 @@ public:
     static std::shared_ptr<SDL_Texture> load_texture(SDL_Renderer* renderer, const string &path, int w, int h);
     static std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> load_text(SDL_Renderer* renderer, TTF_Font* font, const string &text);
 
-    explicit Core(const Config &config);
+    explicit Core();
     ~Core();
 
     void init();

@@ -1,18 +1,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#define FILE_BUTTON_H 32
-#define FILE_BUTTON_SPACING_Y 5
-#define FILE_BUTTON_SPACING_X 15
-#define FILE_BUTTON_TAB 45
-#define FONT_SIZE 20
-#define TOP_BAR_H 54
-#define BOTTOM_BAR_H 41
-#define LEFT_BAR_W 54
-#define TAB_BAR_H 54
-#define TAB_W 300
-#define FILE_TREE_W 400
-
 #include <string>
 
 struct Config {
@@ -20,6 +8,18 @@ struct Config {
     int window_w;
     int window_h;
     double fps;
+
+    int file_button_h = 32;
+    int file_button_spacing_y = 5;
+    int file_button_spacing_x = 15;
+    int file_button_tab = 45;
+    int font_size = 20;
+    int top_bar_h = 54;
+    int bottom_bar_h = 41;
+    int left_bar_w = 54;
+    int tab_bar_h = 54;
+    int tab_w = 300;
+    int file_tree_w = 400;
 };
 
 #endif
