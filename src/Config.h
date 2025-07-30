@@ -3,6 +3,8 @@
 
 #include <string>
 
+#include "SDL2/SDL_pixels.h"
+
 struct Config {
     std::string title;
     int window_w;
@@ -20,6 +22,12 @@ struct Config {
     int tab_bar_h = 54;
     int tab_w = 300;
     int file_tree_w = 400;
+
+    SDL_Color top_bar_colour{60, 63, 65};
+    SDL_Color text_colour{207, 206, 196};
+    SDL_Color tab_bar_colour{30, 31, 34};
+    SDL_Color left_bar_colour{43, 45, 48};
+    SDL_Color outline_colour{57, 59, 64};
 };
 
 #endif

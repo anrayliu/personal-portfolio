@@ -98,23 +98,21 @@ void Core::init() {
 
 void Core::draw_background() {
     // draw filled rects
-    SDL_SetRenderDrawColor(renderer.get(), 60, 63, 65, 0);
+    SDL_SetRenderDrawColor(renderer.get(), conf.top_bar_colour.r, conf.top_bar_colour.g, conf.top_bar_colour.b, 0);
     SDL_RenderFillRect(renderer.get(), &top_bar);
 
-    SDL_SetRenderDrawColor(renderer.get(), 43, 45, 48, 0);
-    SDL_RenderFillRect(renderer.get(), &bottom_bar);
+    SDL_SetRenderDrawColor(renderer.get(), conf.left_bar_colour.r, conf.left_bar_colour.g, conf.left_bar_colour.b, 0);
     SDL_RenderFillRect(renderer.get(), &left_bar);
+    SDL_RenderFillRect(renderer.get(), &bottom_bar);
     SDL_RenderFillRect(renderer.get(), &file_tree);
 
-    SDL_SetRenderDrawColor(renderer.get(), 30, 31, 34, 0);
+    SDL_SetRenderDrawColor(renderer.get(), conf.tab_bar_colour.r, conf.tab_bar_colour.g, conf.tab_bar_colour.b, 0);
     SDL_RenderFillRect(renderer.get(), &tab_bar);
-
-    // do not draw the file view
-    // SDL_RenderFillRect(renderer.get(), &file_viewer);
+    SDL_RenderFillRect(renderer.get(), &file_viewer);
 
     // draw outlines
 
-    SDL_SetRenderDrawColor(renderer.get(), 57, 59, 64, 0);
+    SDL_SetRenderDrawColor(renderer.get(), conf.outline_colour.r, conf.outline_colour.g, conf.outline_colour.b, 0);
 
     SDL_RenderDrawRect(renderer.get(), &top_bar);
     SDL_RenderDrawRect(renderer.get(), &bottom_bar);
@@ -237,10 +235,7 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer* renderer, const st
 std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_Renderer *renderer, TTF_Font *font,
     const string &text) {
 
-    SDL_Color bg{207, 206, 196};
-    SDL_Color fg{43, 45, 48};
-
-    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(TTF_RenderText_Shaded(font, text.c_str(), bg, fg),
+    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(TTF_RenderText_Shaded(font, text.c_str(), conf.text_colour, conf.left_bar_colour),
                                                                   SDL_FreeSurface);
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(SDL_CreateTextureFromSurface(renderer, surf.get()), SDL_DestroyTexture);
 
