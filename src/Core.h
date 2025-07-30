@@ -59,6 +59,8 @@ public:
     void init();
     void update();
 
+    void move_iframe(int x, int y, int w, int h);
+
 };
 
 #endif

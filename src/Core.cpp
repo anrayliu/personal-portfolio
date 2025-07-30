@@ -157,6 +157,18 @@ void Core::recursive_update(Button *button) {
     }
 }
 
+void Core::move_iframe(int x, int y, int w, int h) {
+#ifdef __EMSCRIPTEN__
+    EM_ASM({
+        const iframe = document.getElementById('webpage-iframe');
+               iframe.style.left = ` ${$0}px`;
+               iframe.style.top = ` ${$1}px`;
+               iframe.style.width = ` ${$2}px`;
+               iframe.style.height = ` ${$3}px`;
+           }, x, y, w, h);
+#endif
+}
+
 void Core::init_sdl() {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         throw std::runtime_error(std::format("Error initializing SDL {}", SDL_GetError()));
@@ -241,6 +253,7 @@ void Core::update() {
         if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
             dragging = false;
         }
+        move_iframe(file_viewer.x, file_viewer.y, file_viewer.w, file_viewer.h);
     }
 
     int offset = 10;
@@ -312,6 +325,7 @@ int main(int argc, char* argv[]) {
 
         Core core(config);
         core.init();
+        core.move_iframe(core.file_viewer.x, core.file_viewer.y, core.file_viewer.w, core.file_viewer.h);
 
         #ifdef __EMSCRIPTEN__
                 emscripten_set_main_loop_arg(mainloop, &core, 0, 1);
