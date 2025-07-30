@@ -17,7 +17,7 @@ Core::Core(const Config &config):
     left_bar{},
     file_tree{},
     file_viewer{},
-    tab_bar{}, top_level(nullptr)
+    tab_bar{}, top_level(nullptr), dragging(false)
 {
     init_sdl();
 }
@@ -52,7 +52,7 @@ void Core::init() {
     top_bar = {0, 0, conf.window_w, TOP_BAR_H};
     bottom_bar = {top_bar.x, conf.window_h - BOTTOM_BAR_H, top_bar.w, BOTTOM_BAR_H};
     left_bar = {top_bar.x, top_bar.y + top_bar.h, LEFT_BAR_W, conf.window_h - top_bar.h - bottom_bar.h};
-    file_tree = {left_bar.x + left_bar.w, left_bar.y, 350, left_bar.h};
+    file_tree = {left_bar.x + left_bar.w, left_bar.y, FILE_TREE_W, left_bar.h};
     tab_bar = {file_tree.x + file_tree.w, left_bar.y, conf.window_w - left_bar.w - file_tree.w, TAB_BAR_H};
     file_viewer = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
 
@@ -65,7 +65,7 @@ void Core::init() {
 
     auto work_exp = new DirButton(collapse_icon, expand_icon, renderer.get(), font.get(), "Work Experience");
 
-    auto stats_can = new FileButton(file_icon, renderer.get(), font.get(), "Cloud Engineer @ Statistics Canada");
+    auto stats_can = new FileButton(file_icon, renderer.get(), font.get(), "Cloud Engineer");
 
     work_exp->add_file(stats_can);
 
@@ -83,6 +83,9 @@ void Core::init() {
     top_level->add_dir(work_exp);
     top_level->add_dir(projects);
     top_level->add_file(readme);
+
+    move_iframe(file_viewer.x, file_viewer.y, file_viewer.w, file_viewer.h);
+
 }
 
 void Core::draw_background() {
@@ -243,9 +246,11 @@ void Core::update() {
 
     draw_background();
 
-    if (!dragging && click && abs(file_tree.x + file_tree.w - mousex) <= 10) {
-        dragging = true;
-    }
+    // disable dragging for now
+
+    // if (!dragging && click && abs(file_tree.x + file_tree.w - mousex) <= 10) {
+    //     dragging = true;
+    // }
     if (dragging) {
         file_tree.w = mousex - left_bar.w;
         tab_bar.x = file_viewer.x = file_tree.x + file_tree.w;
@@ -326,7 +331,6 @@ int main(int argc, char* argv[]) {
 
         Core core(config);
         core.init();
-        core.move_iframe(core.file_viewer.x, core.file_viewer.y, core.file_viewer.w, core.file_viewer.h);
 
         #ifdef __EMSCRIPTEN__
                 emscripten_set_main_loop_arg(mainloop, &core, 0, 1);

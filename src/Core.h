@@ -22,6 +22,8 @@ class Core {
     void recursive_align(int x, int y, int w, int h, int* offset, Button *button);
     void recursive_update(Button *button);
 
+    void move_iframe(int x, int y, int w, int h);
+
 public:
     int mousex;
     int mousey;
@@ -59,8 +61,6 @@ public:
 
     void init();
     void update();
-
-    void move_iframe(int x, int y, int w, int h);
 
 };
 
