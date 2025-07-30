@@ -12,8 +12,10 @@
 #define TAB_BAR_H 54
 #define TAB_W 300
 #define WINDOW_MIN 50
+#include <string>
 
 struct Config {
+    std::string title;
     int window_w;
     int window_h;
     double fps;

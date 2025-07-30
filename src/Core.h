@@ -17,6 +17,7 @@ using std::string;
 class Core {
     void draw_background();
     void draw_file_view();
+
     // recursive functions to interact with file buttons
     void recursive_align(int x, int y, int w, int h, int* offset, Button *button);
     void recursive_update(Button *button);
@@ -53,7 +54,7 @@ public:
     static std::shared_ptr<SDL_Texture> load_texture(SDL_Renderer* renderer, const string &path, int w, int h);
     static std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> load_text(SDL_Renderer* renderer, TTF_Font* font, const string &text);
 
-    explicit Core(Config &config);
+    explicit Core(const Config &config);
     ~Core();
 
     void init();

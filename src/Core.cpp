@@ -9,7 +9,7 @@
 #endif
 
 
-Core::Core(Config &config):
+Core::Core(const Config &config):
     conf(config),
     quit(false), win(nullptr, SDL_DestroyWindow), renderer(nullptr, SDL_DestroyRenderer), font(nullptr, TTF_CloseFont),
     top_bar{},
@@ -33,7 +33,7 @@ void Core::init() {
 
     // init sdl materials
 
-    win.reset(SDL_CreateWindow("sort visualizer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, conf.window_w, conf.window_h, SDL_RENDERER_ACCELERATED));
+    win.reset(SDL_CreateWindow(conf.title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, conf.window_w, conf.window_h, SDL_RENDERER_ACCELERATED));
     if (!win) {
         throw std::runtime_error(std::format("Error creating window {}", SDL_GetError()));
     }
@@ -318,6 +318,7 @@ void mainloop(void* arg) {
 int main(int argc, char* argv[]) {
     {
         Config config{
+            "Anray Liu",
             1920,
             917,
             60.0,
