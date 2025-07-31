@@ -38,6 +38,11 @@ public:
     SDL_Rect file_viewer;
     SDL_Rect tab_bar;
 
+    std::shared_ptr<SDL_Texture> collapse_icon;
+    std::shared_ptr<SDL_Texture> expand_icon;
+    std::shared_ptr<SDL_Texture> close_icon;
+    std::shared_ptr<SDL_Texture> file_icon;
+
     std::unique_ptr<DirButton> top_level;
 
     std::vector<TabButton*> tabs;

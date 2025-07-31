@@ -31,6 +31,11 @@ Core::Core():
 }
 
 Core::~Core() {
+    SDL_DestroyTexture(collapse_icon.get());
+    SDL_DestroyTexture(expand_icon.get());
+    SDL_DestroyTexture(close_icon.get());
+    SDL_DestroyTexture(file_icon.get());
+
     for (const TabButton* tb : tabs) {
         delete tb;
     }
@@ -64,36 +69,35 @@ void Core::init() {
     tab_bar = {file_tree.x + file_tree.w, left_bar.y, conf.window_w - left_bar.w - file_tree.w, conf.tab_bar_h};
     file_viewer = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
 
-    std::shared_ptr<SDL_Texture> collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", conf.file_button_h, conf.file_button_h);
-    std::shared_ptr<SDL_Texture> expand_icon = load_texture(renderer.get(), "../assets/expand.png", conf.file_button_h, conf.file_button_h);
-    std::shared_ptr<SDL_Texture> dir_icon = load_texture(renderer.get(), "../assets/directory.png", conf.file_button_h, conf.file_button_h);
-    std::shared_ptr<SDL_Texture> file_icon = load_texture(renderer.get(), "../assets/file.png", conf.file_button_h, conf.file_button_h);
+    collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", conf.file_button_h, conf.file_button_h);
+    expand_icon = load_texture(renderer.get(), "../assets/expand.png", conf.file_button_h, conf.file_button_h);
+    close_icon = load_texture(renderer.get(), "../assets/close.png", conf.file_button_h, conf.file_button_h);
+    file_icon = load_texture(renderer.get(), "../assets/file.png", conf.file_button_h, conf.file_button_h);
 
     top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Anray Liu");
 
-    auto work_exp = new DirButton(collapse_icon, expand_icon, renderer.get(), font.get(), "Work Experience");
+    std::unique_ptr<DirButton> work_exp = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Work Experience");
 
-    auto stats_can = new FileButton(file_icon, renderer.get(), font.get(), "Cloud Engineer");
+    std::unique_ptr<FileButton> stats_can = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Cloud Engineer");
 
-    work_exp->add_file(stats_can);
+    work_exp->add_file(std::move(stats_can));
 
-    auto projects = new DirButton(collapse_icon, expand_icon, renderer.get(), font.get(), "Projects");
+    std::unique_ptr<DirButton> projects = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Projects");
 
-    auto pyvidplayer = new FileButton(file_icon, renderer.get(), font.get(), "Pyvidplayer2");
+    std::unique_ptr<FileButton> pyvidplayer = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Pyvidplayer2");
 
-    auto server = new FileButton(file_icon, renderer.get(), font.get(), "Home Server");
+    std::unique_ptr<FileButton> server = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Home Server");
 
-    projects->add_file(pyvidplayer);
-    projects->add_file(server);
+    projects->add_file(std::move(pyvidplayer));
+    projects->add_file(std::move(server));
 
-    auto readme = new FileButton(file_icon, renderer.get(), font.get(), "README");
+    std::unique_ptr<FileButton> readme = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "README");
 
-    top_level->add_dir(work_exp);
-    top_level->add_dir(projects);
-    top_level->add_file(readme);
+    top_level->add_dir(std::move(work_exp));
+    top_level->add_dir(std::move(projects));
+    top_level->add_file(std::move(readme));
 
     move_iframe(file_viewer.x, file_viewer.y, file_viewer.w, file_viewer.h);
-
 }
 
 void Core::draw_background() {
@@ -133,7 +137,7 @@ void Core::recursive_align(int x, int y, int w, int h, int* offset, Button *butt
     auto dir = dynamic_cast<DirButton*>(button);
     if (dir && !dir->collapsed) {
         for (auto &file : dir->files) {
-            recursive_align(x + conf.file_button_tab, y, w - conf.file_button_tab, h, offset, file);
+            recursive_align(x + conf.file_button_tab, y, w - conf.file_button_tab, h, offset, file.get());
         }
     }
 }
@@ -144,8 +148,8 @@ void Core::recursive_update(Button *button) {
     auto dir = dynamic_cast<DirButton *>(button);
     if (dir) {
         if (!dir->collapsed) {
-            for (Button *sub_button: dir->files) {
-                recursive_update(sub_button);
+            for (const auto& ptr : dir->files) {
+                recursive_update(ptr.get());
             }
         }
     } else {

@@ -23,7 +23,6 @@ public:
     int texture_width;
 
     Button(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
-    virtual ~Button();
 
     virtual void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down);
 };
@@ -45,16 +44,15 @@ public:
 class DirButton : public Button {
 public:
     bool collapsed;
-    std::vector<Button*> files;
+    std::vector<std::unique_ptr<Button>> files;
 
     std::shared_ptr<SDL_Texture> collapse_icon;
     std::shared_ptr<SDL_Texture> expand_icon;
 
     DirButton(const std::shared_ptr<SDL_Texture> &collapse_icon, const std::shared_ptr<SDL_Texture> &expand_icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
-    ~DirButton() override;
 
-    void add_file(FileButton* button);
-    void add_dir(DirButton* button);
+    void add_file(std::unique_ptr<FileButton> button);
+    void add_dir(std::unique_ptr<DirButton> button);
 
     void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down) override;
 };

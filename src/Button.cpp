@@ -11,14 +11,6 @@ select_texture(nullptr, SDL_DestroyTexture), texture_width(0) {
     TTF_SizeText(font, text.c_str(), &texture_width, nullptr);
 }
 
-Button::~Button() {
-    // textures are shared among all buttons, last one frees the texture
-
-    if (icon && icon.use_count() == 1) {
-        SDL_DestroyTexture(icon.get());
-    }
-}
-
 void Button::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
     hover = mousex >= conf.left_bar_w && mousex <= rect.x + rect.w && mousey >= rect.y && mousey <= rect.y + rect.h;
     click = mouse_down && hover;
@@ -35,25 +27,12 @@ DirButton::DirButton(const std::shared_ptr<SDL_Texture> &collapse_icon, const st
     hover_texture = Core::load_text(renderer, font, text, conf.tab_bar_colour);
 }
 
-DirButton::~DirButton() {
-    for (Button* button: files) {
-        delete button;
-    }
-
-    if (collapse_icon && collapse_icon.use_count() == 1) {
-        SDL_DestroyTexture(icon.get());
-    }
-    if (expand_icon && expand_icon.use_count() == 1) {
-        SDL_DestroyTexture(icon.get());
-    }
+void DirButton::add_file(std::unique_ptr<FileButton> button) {
+    files.push_back(std::move(button));
 }
 
-void DirButton::add_file(FileButton* button) {
-    files.push_back(button);
-}
-
-void DirButton::add_dir(DirButton *button) {
-    files.push_back(button);
+void DirButton::add_dir(std::unique_ptr<DirButton> button) {
+    files.push_back(std::move(button));
 }
 
 void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
