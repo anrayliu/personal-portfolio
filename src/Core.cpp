@@ -270,6 +270,8 @@ void Core::update() {
 
     recursive_update(top_level.get());
 
+    SDL_SetRenderDrawColor(renderer.get(), conf.outline_colour.r, conf.outline_colour.g, conf.outline_colour.b, 255);
+
     int w = tabs.size() == 0 ? conf.tab_w : std::min(conf.tab_w, file_viewer.w / static_cast<int>(tabs.size()));
 
     for (int i = 0; i < tabs.size(); i++) {

@@ -14,6 +14,7 @@ public:
     std::shared_ptr<SDL_Texture> icon;
     SDL_Rect rect;
     bool click;
+    bool hover;
 
     std::string text;
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> text_texture;
