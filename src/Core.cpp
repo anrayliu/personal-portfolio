@@ -35,10 +35,6 @@ Core::~Core() {
     SDL_DestroyTexture(expand_icon.get());
     SDL_DestroyTexture(close_icon.get());
     SDL_DestroyTexture(file_icon.get());
-
-    for (const TabButton* tb : tabs) {
-        delete tb;
-    }
 }
 
 void Core::init() {
@@ -156,15 +152,15 @@ void Core::recursive_update(Button *button) {
         // is a file button
         if (button->click) {
             bool add = true;
-            for (TabButton* &tab: tabs) {
-                if (tab->text == button->text) {
+            for (const auto &ptr: tabs) {
+                if (ptr->text == button->text) {
                     add = false;
                     break;
                 }
             }
             if (add) {
-                auto* tb = new TabButton(nullptr, renderer.get(), font.get(), button->text);
-                tabs.push_back(tb);
+                std::unique_ptr<TabButton> tb = std::make_unique<TabButton>(nullptr, renderer.get(), font.get(), button->text);
+                tabs.push_back(std::move(tb));
             }
         }
     }

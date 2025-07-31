@@ -45,7 +45,7 @@ public:
 
     std::unique_ptr<DirButton> top_level;
 
-    std::vector<TabButton*> tabs;
+    std::vector<std::unique_ptr<TabButton>> tabs;
 
     Timer timer;
 
