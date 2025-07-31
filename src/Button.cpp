@@ -90,7 +90,8 @@ void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
     Button::update(renderer, mousex, mousey, mouse_down);
 
     SDL_Rect src = {0, 0, rect.w - rect.h, rect.h};
-    SDL_Rect dest = {rect.x + conf.file_button_h, rect.y, std::min(rect.w - rect.h, texture_width), conf.file_button_h};
+    int w = std::min(rect.w - rect.h, texture_width);
+    SDL_Rect dest = {rect.x + rect.w / 2 - w / 2, rect.y + rect.h / 2 - conf.file_button_h / 2, w, conf.file_button_h};
 
     SDL_RenderCopy(renderer, text_texture.get(), &src, &dest);
 
