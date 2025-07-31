@@ -53,7 +53,8 @@ public:
     static void init_sdl();
     static void quit_sdl();
     static std::shared_ptr<SDL_Texture> load_texture(SDL_Renderer* renderer, const string &path, int w, int h);
-    static std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> load_text(SDL_Renderer* renderer, TTF_Font* font, const string &text);
+    static std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> load_text(SDL_Renderer* renderer, TTF_Font* font,
+        const string &text, SDL_Color bg);
 
     explicit Core();
     ~Core();

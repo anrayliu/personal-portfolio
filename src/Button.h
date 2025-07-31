@@ -17,6 +17,8 @@ public:
 
     std::string text;
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> text_texture;
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> hover_texture;
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> select_texture;
     int texture_width;
 
     Button(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);

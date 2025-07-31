@@ -233,9 +233,9 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer* renderer, const st
 }
 
 std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_Renderer *renderer, TTF_Font *font,
-    const string &text) {
+    const string &text, SDL_Color bg) {
 
-    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(TTF_RenderText_Shaded(font, text.c_str(), conf.text_colour, conf.left_bar_colour),
+    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(TTF_RenderText_Shaded(font, text.c_str(), conf.text_colour, bg),
                                                                   SDL_FreeSurface);
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(SDL_CreateTextureFromSurface(renderer, surf.get()), SDL_DestroyTexture);
 

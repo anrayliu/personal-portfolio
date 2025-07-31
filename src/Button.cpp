@@ -3,12 +3,11 @@
 #include "Core.h"
 #include "SDL2/SDL_ttf.h"
 
-
 extern Config conf;
 
 Button::Button(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text)
-: icon(icon), rect{}, click(false), text(text), text_texture(nullptr, SDL_DestroyTexture), texture_width(0) {
-    text_texture = Core::load_text(renderer, font, text);
+: icon(icon), rect{}, click(false), text(text), text_texture(nullptr, SDL_DestroyTexture), hover_texture(nullptr, SDL_DestroyTexture),
+select_texture(nullptr, SDL_DestroyTexture), texture_width(0) {
     TTF_SizeText(font, text.c_str(), &texture_width, nullptr);
 }
 
@@ -32,8 +31,11 @@ bool Button::collidepoint(const SDL_Rect &rect, int x, int y) {
     return x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h;
 }
 
+
 DirButton::DirButton(const std::shared_ptr<SDL_Texture> &collapse_icon, const std::shared_ptr<SDL_Texture> &expand_icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text)
-: Button(nullptr, renderer, font, text), collapsed(false), collapse_icon(collapse_icon), expand_icon(expand_icon) {}
+: Button(nullptr, renderer, font, text), collapsed(false), collapse_icon(collapse_icon), expand_icon(expand_icon) {
+    text_texture = Core::load_text(renderer, font, text, conf.left_bar_colour);
+}
 
 DirButton::~DirButton() {
     for (Button* button: files) {
@@ -67,7 +69,9 @@ void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
     SDL_RenderCopy(renderer, collapsed ? expand_icon.get() : collapse_icon.get(), nullptr, &dest);
 }
 
-FileButton::FileButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) : Button(icon, renderer, font, text) {}
+FileButton::FileButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) : Button(icon, renderer, font, text) {
+    text_texture = Core::load_text(renderer, font, text, conf.left_bar_colour);
+}
 
 void FileButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
     Button::update(renderer, mousex, mousey, mouse_down);
@@ -77,7 +81,7 @@ void FileButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mou
 }
 
 TabButton::TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) : Button(icon, renderer, font, text) {
-    // text_texture = Core::load_text(renderer, font, text, {43, 45, 48});
+    text_texture = Core::load_text(renderer, font, text, conf.tab_bar_colour);
 }
 
 void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
