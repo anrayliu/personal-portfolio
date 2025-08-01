@@ -8,7 +8,7 @@ extern Config conf;
 Button::Button(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text)
 : icon(icon), rect{}, click(false), hover(false), text(text), text_texture(nullptr, SDL_DestroyTexture), hover_texture(nullptr, SDL_DestroyTexture),
 select_texture(nullptr, SDL_DestroyTexture), texture_width(0) {
-    TTF_SizeText(font, text.c_str(), &texture_width, nullptr);
+    TTF_SizeText(font, text.c_str(), &texture_width, &texture_height);
 }
 
 void Button::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
@@ -90,8 +90,8 @@ TabButton::TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* ren
 void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
     Button::update(renderer, mousex, mousey, mouse_down);
 
-    SDL_Rect src = {0, 0, rect.w - rect.h, rect.h};
     int w = std::min(rect.w - rect.h, texture_width);
+    SDL_Rect src = {0, 0, w, texture_height};
     SDL_Rect dest = {rect.x + rect.w / 2 - w / 2, rect.y + rect.h / 2 - conf.file_button_h / 2, w, conf.file_button_h};
 
     if (hover) {
@@ -99,10 +99,12 @@ void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
         SDL_Rect highlight_rect{rect.x, rect.y, rect.w, rect.h};
         SDL_RenderFillRect(renderer, &highlight_rect);
         SDL_RenderCopy(renderer, hover_texture.get(), &src, &dest);
+
+        dest = {rect.x + rect.w - conf.file_button_h - 10, dest.y, conf.file_button_h, conf.file_button_h};
+        SDL_RenderCopy(renderer, icon.get(), nullptr, &dest);
+
+
     } else {
         SDL_RenderCopy(renderer, text_texture.get(), &src, &dest);
     }
-
-    dest = {rect.x, rect.y, conf.file_button_h, conf.file_button_h};
-    SDL_RenderCopy(renderer, icon.get(), nullptr, &dest);
 }

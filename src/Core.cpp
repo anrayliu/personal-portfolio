@@ -144,7 +144,7 @@ void Core::recursive_align(int x, int y, int w, int h, int* offset, Button *butt
 void Core::recursive_update(Button *button) {
     button->update(renderer.get(), mousex, mousey, click);
 
-    auto dir = dynamic_cast<DirButton *>(button);
+    auto dir = dynamic_cast<DirButton*>(button);
     if (dir) {
         if (!dir->collapsed) {
             for (const auto& ptr : dir->files) {
