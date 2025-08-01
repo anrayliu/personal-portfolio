@@ -47,7 +47,7 @@ void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
 
     if (hover) {
         SDL_SetRenderDrawColor(renderer, conf.tab_bar_colour.r, conf.tab_bar_colour.g, conf.tab_bar_colour.b, 255);
-        SDL_Rect highlight_rect{conf.left_bar_w + 1, rect.y, conf.file_tree_w - 2, rect.h};
+        SDL_Rect highlight_rect{conf.left_bar_w, rect.y, conf.file_tree_w, rect.h};
         SDL_RenderFillRect(renderer, &highlight_rect);
         SDL_RenderCopy(renderer, hover_texture.get(), &src, &dest);
     } else {
@@ -71,7 +71,7 @@ void FileButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mou
 
     if (hover) {
         SDL_SetRenderDrawColor(renderer, conf.tab_bar_colour.r, conf.tab_bar_colour.g, conf.tab_bar_colour.b, 255);
-        SDL_Rect highlight_rect{conf.left_bar_w + 1, rect.y, conf.file_tree_w - 2, rect.h};
+        SDL_Rect highlight_rect{conf.left_bar_w, rect.y, conf.file_tree_w, rect.h};
         SDL_RenderFillRect(renderer, &highlight_rect);
         SDL_RenderCopy(renderer, hover_texture.get(), &src, &dest);
     } else {
@@ -96,7 +96,7 @@ void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
 
     if (hover) {
         SDL_SetRenderDrawColor(renderer, conf.left_bar_colour.r, conf.left_bar_colour.g, conf.left_bar_colour.b, 255);
-        SDL_Rect highlight_rect{rect.x + 1, rect.y + 1, rect.w - 2, rect.h - 2};
+        SDL_Rect highlight_rect{rect.x, rect.y, rect.w, rect.h};
         SDL_RenderFillRect(renderer, &highlight_rect);
         SDL_RenderCopy(renderer, hover_texture.get(), &src, &dest);
     } else {

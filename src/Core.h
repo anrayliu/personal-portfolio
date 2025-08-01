@@ -1,7 +1,6 @@
 #ifndef CORE_H
 #define CORE_H
 
-#include "Config.h"
 #include "Timer.h"
 
 #include <memory>
@@ -16,6 +15,7 @@ using std::string;
 
 class Core {
     void draw_background();
+    void draw_outlines();
     void draw_file_view();
 
     // recursive functions to interact with file buttons

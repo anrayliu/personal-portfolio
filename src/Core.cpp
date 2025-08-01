@@ -4,6 +4,8 @@
 #include <iostream>
 #include <memory>
 
+#include "Config.h"
+
 #ifdef __EMSCRIPTEN__
 #include "emscripten.h"
 #endif
@@ -109,9 +111,9 @@ void Core::draw_background() {
     SDL_SetRenderDrawColor(renderer.get(), conf.tab_bar_colour.r, conf.tab_bar_colour.g, conf.tab_bar_colour.b, 0);
     SDL_RenderFillRect(renderer.get(), &tab_bar);
     SDL_RenderFillRect(renderer.get(), &file_viewer);
+}
 
-    // draw outlines
-
+void Core::draw_outlines() {
     SDL_SetRenderDrawColor(renderer.get(), conf.outline_colour.r, conf.outline_colour.g, conf.outline_colour.b, 0);
 
     SDL_RenderDrawRect(renderer.get(), &top_bar);
@@ -120,6 +122,7 @@ void Core::draw_background() {
     SDL_RenderDrawRect(renderer.get(), &file_tree);
     SDL_RenderDrawRect(renderer.get(), &tab_bar);
     SDL_RenderDrawRect(renderer.get(), &file_viewer);
+
 }
 
 void Core::draw_file_view() {
@@ -254,6 +257,7 @@ void Core::update() {
     // if (!dragging && click && abs(file_tree.x + file_tree.w - mousex) <= 10) {
     //     dragging = true;
     // }
+
     if (dragging) {
         file_tree.w = mousex - left_bar.w;
         tab_bar.x = file_viewer.x = file_tree.x + file_tree.w;
@@ -280,6 +284,8 @@ void Core::update() {
 
         SDL_RenderDrawRect(renderer.get(), &tabs[i]->rect);
     }
+
+    draw_outlines();
 
     SDL_RenderPresent(renderer.get());
 }
