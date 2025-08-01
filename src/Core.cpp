@@ -282,6 +282,7 @@ void Core::update() {
         tabs[i]->rect = {tab_bar.x + i * w, tab_bar.y, w, tab_bar.h};
         tabs[i]->update(renderer.get(), mousex, mousey, click);
 
+        SDL_SetRenderDrawColor(renderer.get(), conf.left_bar_colour.r, conf.left_bar_colour.g, conf.left_bar_colour.b, 255);
         SDL_RenderDrawRect(renderer.get(), &tabs[i]->rect);
     }
 
