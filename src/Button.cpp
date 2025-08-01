@@ -83,7 +83,8 @@ x_rect{0, 0, conf.file_button_h, conf.file_button_h}, Button(icon, renderer, fon
     hover_texture = Core::load_text(renderer, font, text, conf.left_bar_colour);
 }
 
-void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
+void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down,
+    std::shared_ptr<TabButton> &selected, std::vector<std::shared_ptr<TabButton>> &tabs) {
     Button::update(renderer, mousex, mousey, mouse_down);
 
     int w = std::min(rect.w - rect.h, texture_width);
@@ -103,6 +104,33 @@ void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
         if (mousex >= x_rect.x && mousex <= x_rect.x + rect.w && mousey >= x_rect.y && mousey <= x_rect.y + x_rect.h) {
             SDL_SetRenderDrawColor(renderer, conf.tab_bar_colour.r, conf.tab_bar_colour.g, conf.tab_bar_colour.b, 255);
             SDL_RenderFillRect(renderer, &x_rect);
+
+            if (click) {
+                // close tab
+                for (int i = 0; i < tabs.size(); i ++) {
+                    if (tabs[i].get() == this) {
+                        tabs.erase(tabs.begin() + i);
+                        if (selected.get() == this) {
+                            selected.reset();
+                            if (!tabs.empty()) {
+                                selected = tabs[tabs.size() - 1];
+                            }
+                        }
+                        return;
+                    }
+                }
+            }
+        }
+
+        // tab is clicked
+        if (click) {
+            for (int i = 0; i < tabs.size(); i ++) {
+                if (tabs[i].get() == this) {
+                    selected.reset();
+                    selected = tabs[i];
+                    break;
+                }
+            }
         }
 
         SDL_RenderCopy(renderer, icon.get(), nullptr, &x_rect);

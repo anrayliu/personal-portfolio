@@ -21,13 +21,13 @@ Config conf{
 };
 
 Core::Core():
-    quit(false), win(nullptr, SDL_DestroyWindow), renderer(nullptr, SDL_DestroyRenderer), font(nullptr, TTF_CloseFont),
-    top_bar{},
-    bottom_bar{},
-    left_bar{},
+    dragging(false), top_bar{}, bottom_bar{}, left_bar{},
     file_tree{},
     file_viewer{},
-    tab_bar{}, top_level(nullptr), dragging(false)
+    tab_bar{},
+    top_level(nullptr),
+    selected_tab(nullptr), quit(false),
+    win(nullptr, SDL_DestroyWindow), renderer(nullptr, SDL_DestroyRenderer), font(nullptr, TTF_CloseFont)
 {
     init_sdl();
 }
@@ -162,8 +162,11 @@ void Core::recursive_update(Button *button) {
                 }
             }
             if (add) {
-                std::unique_ptr<TabButton> tb = std::make_unique<TabButton>(close_icon, renderer.get(), font.get(), button->text);
+                std::shared_ptr<TabButton> tb = std::make_shared<TabButton>(close_icon, renderer.get(), font.get(), button->text);
                 tabs.push_back(std::move(tb));
+                if (!selected_tab) {
+                    selected_tab = tabs[0];
+                }
             }
         }
     }
@@ -276,14 +279,20 @@ void Core::update() {
 
     SDL_SetRenderDrawColor(renderer.get(), conf.outline_colour.r, conf.outline_colour.g, conf.outline_colour.b, 255);
 
-    int w = tabs.size() == 0 ? conf.tab_w : std::min(conf.tab_w, file_viewer.w / static_cast<int>(tabs.size()));
+    const int w = tabs.empty() ? conf.tab_w : std::min(conf.tab_w, file_viewer.w / static_cast<int>(tabs.size()));
 
     for (int i = 0; i < tabs.size(); i++) {
         tabs[i]->rect = {tab_bar.x + i * w, tab_bar.y, w, tab_bar.h};
-        tabs[i]->update(renderer.get(), mousex, mousey, click);
+        tabs[i]->update(renderer.get(), mousex, mousey, click, selected_tab, tabs);
 
         SDL_SetRenderDrawColor(renderer.get(), conf.left_bar_colour.r, conf.left_bar_colour.g, conf.left_bar_colour.b, 255);
         SDL_RenderDrawRect(renderer.get(), &tabs[i]->rect);
+    }
+
+    if (selected_tab) {
+        SDL_SetRenderDrawColor(renderer.get(), conf.select_tab_colour.r, conf.select_tab_colour.g, conf.select_tab_colour.b, 255);
+        SDL_Rect dest{selected_tab->rect.x, selected_tab->rect.y + selected_tab->rect.h - 5, selected_tab->rect.w, 5};
+        SDL_RenderFillRect(renderer.get(), &dest);
     }
 
     draw_outlines();

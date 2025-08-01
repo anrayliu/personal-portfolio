@@ -34,7 +34,8 @@ public:
 
     TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
 
-    void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down) override;
+    void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down,
+    std::shared_ptr<TabButton> &selected, std::vector<std::shared_ptr<TabButton>> &tabs);
 };
 
 class FileButton : public Button {

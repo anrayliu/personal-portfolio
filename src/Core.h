@@ -44,8 +44,9 @@ public:
     std::shared_ptr<SDL_Texture> file_icon;
 
     std::unique_ptr<DirButton> top_level;
+    std::vector<std::shared_ptr<TabButton>> tabs;
 
-    std::vector<std::unique_ptr<TabButton>> tabs;
+    std::shared_ptr<TabButton> selected_tab;
 
     Timer timer;
 

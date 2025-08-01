@@ -28,6 +28,7 @@ struct Config {
     SDL_Color tab_bar_colour{30, 31, 34};
     SDL_Color left_bar_colour{43, 45, 48};
     SDL_Color outline_colour{57, 59, 64};
+    SDL_Color select_tab_colour{41, 102, 213};
 };
 
 #endif
