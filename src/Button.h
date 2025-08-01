@@ -9,7 +9,6 @@
 
 
 class Button {
-    static bool collidepoint(const SDL_Rect &rect, int x, int y);
 public:
     std::shared_ptr<SDL_Texture> icon;
     SDL_Rect rect;

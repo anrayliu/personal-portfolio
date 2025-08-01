@@ -16,11 +16,6 @@ void Button::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_d
     click = mouse_down && hover;
 }
 
-bool Button::collidepoint(const SDL_Rect &rect, int x, int y) {
-    return x >= rect.x && x <= rect.x + rect.w && y >= rect.y && y <= rect.y + rect.h;
-}
-
-
 DirButton::DirButton(const std::shared_ptr<SDL_Texture> &collapse_icon, const std::shared_ptr<SDL_Texture> &expand_icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text)
 : Button(nullptr, renderer, font, text), collapsed(false), collapse_icon(collapse_icon), expand_icon(expand_icon) {
     text_texture = Core::load_text(renderer, font, text, conf.left_bar_colour);
