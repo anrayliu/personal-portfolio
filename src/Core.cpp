@@ -162,7 +162,7 @@ void Core::recursive_update(Button *button) {
                 }
             }
             if (add) {
-                std::unique_ptr<TabButton> tb = std::make_unique<TabButton>(nullptr, renderer.get(), font.get(), button->text);
+                std::unique_ptr<TabButton> tb = std::make_unique<TabButton>(close_icon, renderer.get(), font.get(), button->text);
                 tabs.push_back(std::move(tb));
             }
         }
