@@ -12,7 +12,7 @@ select_texture(nullptr, SDL_DestroyTexture), texture_width(0) {
 }
 
 void Button::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
-    hover = mousex >= conf.left_bar_w && mousex <= rect.x + rect.w && mousey >= rect.y && mousey <= rect.y + rect.h;
+    hover = mousex >= rect.x && mousex <= rect.x + rect.w && mousey >= rect.y && mousey <= rect.y + rect.h;
     click = mouse_down && hover;
 }
 
@@ -84,6 +84,7 @@ void FileButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mou
 
 TabButton::TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) : Button(icon, renderer, font, text) {
     text_texture = Core::load_text(renderer, font, text, conf.tab_bar_colour);
+    hover_texture = Core::load_text(renderer, font, text, conf.left_bar_colour);
 }
 
 void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
@@ -93,7 +94,14 @@ void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
     int w = std::min(rect.w - rect.h, texture_width);
     SDL_Rect dest = {rect.x + rect.w / 2 - w / 2, rect.y + rect.h / 2 - conf.file_button_h / 2, w, conf.file_button_h};
 
-    SDL_RenderCopy(renderer, text_texture.get(), &src, &dest);
+    if (hover) {
+        SDL_SetRenderDrawColor(renderer, conf.left_bar_colour.r, conf.left_bar_colour.g, conf.left_bar_colour.b, 255);
+        SDL_Rect highlight_rect{rect.x + 1, rect.y + 1, rect.w - 2, rect.h - 2};
+        SDL_RenderFillRect(renderer, &highlight_rect);
+        SDL_RenderCopy(renderer, hover_texture.get(), &src, &dest);
+    } else {
+        SDL_RenderCopy(renderer, text_texture.get(), &src, &dest);
+    }
 
     dest = {rect.x, rect.y, conf.file_button_h, conf.file_button_h};
     SDL_RenderCopy(renderer, icon.get(), nullptr, &dest);
