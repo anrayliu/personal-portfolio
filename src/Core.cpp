@@ -165,7 +165,9 @@ void Core::recursive_update(Button *button) {
                 std::shared_ptr<TabButton> tb = std::make_shared<TabButton>(close_icon, renderer.get(), font.get(), button->text);
                 tabs.push_back(std::move(tb));
                 if (!selected_tab) {
-                    selected_tab = tabs[0];
+                    selected_tab.reset();
+                }
+                selected_tab = tabs[tabs.size() - 1];
             } else {
                 if (tabs[index].get() != button) {
                     selected_tab.reset();
