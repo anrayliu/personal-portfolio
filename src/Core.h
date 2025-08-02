@@ -17,6 +17,8 @@ class Core {
     // singleton pattern
     inline static Core* instance;
 
+    void construct_file_tree();
+
     void draw_background();
     void draw_outlines();
     void draw_file_view();
@@ -69,7 +71,6 @@ public:
 
     // singleton pattern
     static Core* get_instance();
-
 
     static void init_sdl();
     static void quit_sdl();

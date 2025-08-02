@@ -64,34 +64,48 @@ void Core::init() {
     file_viewer = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
 
     collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", Config::file_button_h, Config::file_button_h);
+    file_icon = load_texture(renderer.get(), "../assets/file.png", Config::file_button_h, Config::file_button_h);
     expand_icon = load_texture(renderer.get(), "../assets/expand.png", Config::file_button_h, Config::file_button_h);
     close_icon = load_texture(renderer.get(), "../assets/close.png", Config::tab_x_button_size, Config::tab_x_button_size);
     logo = load_texture(renderer.get(), "../assets/logo.png", 0, 0);
 
+    construct_file_tree();
+
+    move_iframe(file_viewer.x, file_viewer.y, file_viewer.w, file_viewer.h);
+}
+
+void Core::construct_file_tree() {
     top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Anray Liu");
 
     std::unique_ptr<DirButton> work_exp = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Work Experience");
 
-    std::unique_ptr<FileButton> stats_can = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Cloud Engineer");
-
-    work_exp->add_file(std::move(stats_can));
+    std::unique_ptr<FileButton> item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Cloud Engineer");
+    work_exp->add_file(std::move(item));
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Research Intern");
+    work_exp->add_file(std::move(item));
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "GIS Technician");
+    work_exp->add_file(std::move(item));
 
     std::unique_ptr<DirButton> projects = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Projects");
 
-    std::unique_ptr<FileButton> pyvidplayer = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Pyvidplayer2");
-
-    std::unique_ptr<FileButton> server = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Home Server");
-
-    projects->add_file(std::move(pyvidplayer));
-    projects->add_file(std::move(server));
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Pyvidplayer2");
+    projects->add_file(std::move(item));
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Home Server");
+    projects->add_file(std::move(item));
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "TestMyCS");
+    projects->add_file(std::move(item));
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Volume Cleaner");
+    projects->add_file(std::move(item));
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Portfolio");
+    projects->add_file(std::move(item));
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Gomoku AI");
+    projects->add_file(std::move(item));
 
     std::unique_ptr<FileButton> readme = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "README");
 
     top_level->add_dir(std::move(work_exp));
     top_level->add_dir(std::move(projects));
     top_level->add_file(std::move(readme));
-
-    move_iframe(file_viewer.x, file_viewer.y, file_viewer.w, file_viewer.h);
 }
 
 void Core::draw_background() {
