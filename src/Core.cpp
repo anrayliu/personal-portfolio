@@ -154,18 +154,22 @@ void Core::recursive_update(Button *button) {
     } else {
         // is a file button
         if (button->click) {
-            bool add = true;
-            for (const auto &ptr: tabs) {
-                if (ptr->text == button->text) {
-                    add = false;
+            int index = -1;
+            for (int i = 0; i < tabs.size(); i ++) {
+                if (tabs[i]->text == button->text) {
+                    index = i;
                     break;
                 }
             }
-            if (add) {
+            if (index == -1) {
                 std::shared_ptr<TabButton> tb = std::make_shared<TabButton>(close_icon, renderer.get(), font.get(), button->text);
                 tabs.push_back(std::move(tb));
                 if (!selected_tab) {
                     selected_tab = tabs[0];
+            } else {
+                if (tabs[index].get() != button) {
+                    selected_tab.reset();
+                    selected_tab = tabs[index];
                 }
             }
         }
