@@ -19,7 +19,7 @@ struct Config {
     int constexpr static file_button_h = 32;
     int constexpr static file_button_spacing_y = 5;
     int constexpr static file_button_spacing_x = 15;
-    int constexpr static file_button_tab = 45;
+    int constexpr static file_button_tab = 30;
     int constexpr static font_size = 20;
     int constexpr static top_bar_h = 54;
     int constexpr static bottom_bar_h = 41;
@@ -29,6 +29,7 @@ struct Config {
     int constexpr static file_tree_w = 400;
     int constexpr static tab_x_button_size = 20;
     int constexpr static logo_size = 30;
+    int constexpr static icon_spacing = 5;
 
     SDL_Color constexpr static top_bar_colour{60, 63, 65};
     SDL_Color constexpr static text_colour{207, 206, 196};
