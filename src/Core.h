@@ -14,6 +14,9 @@ using std::string;
 
 
 class Core {
+    // singleton pattern
+    inline static Core* instance;
+
     void draw_background();
     void draw_outlines();
     void draw_file_view();
@@ -23,6 +26,9 @@ class Core {
     void recursive_update(Button *button);
 
     void move_iframe(int x, int y, int w, int h);
+
+    explicit Core();
+    ~Core();
 
 public:
     int mousex;
@@ -57,14 +63,19 @@ public:
     std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> renderer;
     std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font;
 
+public:
+    // delete copy constructor
+    Core(const Core& obj) = delete;
+
+    // singleton pattern
+    static Core* get_instance();
+
+
     static void init_sdl();
     static void quit_sdl();
     static std::shared_ptr<SDL_Texture> load_texture(SDL_Renderer* renderer, const string &path, int w, int h);
     static std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> load_text(SDL_Renderer* renderer, TTF_Font* font,
         const string &text, SDL_Color bg);
-
-    explicit Core();
-    ~Core();
 
     void init();
     void update();
