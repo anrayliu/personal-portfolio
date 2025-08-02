@@ -23,6 +23,7 @@ struct Config {
     int tab_w = 240;
     int file_tree_w = 400;
     int tab_x_button_size = 20;
+    int logo_size = 30;
 
     SDL_Color top_bar_colour{60, 63, 65};
     SDL_Color text_colour{207, 206, 196};

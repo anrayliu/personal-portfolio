@@ -55,6 +55,9 @@ void Core::init() {
         throw std::runtime_error(std::format("Error creating renderer {}", SDL_GetError()));
     }
 
+    // linear interpolation
+    SDL_SetHint (SDL_HINT_RENDER_SCALE_QUALITY, "1");
+
     font.reset(TTF_OpenFont("../assets/jetbrains-mono.ttf", conf.font_size));
     if (!font) {
         throw std::runtime_error(std::format("Error creating font {}", SDL_GetError()));
@@ -70,7 +73,7 @@ void Core::init() {
     collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", conf.file_button_h, conf.file_button_h);
     expand_icon = load_texture(renderer.get(), "../assets/expand.png", conf.file_button_h, conf.file_button_h);
     close_icon = load_texture(renderer.get(), "../assets/close.png", conf.tab_x_button_size, conf.tab_x_button_size);
-    file_icon = load_texture(renderer.get(), "../assets/file.png", conf.file_button_h, conf.file_button_h);
+    logo = load_texture(renderer.get(), "../assets/logo.png", 0, 0);
 
     top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Anray Liu");
 
@@ -219,6 +222,10 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer* renderer, const st
         throw std::runtime_error(std::format("Error loading texture {}", IMG_GetError()));
     }
 
+    if (w <= 0 || h <= 0) {
+        return std::move(texture);
+    }
+
     // lossy texture resampling
 
     Uint32 pixel_format;
@@ -285,6 +292,7 @@ void Core::update() {
 
     SDL_SetRenderDrawColor(renderer.get(), conf.outline_colour.r, conf.outline_colour.g, conf.outline_colour.b, 255);
 
+    // draw tabs
     const int w = tabs.empty() ? conf.tab_w : std::min(conf.tab_w, file_viewer.w / static_cast<int>(tabs.size()));
 
     for (int i = 0; i < tabs.size(); i++) {
@@ -295,6 +303,7 @@ void Core::update() {
         SDL_RenderDrawRect(renderer.get(), &tabs[i]->rect);
     }
 
+    // draw selected tab indicator
     if (selected_tab) {
         SDL_SetRenderDrawColor(renderer.get(), conf.select_tab_colour.r, conf.select_tab_colour.g, conf.select_tab_colour.b, 255);
         SDL_Rect dest{selected_tab->rect.x, selected_tab->rect.y + selected_tab->rect.h - 5, selected_tab->rect.w, 5};
@@ -302,6 +311,10 @@ void Core::update() {
     }
 
     draw_outlines();
+
+    // draw logo
+    SDL_Rect dest{(conf.top_bar_h - conf.logo_size) / 2, (conf.top_bar_h - conf.logo_size) / 2, conf.logo_size, conf.logo_size};
+    SDL_RenderCopy(renderer.get(), logo.get(), nullptr, &dest);
 
     SDL_RenderPresent(renderer.get());
 }

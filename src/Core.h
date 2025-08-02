@@ -42,6 +42,7 @@ public:
     std::shared_ptr<SDL_Texture> expand_icon;
     std::shared_ptr<SDL_Texture> close_icon;
     std::shared_ptr<SDL_Texture> file_icon;
+    std::shared_ptr<SDL_Texture> logo;
 
     std::unique_ptr<DirButton> top_level;
     std::vector<std::shared_ptr<TabButton>> tabs;
