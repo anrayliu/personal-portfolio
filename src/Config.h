@@ -20,7 +20,7 @@ struct Config {
     int bottom_bar_h = 41;
     int left_bar_w = 54;
     int tab_bar_h = 54;
-    int tab_w = 300;
+    int tab_w = 240;
     int file_tree_w = 400;
     int tab_x_button_size = 20;
 
