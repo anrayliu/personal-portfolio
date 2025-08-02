@@ -22,6 +22,7 @@ struct Config {
     int tab_bar_h = 54;
     int tab_w = 300;
     int file_tree_w = 400;
+    int tab_x_button_size = 20;
 
     SDL_Color top_bar_colour{60, 63, 65};
     SDL_Color text_colour{207, 206, 196};

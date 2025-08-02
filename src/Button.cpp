@@ -78,7 +78,7 @@ void FileButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mou
 }
 
 TabButton::TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) :
-x_rect{0, 0, conf.file_button_h, conf.file_button_h}, Button(icon, renderer, font, text) {
+x_rect{0, 0, conf.tab_x_button_size, conf.tab_x_button_size}, Button(icon, renderer, font, text) {
     text_texture = Core::load_text(renderer, font, text, conf.tab_bar_colour);
     hover_texture = Core::load_text(renderer, font, text, conf.left_bar_colour);
 }
@@ -97,8 +97,8 @@ void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
         SDL_RenderFillRect(renderer, &highlight_rect);
         SDL_RenderCopy(renderer, hover_texture.get(), &src, &dest);
 
-        x_rect.x = rect.x + rect.w - conf.file_button_h - 10;
-        x_rect.y = dest.y;
+        x_rect.x = rect.x + rect.w - conf.tab_x_button_size - 10;
+        x_rect.y = rect.y + rect.h / 2 - conf.tab_x_button_size / 2;
 
         // check if x button hover
         if (mousex >= x_rect.x && mousex <= x_rect.x + rect.w && mousey >= x_rect.y && mousey <= x_rect.y + x_rect.h) {

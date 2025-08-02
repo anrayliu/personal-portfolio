@@ -69,7 +69,7 @@ void Core::init() {
 
     collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", conf.file_button_h, conf.file_button_h);
     expand_icon = load_texture(renderer.get(), "../assets/expand.png", conf.file_button_h, conf.file_button_h);
-    close_icon = load_texture(renderer.get(), "../assets/close.png", conf.file_button_h, conf.file_button_h);
+    close_icon = load_texture(renderer.get(), "../assets/close.png", conf.tab_x_button_size, conf.tab_x_button_size);
     file_icon = load_texture(renderer.get(), "../assets/file.png", conf.file_button_h, conf.file_button_h);
 
     top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Anray Liu");
