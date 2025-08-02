@@ -28,8 +28,6 @@ Core::~Core() {
     SDL_DestroyTexture(expand_icon.get());
     SDL_DestroyTexture(close_icon.get());
     SDL_DestroyTexture(file_icon.get());
-
-    delete get_instance();
 }
 
 void Core::init() {
@@ -198,13 +196,6 @@ void Core::move_iframe(int x, int y, int w, int h) {
                iframe.style.height = ` ${$3}px`;
            }, x, y, w, h);
 #endif
-}
-
-Core* Core::get_instance() {
-    if (!instance) {
-        instance = new Core();
-    }
-    return instance;
 }
 
 void Core::init_sdl() {
@@ -376,17 +367,17 @@ void mainloop(void* arg) {
 
 int main(int argc, char* argv[]) {
     {
-        Core* core = Core::get_instance();
-        core->init();
+        Core core;
+        core.init();
 
         #ifdef __EMSCRIPTEN__
                 emscripten_set_main_loop_arg(mainloop, &core, 0, 1);
         #endif
 
         #ifndef __EMSCRIPTEN__
-                while(!core->quit) {
-                    mainloop(core);
-                    core->timer.tick(Config::fps);
+                while(!core.quit) {
+                    mainloop(&core);
+                    core.timer.tick(Config::fps);
                 }
         #endif
     }
