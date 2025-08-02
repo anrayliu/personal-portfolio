@@ -11,15 +11,6 @@
 #endif
 
 
-// global config
-
-Config conf{
-    "Anray Liu",
-    1920,
-    917,
-    60.0,
-};
-
 Core::Core():
     dragging(false), top_bar{}, bottom_bar{}, left_bar{},
     file_tree{},
@@ -44,7 +35,7 @@ void Core::init() {
 
     // init sdl materials
 
-    win.reset(SDL_CreateWindow(conf.title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, conf.window_w, conf.window_h, SDL_RENDERER_ACCELERATED));
+    win.reset(SDL_CreateWindow(Config::title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Config::window_w, Config::window_h, SDL_RENDERER_ACCELERATED));
     if (!win) {
         throw std::runtime_error(std::format("Error creating window {}", SDL_GetError()));
     }
@@ -58,21 +49,21 @@ void Core::init() {
     // linear interpolation
     SDL_SetHint (SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-    font.reset(TTF_OpenFont("../assets/jetbrains-mono.ttf", conf.font_size));
+    font.reset(TTF_OpenFont("../assets/jetbrains-mono.ttf", Config::font_size));
     if (!font) {
         throw std::runtime_error(std::format("Error creating font {}", SDL_GetError()));
     }
 
-    top_bar = {0, 0, conf.window_w, conf.top_bar_h};
-    bottom_bar = {top_bar.x, conf.window_h - conf.bottom_bar_h, top_bar.w, conf.bottom_bar_h};
-    left_bar = {top_bar.x, top_bar.y + top_bar.h, conf.left_bar_w, conf.window_h - top_bar.h - bottom_bar.h};
-    file_tree = {left_bar.x + left_bar.w, left_bar.y, conf.file_tree_w, left_bar.h};
-    tab_bar = {file_tree.x + file_tree.w, left_bar.y, conf.window_w - left_bar.w - file_tree.w, conf.tab_bar_h};
+    top_bar = {0, 0, Config::window_w, Config::top_bar_h};
+    bottom_bar = {top_bar.x, Config::window_h - Config::bottom_bar_h, top_bar.w, Config::bottom_bar_h};
+    left_bar = {top_bar.x, top_bar.y + top_bar.h, Config::left_bar_w, Config::window_h - top_bar.h - bottom_bar.h};
+    file_tree = {left_bar.x + left_bar.w, left_bar.y, Config::file_tree_w, left_bar.h};
+    tab_bar = {file_tree.x + file_tree.w, left_bar.y, Config::window_w - left_bar.w - file_tree.w, Config::tab_bar_h};
     file_viewer = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
 
-    collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", conf.file_button_h, conf.file_button_h);
-    expand_icon = load_texture(renderer.get(), "../assets/expand.png", conf.file_button_h, conf.file_button_h);
-    close_icon = load_texture(renderer.get(), "../assets/close.png", conf.tab_x_button_size, conf.tab_x_button_size);
+    collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", Config::file_button_h, Config::file_button_h);
+    expand_icon = load_texture(renderer.get(), "../assets/expand.png", Config::file_button_h, Config::file_button_h);
+    close_icon = load_texture(renderer.get(), "../assets/close.png", Config::tab_x_button_size, Config::tab_x_button_size);
     logo = load_texture(renderer.get(), "../assets/logo.png", 0, 0);
 
     top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Anray Liu");
@@ -103,21 +94,21 @@ void Core::init() {
 
 void Core::draw_background() {
     // draw filled rects
-    SDL_SetRenderDrawColor(renderer.get(), conf.top_bar_colour.r, conf.top_bar_colour.g, conf.top_bar_colour.b, 0);
+    SDL_SetRenderDrawColor(renderer.get(), Config::top_bar_colour.r, Config::top_bar_colour.g, Config::top_bar_colour.b, 0);
     SDL_RenderFillRect(renderer.get(), &top_bar);
 
-    SDL_SetRenderDrawColor(renderer.get(), conf.left_bar_colour.r, conf.left_bar_colour.g, conf.left_bar_colour.b, 0);
+    SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g, Config::left_bar_colour.b, 0);
     SDL_RenderFillRect(renderer.get(), &left_bar);
     SDL_RenderFillRect(renderer.get(), &bottom_bar);
     SDL_RenderFillRect(renderer.get(), &file_tree);
 
-    SDL_SetRenderDrawColor(renderer.get(), conf.tab_bar_colour.r, conf.tab_bar_colour.g, conf.tab_bar_colour.b, 0);
+    SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g, Config::tab_bar_colour.b, 0);
     SDL_RenderFillRect(renderer.get(), &tab_bar);
     SDL_RenderFillRect(renderer.get(), &file_viewer);
 }
 
 void Core::draw_outlines() {
-    SDL_SetRenderDrawColor(renderer.get(), conf.outline_colour.r, conf.outline_colour.g, conf.outline_colour.b, 0);
+    SDL_SetRenderDrawColor(renderer.get(), Config::outline_colour.r, Config::outline_colour.g, Config::outline_colour.b, 0);
 
     SDL_RenderDrawRect(renderer.get(), &top_bar);
     SDL_RenderDrawRect(renderer.get(), &bottom_bar);
@@ -134,12 +125,12 @@ void Core::draw_file_view() {
 
 void Core::recursive_align(int x, int y, int w, int h, int* offset, Button *button) {
     button->rect = {x, y + *offset, w, h};
-    *offset += conf.file_button_h + conf.file_button_spacing_y;
+    *offset += Config::file_button_h + Config::file_button_spacing_y;
 
     auto dir = dynamic_cast<DirButton*>(button);
     if (dir && !dir->collapsed) {
         for (auto &file : dir->files) {
-            recursive_align(x + conf.file_button_tab, y, w - conf.file_button_tab, h, offset, file.get());
+            recursive_align(x + Config::file_button_tab, y, w - Config::file_button_tab, h, offset, file.get());
         }
     }
 }
@@ -254,7 +245,7 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer* renderer, const st
 std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_Renderer *renderer, TTF_Font *font,
     const string &text, SDL_Color bg) {
 
-    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(TTF_RenderText_Shaded(font, text.c_str(), conf.text_colour, bg),
+    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(TTF_RenderText_Shaded(font, text.c_str(), Config::text_colour, bg),
                                                                   SDL_FreeSurface);
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(SDL_CreateTextureFromSurface(renderer, surf.get()), SDL_DestroyTexture);
 
@@ -277,7 +268,7 @@ void Core::update() {
     if (dragging) {
         file_tree.w = mousex - left_bar.w;
         tab_bar.x = file_viewer.x = file_tree.x + file_tree.w;
-        tab_bar.w = file_viewer.w = conf.window_w - left_bar.w - file_tree.w;
+        tab_bar.w = file_viewer.w = Config::window_w - left_bar.w - file_tree.w;
         if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
             dragging = false;
         }
@@ -285,27 +276,27 @@ void Core::update() {
     }
 
     int offset = 10;
-    recursive_align(file_tree.x + conf.file_button_spacing_x, file_tree.y + conf.file_button_spacing_x,
-                    file_tree.w - conf.file_button_spacing_x * 2, conf.file_button_h, &offset, top_level.get());
+    recursive_align(file_tree.x + Config::file_button_spacing_x, file_tree.y + Config::file_button_spacing_x,
+                    file_tree.w - Config::file_button_spacing_x * 2, Config::file_button_h, &offset, top_level.get());
 
     recursive_update(top_level.get());
 
-    SDL_SetRenderDrawColor(renderer.get(), conf.outline_colour.r, conf.outline_colour.g, conf.outline_colour.b, 255);
+    SDL_SetRenderDrawColor(renderer.get(), Config::outline_colour.r, Config::outline_colour.g, Config::outline_colour.b, 255);
 
     // draw tabs
-    const int w = tabs.empty() ? conf.tab_w : std::min(conf.tab_w, file_viewer.w / static_cast<int>(tabs.size()));
+    const int w = tabs.empty() ? Config::tab_w : std::min(Config::tab_w, file_viewer.w / static_cast<int>(tabs.size()));
 
     for (int i = 0; i < tabs.size(); i++) {
         tabs[i]->rect = {tab_bar.x + i * w, tab_bar.y, w, tab_bar.h};
         tabs[i]->update(renderer.get(), mousex, mousey, click, selected_tab, tabs);
 
-        SDL_SetRenderDrawColor(renderer.get(), conf.left_bar_colour.r, conf.left_bar_colour.g, conf.left_bar_colour.b, 255);
+        SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g, Config::left_bar_colour.b, 255);
         SDL_RenderDrawRect(renderer.get(), &tabs[i]->rect);
     }
 
     // draw selected tab indicator
     if (selected_tab) {
-        SDL_SetRenderDrawColor(renderer.get(), conf.select_tab_colour.r, conf.select_tab_colour.g, conf.select_tab_colour.b, 255);
+        SDL_SetRenderDrawColor(renderer.get(), Config::select_tab_colour.r, Config::select_tab_colour.g, Config::select_tab_colour.b, 255);
         SDL_Rect dest{selected_tab->rect.x, selected_tab->rect.y + selected_tab->rect.h - 5, selected_tab->rect.w, 5};
         SDL_RenderFillRect(renderer.get(), &dest);
     }
@@ -313,7 +304,7 @@ void Core::update() {
     draw_outlines();
 
     // draw logo
-    SDL_Rect dest{(conf.top_bar_h - conf.logo_size) / 2, (conf.top_bar_h - conf.logo_size) / 2, conf.logo_size, conf.logo_size};
+    SDL_Rect dest{(Config::top_bar_h - Config::logo_size) / 2, (Config::top_bar_h - Config::logo_size) / 2, Config::logo_size, Config::logo_size};
     SDL_RenderCopy(renderer.get(), logo.get(), nullptr, &dest);
 
     SDL_RenderPresent(renderer.get());
@@ -372,7 +363,7 @@ int main(int argc, char* argv[]) {
         #ifndef __EMSCRIPTEN__
                 while(!core.quit) {
                     mainloop(&core);
-                    core.timer.tick(conf.fps);
+                    core.timer.tick(Config::fps);
                 }
         #endif
     }

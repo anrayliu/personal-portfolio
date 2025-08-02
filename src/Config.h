@@ -5,32 +5,38 @@
 
 #include "SDL2/SDL_pixels.h"
 
+
+// static constexpr allow compile time optimizations
+
 struct Config {
-    std::string title;
-    int window_w;
-    int window_h;
-    double fps;
+    Config() = delete;
 
-    int file_button_h = 32;
-    int file_button_spacing_y = 5;
-    int file_button_spacing_x = 15;
-    int file_button_tab = 45;
-    int font_size = 20;
-    int top_bar_h = 54;
-    int bottom_bar_h = 41;
-    int left_bar_w = 54;
-    int tab_bar_h = 54;
-    int tab_w = 240;
-    int file_tree_w = 400;
-    int tab_x_button_size = 20;
-    int logo_size = 30;
+    std::string constexpr static title = "Anray Liu";
+    int constexpr static window_w = 1920;
+    int constexpr static window_h = 917;
+    double constexpr static fps = 60.0;
 
-    SDL_Color top_bar_colour{60, 63, 65};
-    SDL_Color text_colour{207, 206, 196};
-    SDL_Color tab_bar_colour{30, 31, 34};
-    SDL_Color left_bar_colour{43, 45, 48};
-    SDL_Color outline_colour{57, 59, 64};
-    SDL_Color select_tab_colour{41, 102, 213};
+    int constexpr static file_button_h = 32;
+    int constexpr static file_button_spacing_y = 5;
+    int constexpr static file_button_spacing_x = 15;
+    int constexpr static file_button_tab = 45;
+    int constexpr static font_size = 20;
+    int constexpr static top_bar_h = 54;
+    int constexpr static bottom_bar_h = 41;
+    int constexpr static left_bar_w = 54;
+    int constexpr static tab_bar_h = 54;
+    int constexpr static tab_w = 240;
+    int constexpr static file_tree_w = 400;
+    int constexpr static tab_x_button_size = 20;
+    int constexpr static logo_size = 30;
+
+    SDL_Color constexpr static top_bar_colour{60, 63, 65};
+    SDL_Color constexpr static text_colour{207, 206, 196};
+    SDL_Color constexpr static tab_bar_colour{30, 31, 34};
+    SDL_Color constexpr static left_bar_colour{43, 45, 48};
+    SDL_Color constexpr static outline_colour{57, 59, 64};
+    SDL_Color constexpr static select_tab_colour{41, 102, 213};
 };
+
 
 #endif
