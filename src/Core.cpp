@@ -28,6 +28,7 @@ Core::~Core() {
     SDL_DestroyTexture(expand_icon.get());
     SDL_DestroyTexture(close_icon.get());
     SDL_DestroyTexture(file_icon.get());
+    SDL_DestroyTexture(logo.get());
 }
 
 void Core::init() {
