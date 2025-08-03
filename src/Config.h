@@ -12,8 +12,8 @@ struct Config {
     Config() = delete;
 
     std::string constexpr static title = "Anray Liu";
-    int constexpr static window_w = 1920;
-    int constexpr static window_h = 917;
+    inline int static window_w;
+    inline int static window_h;
     double constexpr static fps = 60.0;
 
     int constexpr static file_button_h = 32;

@@ -33,6 +33,20 @@ Core::~Core() {
 void Core::init() {
     quit = false;
 
+    // default window values
+    Config::window_w = 1920;
+    Config::window_h = 917;
+
+    // detect and set window size
+    #ifdef __EMSCRIPTEN__
+    Config::window_w = EM_ASM_INT({
+        return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    });
+    Config::window_h = EM_ASM_INT({
+        return Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    });
+    #endif
+
     // init sdl materials
 
     win.reset(SDL_CreateWindow(Config::title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Config::window_w, Config::window_h, SDL_RENDERER_ACCELERATED));
@@ -69,7 +83,6 @@ void Core::init() {
 
     construct_file_tree();
 
-    move_iframe(file_viewer.x, file_viewer.y, file_viewer.w, file_viewer.h);
 }
 
 void Core::construct_file_tree() {
@@ -189,12 +202,21 @@ void Core::recursive_update(Button *button) {
 void Core::move_iframe(int x, int y, int w, int h) {
 #ifdef __EMSCRIPTEN__
     EM_ASM({
+        const wasmCanvas = document.getElementById('canvas');
+        const width = wasmCanvas.clientWidth;
+        const height = wasmCanvas.clientHeight;
+
+        let adjustedx = width * $0 / $4;
+        let adjustedy = height * $1 / $5;
+        let adjustedw = width * $2 / $4;
+        let adjustedh = height * $3 / $5;
+
         const iframe = document.getElementById('webpage-iframe');
-               iframe.style.left = ` ${$0}px`;
-               iframe.style.top = ` ${$1}px`;
-               iframe.style.width = ` ${$2}px`;
-               iframe.style.height = ` ${$3}px`;
-           }, x, y, w, h);
+               iframe.style.left = `${adjustedx}px`;
+               iframe.style.top = `${adjustedy}px`;
+               iframe.style.width = `${adjustedw}px`;
+               iframe.style.height = `${adjustedh}px`;
+           }, x, y, w, h, Config::window_w, Config::window_h);
 #endif
 }
 
@@ -286,8 +308,11 @@ void Core::update() {
         if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
             dragging = false;
         }
+
         move_iframe(file_viewer.x, file_viewer.y, file_viewer.w, file_viewer.h);
     }
+
+    move_iframe(file_viewer.x, file_viewer.y, file_viewer.w, file_viewer.h);
 
     int offset = 10;
     recursive_align(file_tree.x + Config::file_button_spacing_x, file_tree.y + Config::file_button_spacing_x,
