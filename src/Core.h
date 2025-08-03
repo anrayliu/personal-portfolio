@@ -37,7 +37,7 @@ public:
     SDL_Rect bottom_bar;
     SDL_Rect left_bar;
     SDL_Rect file_tree;
-    SDL_Rect file_viewer;
+    SDL_Rect file_view;
     SDL_Rect tab_bar;
 
     std::shared_ptr<SDL_Texture> collapse_icon;

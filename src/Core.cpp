@@ -14,7 +14,7 @@
 Core::Core():
     dragging(false), top_bar{}, bottom_bar{}, left_bar{},
     file_tree{},
-    file_viewer{},
+    file_view{},
     tab_bar{},
     top_level(nullptr),
     selected_tab(nullptr), project_name_text(nullptr, SDL_DestroyTexture),
@@ -75,7 +75,7 @@ void Core::init() {
     left_bar = {top_bar.x, top_bar.y + top_bar.h, Config::left_bar_w, Config::window_h - top_bar.h - bottom_bar.h};
     file_tree = {left_bar.x + left_bar.w, left_bar.y, Config::file_tree_w, left_bar.h};
     tab_bar = {file_tree.x + file_tree.w, left_bar.y, Config::window_w - left_bar.w - file_tree.w, Config::tab_bar_h};
-    file_viewer = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
+    file_view = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
 
     collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", Config::file_button_h, Config::file_button_h);
     file_icon = load_texture(renderer.get(), "../assets/file.png", Config::file_button_h, Config::file_button_h);
@@ -140,16 +140,16 @@ void Core::draw_background() {
     SDL_RenderFillRect(renderer.get(), &file_tree);
 
     if (tabs.empty()) {
-        SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_viewer.h};
+        SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_view.h};
         SDL_RenderFillRect(renderer.get(), &dest);
 
-        dest = {file_viewer.x + file_viewer.w / 2 - empty_view_dimensions.x / 2, file_viewer.y + file_viewer.h / 2 - empty_view_dimensions.y / 2, empty_view_dimensions.x, empty_view_dimensions.y};
+        dest = {file_view.x + file_view.w / 2 - empty_view_dimensions.x / 2, file_view.y + file_view.h / 2 - empty_view_dimensions.y / 2, empty_view_dimensions.x, empty_view_dimensions.y};
         SDL_RenderCopy(renderer.get(), empty_view_text.get(), nullptr, &dest);
 
     } else {
         SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g, Config::tab_bar_colour.b, 0);
         SDL_RenderFillRect(renderer.get(), &tab_bar);
-        SDL_RenderFillRect(renderer.get(), &file_viewer);
+        SDL_RenderFillRect(renderer.get(), &file_view);
     }
 
 }
@@ -163,11 +163,11 @@ void Core::draw_outlines() {
     SDL_RenderDrawRect(renderer.get(), &file_tree);
 
     if (tabs.empty()) {
-        SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_viewer.h};
+        SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_view.h};
         SDL_RenderDrawRect(renderer.get(), &dest);
     } else {
         SDL_RenderDrawRect(renderer.get(), &tab_bar);
-        SDL_RenderDrawRect(renderer.get(), &file_viewer);
+        SDL_RenderDrawRect(renderer.get(), &file_view);
     }
 }
 
@@ -328,16 +328,16 @@ void Core::update() {
 
     if (dragging) {
         file_tree.w = mousex - left_bar.w;
-        tab_bar.x = file_viewer.x = file_tree.x + file_tree.w;
-        tab_bar.w = file_viewer.w = Config::window_w - left_bar.w - file_tree.w;
+        tab_bar.x = file_view.x = file_tree.x + file_tree.w;
+        tab_bar.w = file_view.w = Config::window_w - left_bar.w - file_tree.w;
         if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
             dragging = false;
         }
 
-        move_iframe(file_viewer.x, file_viewer.y, file_viewer.w, file_viewer.h);
+        move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
     }
 
-    move_iframe(file_viewer.x, file_viewer.y, file_viewer.w, file_viewer.h);
+    move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
 
     int offset = 10;
     recursive_align(file_tree.x + Config::file_button_spacing_x, file_tree.y + Config::file_button_spacing_x,
@@ -348,7 +348,7 @@ void Core::update() {
     SDL_SetRenderDrawColor(renderer.get(), Config::outline_colour.r, Config::outline_colour.g, Config::outline_colour.b, 255);
 
     // draw tabs
-    const int w = tabs.empty() ? Config::tab_w : std::min(Config::tab_w, file_viewer.w / static_cast<int>(tabs.size()));
+    const int w = tabs.empty() ? Config::tab_w : std::min(Config::tab_w, file_view.w / static_cast<int>(tabs.size()));
 
     for (int i = 0; i < tabs.size(); i++) {
         tabs[i]->rect = {tab_bar.x + i * w, tab_bar.y, w, tab_bar.h};
