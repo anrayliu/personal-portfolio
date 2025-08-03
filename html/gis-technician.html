@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JetBrains Python File Mock</title>
+    <style>
+        body {
+            margin: 0;
+            background-color: #2b2b2b;
+            color: #a9b7c6;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+        }
+
+        .editor {
+            display: flex;
+            padding: 1rem;
+        }
+
+        .gutter {
+            user-select: none;
+            color: #606366;
+            text-align: right;
+            padding-right: 1rem;
+            border-right: 1px solid #3c3f41;
+            margin-right: 1rem;
+        }
+
+        .code {
+            flex: 1;
+        }
+
+        .line {
+            white-space: pre;
+        }
+
+        /* Syntax highlighting */
+        .keyword { color: #cc7832; }
+        .def { color: #ffc66d; }
+        .string { color: #6a8759; }
+        .comment { color: #808080; font-style: italic; }
+        .builtin { color: #9876aa; }
+        .func { color: #ffc66d; }
+        .number { color: #6897bb; }
+        .class { color: #a9b7c6; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="editor">
+    <div class="gutter">
+        <div class="line">1</div>
+        <div class="line">2</div>
+        <div class="line">3</div>
+        <div class="line">4</div>
+        <div class="line">5</div>
+        <div class="line">6</div>
+        <div class="line">7</div>
+        <div class="line">8</div>
+        <div class="line">9</div>
+        <div class="line">10</div>
+        <div class="line">11</div>
+        <div class="line">12</div>
+        <div class="line">13</div>
+        <div class="line">14</div>
+        <div class="line">15</div>
+        <div class="line">16</div>
+        <div class="line">17</div>
+    </div>
+    <div class="code">
+        <div class="line"><span class="comment"># This is a simple demo Python file</span></div>
+        <div class="line"><span class="keyword">import</span> <span class="builtin">time</span></div>
+        <div class="line"><span class="keyword">import</span> <span class="builtin">random</span></div>
+        <div class="line"></div>
+        <div class="line"><span class="keyword">class</span> <span class="class">Timer</span>:</div>
+        <div class="line">    <span class="keyword">def</span> <span class="func">__init__</span>(self):</div>
+        <div class="line">        self.start_time = <span class="builtin">time</span>.time()</div>
+        <div class="line"></div>
+        <div class="line">    <span class="keyword">def</span> <span class="func">elapsed</span>(self):</div>
+        <div class="line">        <span class="keyword">return</span> <span class="builtin">round</span>(<span class="builtin">time</span>.time() - self.start_time, <span class="number">2</span>)</div>
+        <div class="line"></div>
+        <div class="line"><span class="keyword">def</span> <span class="func">simulate</span>():</div>
+        <div class="line">    t = <span class="class">Timer</span>()</div>
+        <div class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="builtin">range</span>(<span class="number">5</span>):</div>
+        <div class="line">        delay = <span class="builtin">random</span>.uniform(<span class="number">0.5</span>, <span class="number">1.5</span>)</div>
+        <div class="line">        <span class="builtin">time</span>.sleep(delay)</div>
+        <div class="line">        print(<span class="string">f"Step {i+1} took {t.elapsed()}s"</span>)</div>
+        <div class="line"></div>
+        <div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div>
+        <div class="line">    <span class="func">simulate</span>()</div>
+    </div>
+</div>
+</body>
+</html>

@@ -119,8 +119,6 @@ void Core::construct_file_tree() {
     projects->add_file(std::move(item));
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Portfolio");
     projects->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Gomoku AI");
-    projects->add_file(std::move(item));
 
     std::unique_ptr<FileButton> readme = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "README");
 
