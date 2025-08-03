@@ -1,115 +1,82 @@
-<!--temporary AI generated template-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>About Me</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio</title>
     <style>
         body {
             margin: 0;
             padding: 2rem;
-            font-family: 'Segoe UI', sans-serif;
-            background-color: white;
-            color: #333;
-            line-height: 1.6;
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #2b2b2b;
+            color: #f0f0f0;
         }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-            color: #222;
+        h1, h2 {
+            color: #ffcc00;
+            margin-bottom: 0.2em;
         }
 
-        h2 {
-            font-size: 1.2rem;
-            color: #555;
-            margin-top: 1.5rem;
+        a {
+            color: #40c4ff;
+            text-decoration: none;
         }
 
-        p {
-            max-width: 700px;
-        }
-
-        .highlight {
-            color: #007acc;
-            font-weight: 600;
+        a:hover {
+            text-decoration: underline;
         }
 
         .section {
             margin-bottom: 2rem;
         }
 
-        .tag-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.5rem;
+        .project {
+            margin: 0.5rem 0;
         }
 
-        .tag {
-            background-color: #f0f0f0;
-            border-radius: 6px;
-            padding: 0.3rem 0.7rem;
-            font-size: 0.9rem;
+        .project-title {
+            font-weight: bold;
         }
 
-        .contact a {
-            color: #007acc;
-            text-decoration: none;
+        .tags {
+            font-size: 0.85rem;
+            color: #bbbbbb;
         }
 
-        .contact a:hover {
-            text-decoration: underline;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 1rem;
-            }
+        hr {
+            border: none;
+            border-top: 1px solid #444;
+            margin: 2rem 0;
         }
     </style>
 </head>
 <body>
-
-<div class="section">
-    <h1>Anray Liu</h1>
-    <p class="highlight">Cloud Engineer @ Statistics Canada</p>
-    <p>
-        I'm a passionate cloud engineer and software developer with a knack for building efficient tools and systems.
-        From open-source video players to home server setups, I enjoy creating things that make life and work smoother.
-    </p>
-</div>
+<h1>Anray Liu</h1>
+<p>Developer | Open Source Contributor | Systems Enthusiast</p>
 
 <div class="section">
     <h2>Projects</h2>
-    <ul>
-        <li><strong>PyVidPlayer2</strong> – A lightweight, Pythonic video player API with GUI support.</li>
-        <li><strong>Home Server</strong> – A personal infrastructure stack for services, monitoring, and automation.</li>
-    </ul>
-</div>
+    <div class="project">
+        <div class="project-title"><a href="https://pypi.org/project/pyvidplayer2/" target="_blank">PyVidPlayer2</a></div>
+        <div class="tags">Python, Video, SDL2</div>
+        <p>A fast and flexible video playback library for Python, with SDL2 backend and multi-platform support.</p>
+    </div>
 
-<div class="section">
-    <h2>Skills</h2>
-    <div class="tag-list">
-        <div class="tag">Python</div>
-        <div class="tag">Docker</div>
-        <div class="tag">Kubernetes</div>
-        <div class="tag">Proxmox</div>
-        <div class="tag">Linux</div>
-        <div class="tag">Cloud</div>
-        <div class="tag">Networking</div>
-        <div class="tag">C++</div>
+    <div class="project">
+        <div class="project-title">Personal Server Stack</div>
+        <div class="tags">Proxmox, Docker, WireGuard, ZFS</div>
+        <p>Self-hosted infrastructure including remote access, backups, and automated VM orchestration.</p>
     </div>
 </div>
 
-<div class="section contact">
-    <h2>Contact</h2>
-    <p>
-        You can reach me via <a href="mailto:your.email@example.com">email</a> or connect with me on
-        <a href="https://github.com/yourusername" target="_blank">GitHub</a>.
-    </p>
-</div>
+<hr>
 
+<div class="section">
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:anray@example.com">anray@example.com</a></p>
+    <p>GitHub: <a href="https://github.com/anrayliu" target="_blank">github.com/anrayliu</a></p>
+    <p>LinkedIn: <a href="https://linkedin.com/in/anrayliu" target="_blank">linkedin.com/in/anrayliu</a></p>
+</div>
 </body>
 </html>
