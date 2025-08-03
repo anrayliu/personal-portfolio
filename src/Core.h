@@ -48,8 +48,12 @@ public:
 
     std::unique_ptr<DirButton> top_level;
     std::vector<std::shared_ptr<TabButton>> tabs;
-
     std::shared_ptr<TabButton> selected_tab;
+
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> project_name_text;
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> empty_view_text;
+    SDL_Point empty_view_dimensions;
+    SDL_Point project_name_dimensions;
 
     Timer timer;
 

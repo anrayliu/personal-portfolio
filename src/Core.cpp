@@ -17,8 +17,9 @@ Core::Core():
     file_viewer{},
     tab_bar{},
     top_level(nullptr),
-    selected_tab(nullptr), quit(false),
-    win(nullptr, SDL_DestroyWindow), renderer(nullptr, SDL_DestroyRenderer), font(nullptr, TTF_CloseFont)
+    selected_tab(nullptr), project_name_text(nullptr, SDL_DestroyTexture),
+    empty_view_text(nullptr, SDL_DestroyTexture), quit(false), win(nullptr, SDL_DestroyWindow),
+    renderer(nullptr, SDL_DestroyRenderer), font(nullptr, TTF_CloseFont)
 {
     init_sdl();
 }
@@ -84,6 +85,14 @@ void Core::init() {
 
     construct_file_tree();
 
+    // load some text textures
+    std::string text = "Click on a file from the left to view it.";
+    TTF_SizeText(font.get(), text.c_str(), &empty_view_dimensions.x, &empty_view_dimensions.y);
+    empty_view_text = load_text(renderer.get(), font.get(), text, Config::left_bar_colour);
+
+    text = "Anray Liu's Portfolio";
+    TTF_SizeText(font.get(), text.c_str(), &project_name_dimensions.x, &project_name_dimensions.y);
+    project_name_text = load_text(renderer.get(), font.get(), text, Config::top_bar_colour);
 }
 
 void Core::construct_file_tree() {
@@ -130,9 +139,19 @@ void Core::draw_background() {
     SDL_RenderFillRect(renderer.get(), &bottom_bar);
     SDL_RenderFillRect(renderer.get(), &file_tree);
 
-    SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g, Config::tab_bar_colour.b, 0);
-    SDL_RenderFillRect(renderer.get(), &tab_bar);
-    SDL_RenderFillRect(renderer.get(), &file_viewer);
+    if (tabs.empty()) {
+        SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_viewer.h};
+        SDL_RenderFillRect(renderer.get(), &dest);
+
+        dest = {file_viewer.x + file_viewer.w / 2 - empty_view_dimensions.x / 2, file_viewer.y + file_viewer.h / 2 - empty_view_dimensions.y / 2, empty_view_dimensions.x, empty_view_dimensions.y};
+        SDL_RenderCopy(renderer.get(), empty_view_text.get(), nullptr, &dest);
+
+    } else {
+        SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g, Config::tab_bar_colour.b, 0);
+        SDL_RenderFillRect(renderer.get(), &tab_bar);
+        SDL_RenderFillRect(renderer.get(), &file_viewer);
+    }
+
 }
 
 void Core::draw_outlines() {
@@ -142,9 +161,14 @@ void Core::draw_outlines() {
     SDL_RenderDrawRect(renderer.get(), &bottom_bar);
     SDL_RenderDrawRect(renderer.get(), &left_bar);
     SDL_RenderDrawRect(renderer.get(), &file_tree);
-    SDL_RenderDrawRect(renderer.get(), &tab_bar);
-    SDL_RenderDrawRect(renderer.get(), &file_viewer);
 
+    if (tabs.empty()) {
+        SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_viewer.h};
+        SDL_RenderDrawRect(renderer.get(), &dest);
+    } else {
+        SDL_RenderDrawRect(renderer.get(), &tab_bar);
+        SDL_RenderDrawRect(renderer.get(), &file_viewer);
+    }
 }
 
 void Core::draw_file_view() {
@@ -346,6 +370,8 @@ void Core::update() {
     // draw logo
     SDL_Rect dest{(Config::top_bar_h - Config::logo_size) / 2, (Config::top_bar_h - Config::logo_size) / 2, Config::logo_size, Config::logo_size};
     SDL_RenderCopy(renderer.get(), logo.get(), nullptr, &dest);
+    dest = {dest.x + dest.w + 10, Config::top_bar_h / 2 - project_name_dimensions.y / 2, project_name_dimensions.x, project_name_dimensions.y};
+    SDL_RenderCopy(renderer.get(), project_name_text.get(), nullptr, &dest);
 
     SDL_RenderPresent(renderer.get());
 }
