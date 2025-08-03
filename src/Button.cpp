@@ -37,7 +37,7 @@ void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
     }
 
     SDL_Rect src = {0, 0, rect.w - rect.h, rect.h};
-    SDL_Rect dest = {rect.x + Config::file_button_h + Config::icon_spacing, rect.y, std::min(rect.w - rect.h, texture_width), Config::file_button_h};
+    SDL_Rect dest = {rect.x + Config::file_button_h + Config::icon_spacing, rect.y + (rect.h - texture_height) / 2, std::min(rect.w - rect.h, texture_width), texture_height};
 
     if (hover) {
         SDL_SetRenderDrawColor(renderer, Config::tab_bar_colour.r, Config::tab_bar_colour.g, Config::tab_bar_colour.b, 255);
@@ -61,7 +61,7 @@ void FileButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mou
     Button::update(renderer, mousex, mousey, mouse_down);
 
     SDL_Rect src = {0, 0, rect.w - rect.h, rect.h};
-    SDL_Rect dest = {rect.x + Config::file_button_h + Config::icon_spacing, rect.y, std::min(rect.w - rect.h, texture_width), Config::file_button_h};
+    SDL_Rect dest = {rect.x + Config::file_button_h + Config::icon_spacing, rect.y + (rect.h - texture_height) / 2, std::min(rect.w - rect.h, texture_width), texture_height};
 
     if (hover) {
         SDL_SetRenderDrawColor(renderer, Config::tab_bar_colour.r, Config::tab_bar_colour.g, Config::tab_bar_colour.b, 255);
@@ -88,7 +88,7 @@ void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
 
     int w = std::min(rect.w - rect.h, texture_width);
     SDL_Rect src = {0, 0, w, texture_height};
-    SDL_Rect dest = {rect.x + rect.w / 2 - w / 2, rect.y + rect.h / 2 - Config::file_button_h / 2, w, Config::file_button_h};
+    SDL_Rect dest = {rect.x + rect.w / 2 - w / 2, rect.y + rect.h / 2 - texture_height / 2, w, texture_height};
 
     if (hover) {
         SDL_SetRenderDrawColor(renderer, Config::left_bar_colour.r, Config::left_bar_colour.g, Config::left_bar_colour.b, 255);
