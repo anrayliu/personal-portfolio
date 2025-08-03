@@ -396,7 +396,7 @@ int main(int argc, char* argv[]) {
         core.init();
 
         #ifdef __EMSCRIPTEN__
-                emscripten_set_main_loop_arg(mainloop, &core, 0, 1);
+                emscripten_set_main_loop_arg(mainloop, &core, static_cast<int>(Config::fps), 1);
         #endif
 
         #ifndef __EMSCRIPTEN__
