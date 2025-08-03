@@ -19,6 +19,9 @@ add_executable(LearnSDL ${SRC_FILES}
         src/Config.h
         src/Button.cpp
         src/Button.h
+        src/TabButton.cpp
+        src/DirButton.cpp
+        src/FileButton.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} mingw32 SDL2main SDL2 SDL2_image SDL2_ttf)

@@ -1,0 +1,41 @@
+#include "Config.h"
+#include "Button.h"
+#include "Core.h"
+
+
+DirButton::DirButton(const std::shared_ptr<SDL_Texture> &collapse_icon, const std::shared_ptr<SDL_Texture> &expand_icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text)
+: Button(nullptr, renderer, font, text), collapsed(false), collapse_icon(collapse_icon), expand_icon(expand_icon) {
+    text_texture = Core::load_text(renderer, font, text, Config::left_bar_colour);
+    hover_texture = Core::load_text(renderer, font, text, Config::tab_bar_colour);
+}
+
+void DirButton::add_file(std::unique_ptr<FileButton> button) {
+    files.push_back(std::move(button));
+}
+
+void DirButton::add_dir(std::unique_ptr<DirButton> button) {
+    files.push_back(std::move(button));
+}
+
+void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
+    Button::update(renderer, mousex, mousey, mouse_down);
+
+    if (click) {
+        collapsed = !collapsed;
+    }
+
+    SDL_Rect src = {0, 0, rect.w - rect.h, rect.h};
+    SDL_Rect dest = {rect.x + Config::file_button_h + Config::icon_spacing, rect.y + (rect.h - texture_height) / 2, std::min(rect.w - rect.h, texture_width), texture_height};
+
+    if (hover) {
+        SDL_SetRenderDrawColor(renderer, Config::tab_bar_colour.r, Config::tab_bar_colour.g, Config::tab_bar_colour.b, 255);
+        SDL_Rect highlight_rect{Config::left_bar_w, rect.y, Config::file_tree_w, rect.h};
+        SDL_RenderFillRect(renderer, &highlight_rect);
+        SDL_RenderCopy(renderer, hover_texture.get(), &src, &dest);
+    } else {
+        SDL_RenderCopy(renderer, text_texture.get(), &src, &dest);
+    }
+
+    dest = {rect.x, rect.y, Config::file_button_h, Config::file_button_h};
+    SDL_RenderCopy(renderer, collapsed ? expand_icon.get() : collapse_icon.get(), nullptr, &dest);
+}
