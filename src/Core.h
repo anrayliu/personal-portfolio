@@ -25,6 +25,9 @@ class Core {
     void recursive_update(Button *button);
 
     void move_iframe(int x, int y, int w, int h);
+    void load_iframe(const std::string &file);
+    void show_iframe();
+    void hide_iframe();
 
 public:
     int mousex;
@@ -47,7 +50,10 @@ public:
     std::shared_ptr<SDL_Texture> logo;
 
     std::unique_ptr<DirButton> top_level;
-    std::vector<std::shared_ptr<TabButton>> tabs;
+    std::vector<std::shared_ptr<TabButton> > tabs;
+
+    std::string loaded_iframe;
+    bool iframe_hidden;
     std::shared_ptr<TabButton> selected_tab;
 
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> project_name_text;

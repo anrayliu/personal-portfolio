@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "Config.h"
 #include "Button.h"
 #include "Core.h"
@@ -7,6 +8,17 @@ TabButton::TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* ren
 x_rect{0, 0, Config::tab_x_button_size, Config::tab_x_button_size}, Button(icon, renderer, font, text) {
     text_texture = Core::load_text(renderer, font, text, Config::tab_bar_colour);
     hover_texture = Core::load_text(renderer, font, text, Config::left_bar_colour);
+
+    // get static file to load in iframe
+    file = text;
+    std::replace(file.begin(), file.end(), ' ', '-');
+    // convert to lower case
+    std::transform(file.begin(), file.end(), file.begin(),
+    [](unsigned char c) {
+        return std::tolower(c);
+    });
+    file += ".html";
+
 }
 
 void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down,

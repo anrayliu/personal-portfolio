@@ -30,6 +30,7 @@ class TabButton : public Button {
 public:
     // x button
     SDL_Rect x_rect;
+    std::string file;
 
     TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
 

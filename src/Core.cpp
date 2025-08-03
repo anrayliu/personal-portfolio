@@ -15,8 +15,8 @@ Core::Core():
     dragging(false), top_bar{}, bottom_bar{}, left_bar{},
     file_tree{},
     file_view{},
-    tab_bar{},
-    top_level(nullptr),
+    tab_bar{}, top_level(nullptr),
+    iframe_hidden(true),
     selected_tab(nullptr), project_name_text(nullptr, SDL_DestroyTexture),
     empty_view_text(nullptr, SDL_DestroyTexture), quit(false), win(nullptr, SDL_DestroyWindow),
     renderer(nullptr, SDL_DestroyRenderer), font(nullptr, TTF_CloseFont)
@@ -93,6 +93,8 @@ void Core::init() {
     text = "Anray Liu's Portfolio";
     TTF_SizeText(font.get(), text.c_str(), &project_name_dimensions.x, &project_name_dimensions.y);
     project_name_text = load_text(renderer.get(), font.get(), text, Config::top_bar_colour);
+
+    hide_iframe();
 }
 
 void Core::construct_file_tree() {
@@ -243,6 +245,33 @@ void Core::move_iframe(int x, int y, int w, int h) {
 #endif
 }
 
+void Core::load_iframe(const std::string &file) {
+#ifdef __EMSCRIPTEN__
+    EM_ASM({
+        let iFrame = document.getElementById('webpage-iframe');
+        iFrame.src = UTF8ToString($0);
+    }, ("static/" + file).c_str());
+#endif
+}
+
+void Core::hide_iframe() {
+#ifdef __EMSCRIPTEN__
+    EM_ASM({
+        let iFrame = document.getElementById('webpage-iframe');
+        iFrame.setAttribute("hidden", "hidden");
+    });
+#endif
+}
+
+void Core::show_iframe() {
+#ifdef __EMSCRIPTEN__
+    EM_ASM({
+        let iFrame = document.getElementById('webpage-iframe');
+        iFrame.removeAttribute("hidden");
+    });
+#endif
+}
+
 void Core::init_sdl() {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         throw std::runtime_error(std::format("Error initializing SDL {}", SDL_GetError()));
@@ -333,6 +362,22 @@ void Core::update() {
         }
 
         move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
+    }
+
+    // set iframe
+
+    if (selected_tab) {
+        bool show = loaded_iframe.empty();
+        if (selected_tab->file != loaded_iframe) {
+            load_iframe(selected_tab->file);
+            loaded_iframe = selected_tab->file;
+        }
+        if (show) {
+            show_iframe();
+        }
+    } else if (!loaded_iframe.empty()) {
+        hide_iframe();
+        loaded_iframe = "";
     }
 
     move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
