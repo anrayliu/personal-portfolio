@@ -171,10 +171,6 @@ void Core::draw_outlines() {
     }
 }
 
-void Core::draw_file_view() {
-
-}
-
 void Core::recursive_align(int x, int y, int w, int h, int* offset, Button *button) {
     button->rect = {x, y + *offset, w, h};
     *offset += Config::file_button_h + Config::file_button_spacing_y;
