@@ -409,7 +409,7 @@ void Core::update() {
     // draw logo
     SDL_Rect dest{(Config::top_bar_h - Config::logo_size) / 2, (Config::top_bar_h - Config::logo_size) / 2, Config::logo_size, Config::logo_size};
     SDL_RenderCopy(renderer.get(), logo.get(), nullptr, &dest);
-    dest = {dest.x + dest.w + 10, Config::top_bar_h / 2 - project_name_dimensions.y / 2, project_name_dimensions.x, project_name_dimensions.y};
+    dest = {dest.x + dest.w + 20, Config::top_bar_h / 2 - project_name_dimensions.y / 2, project_name_dimensions.x, project_name_dimensions.y};
     SDL_RenderCopy(renderer.get(), project_name_text.get(), nullptr, &dest);
 
     SDL_RenderPresent(renderer.get());
