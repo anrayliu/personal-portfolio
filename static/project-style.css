@@ -23,8 +23,13 @@
     box-sizing: border-box;
 }
 
+@font-face {
+    font-family: jetbrains-mono;
+    src: url(/assets/jetbrains-mono.ttf);
+}
+
 body {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: jetbrains-mono, monospace;
     background-color: var(--bg-primary);
     color: var(--text-primary);
     line-height: 1.6;
@@ -326,7 +331,6 @@ body {
 
 .code-content pre {
     margin: 0;
-    font-family: 'JetBrains Mono', monospace;
     font-size: 1rem;
     color: var(--text-primary);
     line-height: 1.6;

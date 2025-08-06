@@ -25,8 +25,13 @@
     100% { background-position: 0% 50%; }
 }
 
+@font-face {
+    font-family: jetbrains-mono;
+    src: url(/assets/jetbrains-mono.ttf);
+}
+
 body {
-    font-family: 'JetBrains Mono', monospace;
+    font-family: jetbrains-mono, monospace;
     background-color: var(--jb-bg);
     color: var(--jb-text);
     line-height: 1.6;
