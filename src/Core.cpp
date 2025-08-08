@@ -347,34 +347,20 @@ void Core::update() {
     //     dragging = true;
     // }
 
-    if (dragging) {
-        file_tree.w = mousex - left_bar.w;
-        tab_bar.x = file_view.x = file_tree.x + file_tree.w;
-        tab_bar.w = file_view.w = Config::window_w - left_bar.w - file_tree.w;
-        if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
-            dragging = false;
-        }
+    // if (dragging) {
+    //     file_tree.w = mousex - left_bar.w;
+    //     tab_bar.x = file_view.x = file_tree.x + file_tree.w;
+    //     tab_bar.w = file_view.w = Config::window_w - left_bar.w - file_tree.w;
+    //     if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
+    //         dragging = false;
+    //     }
+    //
+    //     move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
+    // }
 
-        move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
-    }
+    update_iframe();
 
-    // set iframe
-
-    if (selected_tab) {
-        bool show = loaded_iframe.empty();
-        if (selected_tab->file != loaded_iframe) {
-            load_iframe(selected_tab->file);
-            loaded_iframe = selected_tab->file;
-        }
-        if (show) {
-            show_iframe();
-        }
-    } else if (!loaded_iframe.empty()) {
-        hide_iframe();
-        loaded_iframe = "";
-    }
-
-    move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
+    // update elements
 
     int offset = 10;
     recursive_align(file_tree.x + Config::file_button_spacing_x, file_tree.y + Config::file_button_spacing_x,
@@ -382,9 +368,22 @@ void Core::update() {
 
     recursive_update(top_level.get());
 
+    update_tabs();
+
+    draw_outlines();
+
+    // draw logo
+    SDL_Rect dest{(Config::top_bar_h - Config::logo_size) / 2, (Config::top_bar_h - Config::logo_size) / 2, Config::logo_size, Config::logo_size};
+    SDL_RenderCopy(renderer.get(), logo.get(), nullptr, &dest);
+    dest = {dest.x + dest.w + 20, Config::top_bar_h / 2 - project_name_dimensions.y / 2, project_name_dimensions.x, project_name_dimensions.y};
+    SDL_RenderCopy(renderer.get(), project_name_text.get(), nullptr, &dest);
+
+    SDL_RenderPresent(renderer.get());
+}
+
+void Core::update_tabs() {
     SDL_SetRenderDrawColor(renderer.get(), Config::outline_colour.r, Config::outline_colour.g, Config::outline_colour.b, 255);
 
-    // draw tabs
     const int w = tabs.empty() ? Config::tab_w : std::min(Config::tab_w, file_view.w / static_cast<int>(tabs.size()));
 
     for (int i = 0; i < tabs.size(); i++) {
@@ -401,16 +400,24 @@ void Core::update() {
         SDL_Rect dest{selected_tab->rect.x, selected_tab->rect.y + selected_tab->rect.h - 5, selected_tab->rect.w, 5};
         SDL_RenderFillRect(renderer.get(), &dest);
     }
+}
 
-    draw_outlines();
+void Core::update_iframe() {
+    if (selected_tab) {
+        bool show = loaded_iframe.empty();
+        if (selected_tab->file != loaded_iframe) {
+            load_iframe(selected_tab->file);
+            loaded_iframe = selected_tab->file;
+        }
+        if (show) {
+            show_iframe();
+        }
+    } else if (!loaded_iframe.empty()) {
+        hide_iframe();
+        loaded_iframe = "";
+    }
 
-    // draw logo
-    SDL_Rect dest{(Config::top_bar_h - Config::logo_size) / 2, (Config::top_bar_h - Config::logo_size) / 2, Config::logo_size, Config::logo_size};
-    SDL_RenderCopy(renderer.get(), logo.get(), nullptr, &dest);
-    dest = {dest.x + dest.w + 20, Config::top_bar_h / 2 - project_name_dimensions.y / 2, project_name_dimensions.x, project_name_dimensions.y};
-    SDL_RenderCopy(renderer.get(), project_name_text.get(), nullptr, &dest);
-
-    SDL_RenderPresent(renderer.get());
+    move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
 }
 
 void mainloop(void* arg) {

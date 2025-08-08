@@ -27,6 +27,8 @@ class Core {
     void load_iframe(const std::string &file);
     void show_iframe();
     void hide_iframe();
+    void update_tabs();
+    void update_iframe();
 
 public:
     int mousex;
