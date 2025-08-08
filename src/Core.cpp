@@ -113,11 +113,9 @@ void Core::construct_file_tree() {
 
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Pyvidplayer2");
     projects->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Home Server");
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Home Lab");
     projects->add_file(std::move(item));
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "TestMyCS");
-    projects->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Volume Cleaner");
     projects->add_file(std::move(item));
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Portfolio");
     projects->add_file(std::move(item));

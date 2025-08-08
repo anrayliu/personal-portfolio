@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Server</title>
+    <link rel="stylesheet" href="project-style.css">
+</head>
+<body>
+<!-- Animated Background -->
+<div class="bg-animation">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+
+<div class="container">
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Home Lab</h1>
+        <p>A personal home server assembled and configured from scratch.</p>
+        <div class="hero-image">
+            <img src="../assets/server.png" alt="Project Screenshot">
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="section">
+        <h2 class="section-title">Key Features</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <span class="feature-icon">⚡</span>
+                <h3>Bare Metal</h3>
+                <p>Built server from the ground up, carefully choosing components for optimal server performance.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎨</span>
+                <h3>Self Hosting</h3>
+                <p>Self hosts personal projects such as TestMyCS.com and other services like TrueNAS Scale and Jellyfin.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎨</span>
+                <h3>Secure</h3>
+                <p>Uses a VPN to securely tunnel into server from external networks.</p>
+            </div>
+            <div class="feature-card">
+                <span class="feature-icon">🎨</span>
+                <h3>Resilient</h3>
+                <p>Uses RAID to achieve data redundancy and increase server uptime.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section">
+        <h2 class="section-title">Technologies Used</h2>
+        <div class="skills-container">
+            <div class="skill-item">
+                <span class="skill-name">Proxmox VE</span>
+                <div class="skill-tooltip">
+                    Main OS and hypervisor, used to virtualize all other services.
+                </div>
+            </div>
+            <div class="skill-item">
+                <span class="skill-name">Ubuntu Server</span>
+                <div class="skill-tooltip">
+                    OS for most containers and virtual machines.
+                </div>
+            </div>
+            <div class="skill-item">
+                <span class="skill-name">TrueNAS Scale</span>
+                <div class="skill-tooltip">
+                    OS for Network Attached Storage.
+                </div>
+            </div>
+            <div class="skill-item">
+                <span class="skill-name">Jellyfin</span>
+                <div class="skill-tooltip">
+                    Provides a media server to stream shows and movies.
+                </div>
+            </div>
+            <div class="skill-item">
+                <span class="skill-name">Wireguard</span>
+                <div class="skill-tooltip">
+                    VPN used for secure remote access.
+                </div>
+            </div>
+            <div class="skill-item">
+                <span class="skill-name">Docker</span>
+                <div class="skill-tooltip">
+                    Deploys several services, including databases and self-hosted projects.
+                </div>
+            </div>
+            <div class="skill-item">
+                <span class="skill-name">Jenkins</span>
+                <div class="skill-tooltip">
+                    Self-hosted CI/CD pipeline.
+                </div>
+            </div>
+            <div class="skill-item">
+                <span class="skill-name">ZFS</span>
+                <div class="skill-tooltip">
+                    File system of choice due to high data redundancy with ZFS RAID.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="project-meta">
+            <div class="meta-item">
+                <span>📅</span>
+                <span>Completed: Active maintenance</span>
+            </div>
+            <div class="meta-item">
+                <span>👥</span>
+                <span>Team Size: 1</span>
+            </div>
+            <div class="meta-item">
+                <span>⏱️</span>
+                <span>Duration: 4+ months</span>
+            </div>
+        </div>
+    </footer>
+</div>
+</body>
+</html>
