@@ -515,14 +515,6 @@ body {
     border-top: 1px solid var(--border-color);
 }
 
-.tech-stack {
-    display: flex;
-    justify-content: center;
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-    flex-wrap: wrap;
-}
-
 .tech-badge {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
