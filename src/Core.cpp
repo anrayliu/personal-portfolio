@@ -70,18 +70,9 @@ void Core::init() {
         throw std::runtime_error(std::format("Error creating font {}", SDL_GetError()));
     }
 
-    top_bar = {0, 0, Config::window_w, Config::top_bar_h};
-    bottom_bar = {top_bar.x, Config::window_h - Config::bottom_bar_h, top_bar.w, Config::bottom_bar_h};
-    left_bar = {top_bar.x, top_bar.y + top_bar.h, Config::left_bar_w, Config::window_h - top_bar.h - bottom_bar.h};
-    file_tree = {left_bar.x + left_bar.w, left_bar.y, Config::file_tree_w, left_bar.h};
-    tab_bar = {file_tree.x + file_tree.w, left_bar.y, Config::window_w - left_bar.w - file_tree.w, Config::tab_bar_h};
-    file_view = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
+    init_rects();
 
-    collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", Config::file_button_h, Config::file_button_h);
-    file_icon = load_texture(renderer.get(), "../assets/file.png", Config::file_button_h, Config::file_button_h);
-    expand_icon = load_texture(renderer.get(), "../assets/expand.png", Config::file_button_h, Config::file_button_h);
-    close_icon = load_texture(renderer.get(), "../assets/close.png", Config::tab_x_button_size, Config::tab_x_button_size);
-    logo = load_texture(renderer.get(), "../assets/logo.png", 0, 0);
+    init_textures();
 
     construct_file_tree();
 
@@ -95,6 +86,23 @@ void Core::init() {
     project_name_text = load_text(renderer.get(), font.get(), text, Config::top_bar_colour);
 
     hide_iframe();
+}
+
+void Core::init_textures() {
+    collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", Config::file_button_h, Config::file_button_h);
+    file_icon = load_texture(renderer.get(), "../assets/file.png", Config::file_button_h, Config::file_button_h);
+    expand_icon = load_texture(renderer.get(), "../assets/expand.png", Config::file_button_h, Config::file_button_h);
+    close_icon = load_texture(renderer.get(), "../assets/close.png", Config::tab_x_button_size, Config::tab_x_button_size);
+    logo = load_texture(renderer.get(), "../assets/logo.png", 0, 0);
+}
+
+void Core::init_rects() {
+    top_bar = {0, 0, Config::window_w, Config::top_bar_h};
+    bottom_bar = {top_bar.x, Config::window_h - Config::bottom_bar_h, top_bar.w, Config::bottom_bar_h};
+    left_bar = {top_bar.x, top_bar.y + top_bar.h, Config::left_bar_w, Config::window_h - top_bar.h - bottom_bar.h};
+    file_tree = {left_bar.x + left_bar.w, left_bar.y, Config::file_tree_w, left_bar.h};
+    tab_bar = {file_tree.x + file_tree.w, left_bar.y, Config::window_w - left_bar.w - file_tree.w, Config::tab_bar_h};
+    file_view = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
 }
 
 void Core::construct_file_tree() {

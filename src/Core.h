@@ -30,6 +30,9 @@ class Core {
     void update_tabs();
     void update_iframe();
 
+    void init_rects();
+    void init_textures();
+
 public:
     int mousex;
     int mousey;
