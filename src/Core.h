@@ -16,8 +16,8 @@ using std::string;
 class Core {
     void construct_file_tree();
 
-    void draw_background();
-    void draw_outlines();
+    void draw_background() const;
+    void draw_outlines() const;
 
     // recursive functions to interact with file buttons
     void recursive_align(int x, int y, int w, int h, int* offset, Button *button);
@@ -34,9 +34,9 @@ class Core {
     void init_textures();
 
 public:
-    int mousex;
-    int mousey;
-    bool click;
+    int mousex{};
+    int mousey{};
+    bool click{};
 
     bool dragging;
 
@@ -62,8 +62,8 @@ public:
 
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> project_name_text;
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> empty_view_text;
-    SDL_Point empty_view_dimensions;
-    SDL_Point project_name_dimensions;
+    SDL_Point empty_view_dimensions{};
+    SDL_Point project_name_dimensions{};
 
     Timer timer;
 

@@ -9,6 +9,8 @@
 
 class Button {
 public:
+    virtual ~Button() = default;
+
     std::shared_ptr<SDL_Texture> icon;
     SDL_Rect rect;
     bool click;
@@ -19,7 +21,7 @@ public:
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> hover_texture;
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> select_texture;
     int texture_width;
-    int texture_height;
+    int texture_height{};
 
     Button(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
 

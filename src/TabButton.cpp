@@ -5,7 +5,7 @@
 
 
 TabButton::TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) :
-x_rect{0, 0, Config::tab_x_button_size, Config::tab_x_button_size}, Button(icon, renderer, font, text) {
+Button(icon, renderer, font, text), x_rect{0, 0, Config::tab_x_button_size, Config::tab_x_button_size} {
     text_texture = Core::load_text(renderer, font, text, Config::tab_bar_colour);
     hover_texture = Core::load_text(renderer, font, text, Config::left_bar_colour);
 
@@ -62,10 +62,10 @@ void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
 
         // tab is clicked
         if (click) {
-            for (int i = 0; i < tabs.size(); i ++) {
-                if (tabs[i].get() == this) {
+            for (auto & tab : tabs) {
+                if (tab.get() == this) {
                     selected.reset();
-                    selected = tabs[i];
+                    selected = tab;
                     break;
                 }
             }

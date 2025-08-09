@@ -135,7 +135,7 @@ void Core::construct_file_tree() {
     top_level->add_file(std::move(readme));
 }
 
-void Core::draw_background() {
+void Core::draw_background() const {
     // draw filled rects
     SDL_SetRenderDrawColor(renderer.get(), Config::top_bar_colour.r, Config::top_bar_colour.g, Config::top_bar_colour.b, 0);
     SDL_RenderFillRect(renderer.get(), &top_bar);
@@ -160,7 +160,7 @@ void Core::draw_background() {
 
 }
 
-void Core::draw_outlines() {
+void Core::draw_outlines() const {
     SDL_SetRenderDrawColor(renderer.get(), Config::outline_colour.r, Config::outline_colour.g, Config::outline_colour.b, 0);
 
     SDL_RenderDrawRect(renderer.get(), &top_bar);
@@ -192,8 +192,7 @@ void Core::recursive_align(int x, int y, int w, int h, int* offset, Button *butt
 void Core::recursive_update(Button *button) {
     button->update(renderer.get(), mousex, mousey, click);
 
-    auto dir = dynamic_cast<DirButton*>(button);
-    if (dir) {
+    if (auto dir = dynamic_cast<DirButton*>(button)) {
         if (!dir->collapsed) {
             for (const auto& ptr : dir->files) {
                 recursive_update(ptr.get());
@@ -453,12 +452,6 @@ void mainloop(void* arg) {
                 #endif
 
                 return;
-
-            case SDL_MOUSEMOTION:
-                break;
-
-            case SDL_MOUSEWHEEL:
-                break;
 
             default:
                 break;
