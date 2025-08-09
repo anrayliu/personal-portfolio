@@ -414,7 +414,8 @@ void Core::update_tabs() {
     const int w = tabs.empty() ? Config::tab_w : std::min(Config::tab_w, file_view.w / static_cast<int>(tabs.size()));
 
     for (int i = 0; i < tabs.size(); i++) {
-        tabs[i]->rect = {tab_bar.x + i * w, tab_bar.y, w, tab_bar.h};
+        tabs[i]->rect.x = tab_bar.x + i * w;
+        tabs[i]->rect.w = w;
         tabs[i]->update(renderer.get(), mousex, mousey, click, selected_tab, tabs);
 
         SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g,

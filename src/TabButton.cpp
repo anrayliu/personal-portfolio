@@ -3,7 +3,6 @@
 #include "Button.h"
 #include "Core.h"
 
-
 TabButton::TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) :
 Button(icon, renderer, font, text), x_rect{0, 0, Config::tab_x_button_size, Config::tab_x_button_size} {
     text_texture = Core::load_text(renderer, font, text, Config::tab_bar_colour);
@@ -19,6 +18,7 @@ Button(icon, renderer, font, text), x_rect{0, 0, Config::tab_x_button_size, Conf
     });
     file += ".html";
 
+    rect = {0, Config::top_bar_h, 0, Config::tab_bar_h};
 }
 
 void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down,
