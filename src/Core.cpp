@@ -11,16 +11,14 @@
 #endif
 
 
-Core::Core():
-    dragging(false), top_bar{}, bottom_bar{}, left_bar{},
-    file_tree{},
-    file_view{},
-    tab_bar{}, top_level(nullptr),
-    iframe_hidden(true),
-    selected_tab(nullptr), project_name_text(nullptr, SDL_DestroyTexture),
-    empty_view_text(nullptr, SDL_DestroyTexture), quit(false), win(nullptr, SDL_DestroyWindow),
-    renderer(nullptr, SDL_DestroyRenderer), font(nullptr, TTF_CloseFont)
-{
+Core::Core(): dragging(false), top_bar{}, bottom_bar{}, left_bar{},
+              file_tree{},
+              file_view{},
+              tab_bar{}, top_level(nullptr),
+              iframe_hidden(true),
+              selected_tab(nullptr), project_name_text(nullptr, SDL_DestroyTexture),
+              empty_view_text(nullptr, SDL_DestroyTexture), quit(false), win(nullptr, SDL_DestroyWindow),
+              renderer(nullptr, SDL_DestroyRenderer), font(nullptr, TTF_CloseFont) {
     init_sdl();
 }
 
@@ -40,18 +38,19 @@ void Core::init() {
     Config::window_h = 917;
 
     // detect and set window size
-    #ifdef __EMSCRIPTEN__
+#ifdef __EMSCRIPTEN__
     Config::window_w = EM_ASM_INT({
         return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
     });
     Config::window_h = EM_ASM_INT({
         return Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     });
-    #endif
+#endif
 
     // init sdl materials
 
-    win.reset(SDL_CreateWindow(Config::title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, Config::window_w, Config::window_h, SDL_RENDERER_ACCELERATED));
+    win.reset(SDL_CreateWindow(Config::title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+                               Config::window_w, Config::window_h, SDL_RENDERER_ACCELERATED));
     if (!win) {
         throw std::runtime_error(std::format("Error creating window {}", SDL_GetError()));
     }
@@ -63,7 +62,7 @@ void Core::init() {
     }
 
     // linear interpolation
-    SDL_SetHint (SDL_HINT_RENDER_SCALE_QUALITY, "1");
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
     font.reset(TTF_OpenFont("../assets/jetbrains-mono.ttf", Config::font_size));
     if (!font) {
@@ -89,10 +88,12 @@ void Core::init() {
 }
 
 void Core::init_textures() {
-    collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", Config::file_button_h, Config::file_button_h);
+    collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", Config::file_button_h,
+                                 Config::file_button_h);
     file_icon = load_texture(renderer.get(), "../assets/file.png", Config::file_button_h, Config::file_button_h);
     expand_icon = load_texture(renderer.get(), "../assets/expand.png", Config::file_button_h, Config::file_button_h);
-    close_icon = load_texture(renderer.get(), "../assets/close.png", Config::tab_x_button_size, Config::tab_x_button_size);
+    close_icon = load_texture(renderer.get(), "../assets/close.png", Config::tab_x_button_size,
+                              Config::tab_x_button_size);
     logo = load_texture(renderer.get(), "../assets/logo.png", 0, 0);
 }
 
@@ -108,16 +109,19 @@ void Core::init_rects() {
 void Core::construct_file_tree() {
     top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Anray Liu");
 
-    std::unique_ptr<DirButton> work_exp = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Work Experience");
+    std::unique_ptr<DirButton> work_exp = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(),
+                                                                      font.get(), "Work Experience");
 
-    std::unique_ptr<FileButton> item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Cloud Engineer");
+    std::unique_ptr<FileButton> item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(),
+                                                                    "Cloud Engineer");
     work_exp->add_file(std::move(item));
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Research Intern");
     work_exp->add_file(std::move(item));
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "GIS Technician");
     work_exp->add_file(std::move(item));
 
-    std::unique_ptr<DirButton> projects = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Projects");
+    std::unique_ptr<DirButton> projects = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(),
+                                                                      font.get(), "Projects");
 
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Pyvidplayer2");
     projects->add_file(std::move(item));
@@ -137,10 +141,12 @@ void Core::construct_file_tree() {
 
 void Core::draw_background() const {
     // draw filled rects
-    SDL_SetRenderDrawColor(renderer.get(), Config::top_bar_colour.r, Config::top_bar_colour.g, Config::top_bar_colour.b, 0);
+    SDL_SetRenderDrawColor(renderer.get(), Config::top_bar_colour.r, Config::top_bar_colour.g, Config::top_bar_colour.b,
+                           0);
     SDL_RenderFillRect(renderer.get(), &top_bar);
 
-    SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g, Config::left_bar_colour.b, 0);
+    SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g,
+                           Config::left_bar_colour.b, 0);
     SDL_RenderFillRect(renderer.get(), &left_bar);
     SDL_RenderFillRect(renderer.get(), &bottom_bar);
     SDL_RenderFillRect(renderer.get(), &file_tree);
@@ -149,19 +155,23 @@ void Core::draw_background() const {
         SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_view.h};
         SDL_RenderFillRect(renderer.get(), &dest);
 
-        dest = {file_view.x + file_view.w / 2 - empty_view_dimensions.x / 2, file_view.y + file_view.h / 2 - empty_view_dimensions.y / 2, empty_view_dimensions.x, empty_view_dimensions.y};
+        dest = {
+            file_view.x + file_view.w / 2 - empty_view_dimensions.x / 2,
+            file_view.y + file_view.h / 2 - empty_view_dimensions.y / 2, empty_view_dimensions.x,
+            empty_view_dimensions.y
+        };
         SDL_RenderCopy(renderer.get(), empty_view_text.get(), nullptr, &dest);
-
     } else {
-        SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g, Config::tab_bar_colour.b, 0);
+        SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g,
+                               Config::tab_bar_colour.b, 0);
         SDL_RenderFillRect(renderer.get(), &tab_bar);
         SDL_RenderFillRect(renderer.get(), &file_view);
     }
-
 }
 
 void Core::draw_outlines() const {
-    SDL_SetRenderDrawColor(renderer.get(), Config::outline_colour.r, Config::outline_colour.g, Config::outline_colour.b, 0);
+    SDL_SetRenderDrawColor(renderer.get(), Config::outline_colour.r, Config::outline_colour.g, Config::outline_colour.b,
+                           0);
 
     SDL_RenderDrawRect(renderer.get(), &top_bar);
     SDL_RenderDrawRect(renderer.get(), &bottom_bar);
@@ -177,13 +187,13 @@ void Core::draw_outlines() const {
     }
 }
 
-void Core::recursive_align(int x, int y, int w, int h, int* offset, Button *button) {
+void Core::recursive_align(int x, int y, int w, int h, int *offset, Button *button) {
     button->rect = {x, y + *offset, w, h};
     *offset += Config::file_button_h + Config::file_button_spacing_y;
 
-    auto dir = dynamic_cast<DirButton*>(button);
+    auto dir = dynamic_cast<DirButton *>(button);
     if (dir && !dir->collapsed) {
-        for (auto &file : dir->files) {
+        for (auto &file: dir->files) {
             recursive_align(x + Config::file_button_tab, y, w - Config::file_button_tab, h, offset, file.get());
         }
     }
@@ -192,9 +202,9 @@ void Core::recursive_align(int x, int y, int w, int h, int* offset, Button *butt
 void Core::recursive_update(Button *button) {
     button->update(renderer.get(), mousex, mousey, click);
 
-    if (auto dir = dynamic_cast<DirButton*>(button)) {
+    if (auto dir = dynamic_cast<DirButton *>(button)) {
         if (!dir->collapsed) {
-            for (const auto& ptr : dir->files) {
+            for (const auto &ptr: dir->files) {
                 recursive_update(ptr.get());
             }
         }
@@ -202,14 +212,15 @@ void Core::recursive_update(Button *button) {
         // is a file button
         if (button->click) {
             int index = -1;
-            for (int i = 0; i < tabs.size(); i ++) {
+            for (int i = 0; i < tabs.size(); i++) {
                 if (tabs[i]->text == button->text) {
                     index = i;
                     break;
                 }
             }
             if (index == -1) {
-                std::shared_ptr<TabButton> tb = std::make_shared<TabButton>(close_icon, renderer.get(), font.get(), button->text);
+                std::shared_ptr<TabButton> tb = std::make_shared<TabButton>(
+                    close_icon, renderer.get(), font.get(), button->text);
                 tabs.push_back(std::move(tb));
                 if (!selected_tab) {
                     selected_tab.reset();
@@ -294,10 +305,11 @@ void Core::quit_sdl() {
     SDL_Quit();
 }
 
-std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer* renderer, const string &path, int w, int h) {
+std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer *renderer, const string &path, int w, int h) {
     // load image texture
 
-    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(IMG_LoadTexture(renderer, path.c_str()), SDL_DestroyTexture);
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(IMG_LoadTexture(renderer, path.c_str()),
+                                                                        SDL_DestroyTexture);
     if (!texture) {
         throw std::runtime_error(std::format("Error loading texture {}", IMG_GetError()));
     }
@@ -332,11 +344,12 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer* renderer, const st
 }
 
 std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_Renderer *renderer, TTF_Font *font,
-    const string &text, SDL_Color bg) {
-
-    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(TTF_RenderText_Shaded(font, text.c_str(), Config::text_colour, bg),
-                                                                  SDL_FreeSurface);
-    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(SDL_CreateTextureFromSurface(renderer, surf.get()), SDL_DestroyTexture);
+                                                                            const string &text, SDL_Color bg) {
+    std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(
+        TTF_RenderText_Shaded(font, text.c_str(), Config::text_colour, bg),
+        SDL_FreeSurface);
+    std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(
+        SDL_CreateTextureFromSurface(renderer, surf.get()), SDL_DestroyTexture);
 
     return std::move(texture);
 }
@@ -380,16 +393,23 @@ void Core::update() {
     draw_outlines();
 
     // draw logo
-    SDL_Rect dest{(Config::top_bar_h - Config::logo_size) / 2, (Config::top_bar_h - Config::logo_size) / 2, Config::logo_size, Config::logo_size};
+    SDL_Rect dest{
+        (Config::top_bar_h - Config::logo_size) / 2, (Config::top_bar_h - Config::logo_size) / 2, Config::logo_size,
+        Config::logo_size
+    };
     SDL_RenderCopy(renderer.get(), logo.get(), nullptr, &dest);
-    dest = {dest.x + dest.w + 20, Config::top_bar_h / 2 - project_name_dimensions.y / 2, project_name_dimensions.x, project_name_dimensions.y};
+    dest = {
+        dest.x + dest.w + 20, Config::top_bar_h / 2 - project_name_dimensions.y / 2, project_name_dimensions.x,
+        project_name_dimensions.y
+    };
     SDL_RenderCopy(renderer.get(), project_name_text.get(), nullptr, &dest);
 
     SDL_RenderPresent(renderer.get());
 }
 
 void Core::update_tabs() {
-    SDL_SetRenderDrawColor(renderer.get(), Config::outline_colour.r, Config::outline_colour.g, Config::outline_colour.b, 255);
+    SDL_SetRenderDrawColor(renderer.get(), Config::outline_colour.r, Config::outline_colour.g, Config::outline_colour.b,
+                           255);
 
     const int w = tabs.empty() ? Config::tab_w : std::min(Config::tab_w, file_view.w / static_cast<int>(tabs.size()));
 
@@ -397,13 +417,15 @@ void Core::update_tabs() {
         tabs[i]->rect = {tab_bar.x + i * w, tab_bar.y, w, tab_bar.h};
         tabs[i]->update(renderer.get(), mousex, mousey, click, selected_tab, tabs);
 
-        SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g, Config::left_bar_colour.b, 255);
+        SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g,
+                               Config::left_bar_colour.b, 255);
         SDL_RenderDrawRect(renderer.get(), &tabs[i]->rect);
     }
 
     // draw selected tab indicator
     if (selected_tab) {
-        SDL_SetRenderDrawColor(renderer.get(), Config::select_tab_colour.r, Config::select_tab_colour.g, Config::select_tab_colour.b, 255);
+        SDL_SetRenderDrawColor(renderer.get(), Config::select_tab_colour.r, Config::select_tab_colour.g,
+                               Config::select_tab_colour.b, 255);
         SDL_Rect dest{selected_tab->rect.x, selected_tab->rect.y + selected_tab->rect.h - 5, selected_tab->rect.w, 5};
         SDL_RenderFillRect(renderer.get(), &dest);
     }
@@ -427,8 +449,8 @@ void Core::update_iframe() {
     move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
 }
 
-void mainloop(void* arg) {
-    Core* core = static_cast<Core*>(arg);
+void mainloop(void *arg) {
+    Core *core = static_cast<Core *>(arg);
 
     SDL_GetMouseState(&core->mousex, &core->mousey);
     core->click = false;
@@ -443,13 +465,13 @@ void mainloop(void* arg) {
                 break;
 
             case SDL_QUIT:
-                #ifdef __EMSCRIPTEN__
+#ifdef __EMSCRIPTEN__
                     emscripten_cancel_main_loop();
-                #endif
+#endif
 
-                #ifndef __EMSCRIPTEN__
-                    core->quit = true;
-                #endif
+#ifndef __EMSCRIPTEN__
+                core->quit = true;
+#endif
 
                 return;
 
@@ -459,24 +481,22 @@ void mainloop(void* arg) {
     }
 
     core->update();
-
 }
 
-int main(int argc, char* argv[]) {
-    {
+int main(int argc, char *argv[]) { {
         Core core;
         core.init();
 
-        #ifdef __EMSCRIPTEN__
+#ifdef __EMSCRIPTEN__
                 emscripten_set_main_loop_arg(mainloop, &core, static_cast<int>(Config::fps), 1);
-        #endif
+#endif
 
-        #ifndef __EMSCRIPTEN__
-                while(!core.quit) {
-                    mainloop(&core);
-                    core.timer.tick(Config::fps);
-                }
-        #endif
+#ifndef __EMSCRIPTEN__
+        while (!core.quit) {
+            mainloop(&core);
+            core.timer.tick(Config::fps);
+        }
+#endif
     }
 
     // quit after core object is cleaned up
