@@ -13,6 +13,7 @@
 using std::string;
 
 
+// singleton class
 class Core {
     void construct_file_tree();
 
@@ -33,7 +34,16 @@ class Core {
     void init_rects();
     void init_textures();
 
+    Core();
+    ~Core();
+
 public:
+    // delete copy constructor and copy assignment operator
+    Core(Core &core) = delete;
+    void operator=(const Core &) = delete;
+
+    static Core* get_instance();
+
     int mousex{};
     int mousey{};
     bool click{};
@@ -78,9 +88,6 @@ public:
     static std::shared_ptr<SDL_Texture> load_texture(SDL_Renderer* renderer, const string &path, int w, int h);
     static std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> load_text(SDL_Renderer* renderer, TTF_Font* font,
         const string &text, SDL_Color bg);
-
-    explicit Core();
-    ~Core();
 
     void init();
     void update();

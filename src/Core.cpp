@@ -22,6 +22,11 @@ Core::Core(): dragging(false), top_bar{}, bottom_bar{}, left_bar{},
     init_sdl();
 }
 
+Core *Core::get_instance() {
+    static Core* core = new Core();
+    return core;
+}
+
 Core::~Core() {
     SDL_DestroyTexture(collapse_icon.get());
     SDL_DestroyTexture(expand_icon.get());
@@ -485,17 +490,17 @@ void mainloop(void *arg) {
 }
 
 int main(int argc, char *argv[]) { {
-        Core core;
-        core.init();
+        Core* core = Core::get_instance();
+        core->init();
 
 #ifdef __EMSCRIPTEN__
-                emscripten_set_main_loop_arg(mainloop, &core, static_cast<int>(Config::fps), 1);
+                emscripten_set_main_loop_arg(mainloop, core, static_cast<int>(Config::fps), 1);
 #endif
 
 #ifndef __EMSCRIPTEN__
-        while (!core.quit) {
-            mainloop(&core);
-            core.timer.tick(Config::fps);
+        while (!core->quit) {
+            mainloop(core);
+            core->timer.tick(Config::fps);
         }
 #endif
     }
