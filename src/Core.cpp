@@ -85,7 +85,7 @@ void Core::init() {
     TTF_SizeText(font.get(), text.c_str(), &empty_view_dimensions.x, &empty_view_dimensions.y);
     empty_view_text = load_text(renderer.get(), font.get(), text, Config::left_bar_colour);
 
-    text = "Anray Liu's Portfolio";
+    text = "Anray Liu - Software Developer";
     TTF_SizeText(font.get(), text.c_str(), &project_name_dimensions.x, &project_name_dimensions.y);
     project_name_text = load_text(renderer.get(), font.get(), text, Config::top_bar_colour);
 
@@ -112,7 +112,7 @@ void Core::init_rects() {
 }
 
 void Core::construct_file_tree() {
-    top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Anray Liu");
+    top_level = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(), font.get(), "Portfolio");
 
     std::unique_ptr<DirButton> work_exp = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(),
                                                                       font.get(), "Work Experience");
