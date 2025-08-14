@@ -1,7 +1,7 @@
 /* JetBrains IDE Color Palette */
 :root {
-    --jb-bg: rgb(30, 31, 34);
     --jb-bg-light: #2d313a;
+    --jb-bg: #1e1f22;
     --jb-bg-lighter: #3c4049;
     --jb-text: #abb2bf;
     --jb-text-light: #d7dae0;
