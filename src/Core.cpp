@@ -137,11 +137,13 @@ void Core::construct_file_tree() {
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Portfolio");
     projects->add_file(std::move(item));
 
-    std::unique_ptr<FileButton> readme = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "README");
-
     top_level->add_dir(std::move(work_exp));
     top_level->add_dir(std::move(projects));
-    top_level->add_file(std::move(readme));
+
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "README");
+    top_level->add_file(std::move(item));
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Resume");
+    top_level->add_file(std::move(item));
 }
 
 void Core::draw_background() const {
