@@ -90,6 +90,11 @@ void Core::init() {
     project_name_text = load_text(renderer.get(), font.get(), text, Config::top_bar_colour);
 
     hide_iframe();
+
+    std::shared_ptr<TabButton> tb = std::make_shared<TabButton>(
+                close_icon, renderer.get(), font.get(), "README");
+    tabs.push_back(std::move(tb));
+    selected_tab = tabs[tabs.size() - 1];
 }
 
 void Core::init_textures() {
@@ -225,6 +230,7 @@ void Core::recursive_update(Button *button) {
                     break;
                 }
             }
+            // if file clicked is not open, new tab
             if (index == -1) {
                 std::shared_ptr<TabButton> tb = std::make_shared<TabButton>(
                     close_icon, renderer.get(), font.get(), button->text);
@@ -233,6 +239,8 @@ void Core::recursive_update(Button *button) {
                     selected_tab.reset();
                 }
                 selected_tab = tabs[tabs.size() - 1];
+
+            // if file clicked is open, select it
             } else {
                 if (tabs[index].get() != button) {
                     selected_tab.reset();
