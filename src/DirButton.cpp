@@ -7,6 +7,8 @@ DirButton::DirButton(const std::shared_ptr<SDL_Texture> &collapse_icon, const st
 : Button(nullptr, renderer, font, text), collapsed(false), collapse_icon(collapse_icon), expand_icon(expand_icon) {
     text_texture = Core::load_text(renderer, font, text, Config::left_bar_colour);
     hover_texture = Core::load_text(renderer, font, text, Config::tab_bar_colour);
+    rect.w = texture_width + Config::file_button_h + Config::icon_spacing;
+    rect.h = Config::file_button_h;
 }
 
 void DirButton::add_file(std::unique_ptr<FileButton> button) {
@@ -17,8 +19,11 @@ void DirButton::add_dir(std::unique_ptr<DirButton> button) {
     files.push_back(std::move(button));
 }
 
-void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
-    Button::update(renderer, mousex, mousey, mouse_down);
+void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down, int file_tree_w) {
+    // Button::update(renderer, mousex, mousey, mouse_down, file_tree_w);
+
+    hover = mousex >= Config::left_bar_w && mousex <= Config::left_bar_w + file_tree_w - Config::drag_tolerance && mousey >= rect.y && mousey <= rect.y + rect.h;
+    click = mouse_down && hover;
 
     if (click) {
         collapsed = !collapsed;
@@ -29,7 +34,7 @@ void DirButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mous
 
     if (hover) {
         SDL_SetRenderDrawColor(renderer, Config::tab_bar_colour.r, Config::tab_bar_colour.g, Config::tab_bar_colour.b, 255);
-        SDL_Rect highlight_rect{Config::left_bar_w, rect.y, Config::file_tree_w, rect.h};
+        SDL_Rect highlight_rect{Config::left_bar_w, rect.y, file_tree_w, rect.h};
         SDL_RenderFillRect(renderer, &highlight_rect);
         SDL_RenderCopy(renderer, hover_texture.get(), &src, &dest);
     } else {

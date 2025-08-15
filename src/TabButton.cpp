@@ -22,7 +22,7 @@ Button(icon, renderer, font, text), x_rect{0, 0, Config::tab_x_button_size, Conf
 }
 
 void TabButton::update(SDL_Renderer *renderer, int mousex, int mousey, bool mouse_down) {
-    Button::update(renderer, mousex, mousey, mouse_down);
+    Button::update(renderer, mousex, mousey, mouse_down, 0); // tab button doesn't need file_tree_w
 
     int w = std::min(rect.w - rect.h, texture_width);
     SDL_Rect src = {0, 0, w, texture_height};

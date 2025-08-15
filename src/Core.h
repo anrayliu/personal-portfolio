@@ -22,7 +22,7 @@ class Core {
     void draw_topleft() const;
 
     // recursive functions to interact with file buttons
-    void recursive_align(int x, int y, int w, int h, int* offset, Button *button);
+    void recursive_align(int x, int y, int* offset, Button *button);
     void recursive_update(Button *button);
     void update_tabs();
     void update_iframe();

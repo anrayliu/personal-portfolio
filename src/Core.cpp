@@ -165,23 +165,6 @@ void Core::draw_background() const {
     SDL_RenderFillRect(renderer.get(), &left_bar);
     SDL_RenderFillRect(renderer.get(), &bottom_bar);
     SDL_RenderFillRect(renderer.get(), &file_tree);
-
-    if (tabs.empty()) {
-        SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_view.h};
-        SDL_RenderFillRect(renderer.get(), &dest);
-
-        dest = {
-            file_view.x + file_view.w / 2 - empty_view_dimensions.x / 2,
-            file_view.y + file_view.h / 2 - empty_view_dimensions.y / 2, empty_view_dimensions.x,
-            empty_view_dimensions.y
-        };
-        SDL_RenderCopy(renderer.get(), empty_view_text.get(), nullptr, &dest);
-    } else {
-        SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g,
-                               Config::tab_bar_colour.b, 0);
-        SDL_RenderFillRect(renderer.get(), &tab_bar);
-        SDL_RenderFillRect(renderer.get(), &file_view);
-    }
 }
 
 void Core::draw_outlines() const {
@@ -202,20 +185,21 @@ void Core::draw_outlines() const {
     }
 }
 
-void Core::recursive_align(int x, int y, int w, int h, int *offset, Button *button) {
-    button->rect = {x, y + *offset, w, h};
+void Core::recursive_align(int x, int y, int *offset, Button *button) {
+    button->rect.x = x;
+    button->rect.y = y + *offset;
     *offset += Config::file_button_h + Config::file_button_spacing_y;
 
     auto dir = dynamic_cast<DirButton *>(button);
     if (dir && !dir->collapsed) {
         for (auto &file: dir->files) {
-            recursive_align(x + Config::file_button_tab, y, w - Config::file_button_tab, h, offset, file.get());
+            recursive_align(x + Config::file_button_tab, y, offset, file.get());
         }
     }
 }
 
 void Core::recursive_update(Button *button) {
-    button->update(renderer.get(), mousex, mousey, click);
+    button->update(renderer.get(), mousex, mousey, click, file_tree.w);
 
     if (auto dir = dynamic_cast<DirButton *>(button)) {
         if (!dir->collapsed) {
@@ -252,6 +236,7 @@ void Core::recursive_update(Button *button) {
             }
         }
     }
+
 }
 
 void Core::move_iframe(int x, int y, int w, int h) {
@@ -401,7 +386,7 @@ std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_
 }
 
 void Core::update_dragging() {
-    if (!dragging && abs(file_tree.x + file_tree.w - mousex) <= 8) {
+    if (!dragging && abs(file_tree.x + file_tree.w - mousex) <= Config::drag_tolerance) {
         if (click) {
             dragging = true;
             disable_iframe();
@@ -412,7 +397,7 @@ void Core::update_dragging() {
     }
 
     if (dragging) {
-        file_tree.w = std::max(Config::min_file_tree_w, mousex - left_bar.w);
+        file_tree.w = std::min(Config::window_w - left_bar.w - Config::min_file_tree_w * 2, std::max(Config::min_file_tree_w, mousex - left_bar.w));
         tab_bar.x = file_view.x = file_tree.x + file_tree.w;
         tab_bar.w = file_view.w = Config::window_w - left_bar.w - file_tree.w;
         if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
@@ -456,13 +441,27 @@ void Core::update() {
 
     // re-position and update file buttons
     int offset = 10;
-    recursive_align(file_tree.x + Config::file_button_spacing_x, file_tree.y + Config::file_button_spacing_x,
-                    file_tree.w - Config::file_button_spacing_x * 2, Config::file_button_h, &offset, top_level.get());
+    recursive_align(file_tree.x + Config::file_button_spacing_x, file_tree.y + Config::file_button_spacing_x, &offset, top_level.get());
     recursive_update(top_level.get());
 
-    SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g, Config::tab_bar_colour.b, 255);
-    SDL_RenderFillRect(renderer.get(), &tab_bar);
-    SDL_RenderFillRect(renderer.get(), &file_view);
+    if (tabs.empty()) {
+        SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g, Config::left_bar_colour.b, 255);
+
+        SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_view.h};
+        SDL_RenderFillRect(renderer.get(), &dest);
+
+        dest = {
+            std::max(file_view.x + 10, file_view.x + file_view.w / 2 - empty_view_dimensions.x / 2),
+            file_view.y + file_view.h / 2 - empty_view_dimensions.y / 2, empty_view_dimensions.x,
+            empty_view_dimensions.y
+        };
+        SDL_RenderCopy(renderer.get(), empty_view_text.get(), nullptr, &dest);
+    } else {
+        SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g,
+                               Config::tab_bar_colour.b, 0);
+        SDL_RenderFillRect(renderer.get(), &tab_bar);
+        SDL_RenderFillRect(renderer.get(), &file_view);
+    }
 
     update_tabs();
 

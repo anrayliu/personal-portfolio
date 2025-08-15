@@ -7,6 +7,11 @@
 #include "SDL2/SDL_ttf.h"
 
 
+/*
+ *This Button inheritance structure wasn't planned as well as I would've liked
+ *Now it's causing messy clashes between tab buttons and file/dir buttons
+ */
+
 class Button {
 public:
     virtual ~Button() = default;
@@ -25,7 +30,7 @@ public:
 
     Button(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
 
-    virtual void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down);
+    virtual void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down, int file_tree_w);
 };
 
 class TabButton : public Button {
@@ -44,7 +49,7 @@ class FileButton : public Button {
 public:
     FileButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text);
 
-    void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down) override;
+    void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down, int file_tree_w) override;
 };
 
 class DirButton : public Button {
@@ -60,7 +65,7 @@ public:
     void add_file(std::unique_ptr<FileButton> button);
     void add_dir(std::unique_ptr<DirButton> button);
 
-    void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down) override;
+    void update(SDL_Renderer* renderer, int mousex, int mousey, bool mouse_down, int file_tree_w) override;
 };
 
 
