@@ -376,6 +376,8 @@ void Core::update() {
 
     draw_background();
 
+    SDL_GetMouseState(&mousex, &mousey);
+
     // disable dragging for now
 
     // if (!dragging && click && abs(file_tree.x + file_tree.w - mousex) <= 10) {
@@ -429,9 +431,37 @@ void Core::update_tabs() {
     const int w = tabs.empty() ? Config::tab_w : std::min(Config::tab_w, file_view.w / static_cast<int>(tabs.size()));
 
     for (int i = 0; i < tabs.size(); i++) {
-        tabs[i]->rect.x = tab_bar.x + i * w;
-        tabs[i]->rect.w = w;
-        tabs[i]->update(renderer.get(), mousex, mousey, click, selected_tab, tabs);
+        auto tab = tabs[i];
+
+        tab->rect.x = tab_bar.x + i * w;
+        tab->rect.w = w;
+        tab->update(renderer.get(), mousex, mousey, click);
+
+        if ((tab->x_button_hover && click) || (tab->hover && middle_click)) {
+            // delete tab button
+            for (int j = 0; j < tabs.size(); j++) {
+                if (tabs[j].get() == tab.get()) {
+                    tabs.erase(tabs.begin() + j);
+                    if (selected_tab.get() == tab.get()) {
+                        selected_tab.reset();
+                        if (!tabs.empty()) {
+
+                            // probably an unnecessary check
+                            selected_tab = tabs[tabs.size() - 1];
+                        }
+                    }
+                }
+            }
+        } else if (tab->click) {
+            // select tab button
+            for (auto &t: tabs) {
+                if (t.get() == tab.get()) {
+                    selected_tab.reset();
+                    selected_tab = t;
+                    break;
+                }
+            }
+        }
 
         SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g,
                                Config::left_bar_colour.b, 255);
@@ -466,10 +496,9 @@ void Core::update_iframe() {
 }
 
 void mainloop(void *arg) {
-    Core *core = static_cast<Core *>(arg);
-
-    SDL_GetMouseState(&core->mousex, &core->mousey);
+    Core* core = static_cast<Core*>(arg);
     core->click = false;
+    core->middle_click = false;
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -477,6 +506,9 @@ void mainloop(void *arg) {
             case SDL_MOUSEBUTTONDOWN:
                 if (event.button.button == SDL_BUTTON_LEFT) {
                     core->click = true;
+                } else if (event.button.button == SDL_BUTTON_MIDDLE) {
+                    core->middle_click = true;
+
                 }
                 break;
 

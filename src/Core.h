@@ -47,6 +47,7 @@ public:
     int mousex{};
     int mousey{};
     bool click{};
+    bool middle_click{};
 
     bool dragging;
 
