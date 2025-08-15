@@ -23,13 +23,16 @@ class Core {
     // recursive functions to interact with file buttons
     void recursive_align(int x, int y, int w, int h, int* offset, Button *button);
     void recursive_update(Button *button);
+    void update_tabs();
+    void update_iframe();
 
     void move_iframe(int x, int y, int w, int h);
     void load_iframe(const std::string &file);
     void show_iframe();
     void hide_iframe();
-    void update_tabs();
-    void update_iframe();
+    void disable_iframe();
+    void enable_iframe();
+    void set_cursor(const std::string &type);
 
     void init_rects();
     void init_textures();
@@ -92,7 +95,6 @@ public:
 
     void init();
     void update();
-
 };
 
 #endif

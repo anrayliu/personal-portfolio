@@ -302,6 +302,35 @@ void Core::show_iframe() {
 #endif
 }
 
+void Core::disable_iframe() {
+#ifdef __EMSCRIPTEN__
+    EM_ASM({
+        let iFrame = document.getElementById('webpage-iframe');
+        iFrame.style.pointerEvents = 'none';
+    });
+#endif
+}
+
+void Core::enable_iframe() {
+#ifdef __EMSCRIPTEN__
+    EM_ASM({
+        let iFrame = document.getElementById('webpage-iframe');
+        iFrame.style.pointerEvents = 'auto';
+    });
+#endif
+}
+
+void Core::set_cursor(const std::string &type) {
+#ifdef __EMSCRIPTEN__
+        EM_ASM({
+            document.getElementById('canvas').style.cursor = UTF8ToString($0);
+            document.body.style.display = 'none';
+            document.body.style.display = 'block';
+        }, type.c_str());
+#endif
+}
+
+
 void Core::init_sdl() {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         throw std::runtime_error(std::format("Error initializing SDL {}", SDL_GetError()));
@@ -381,22 +410,27 @@ void Core::update() {
 
     SDL_GetMouseState(&mousex, &mousey);
 
-    // disable dragging for now
+    if (!dragging && abs(file_tree.x + file_tree.w - mousex) <= 8) {
+        if (click) {
+            dragging = true;
+            disable_iframe();
+        }
+        set_cursor("ew-resize");
+    } else {
+        set_cursor("auto");
+    }
 
-    // if (!dragging && click && abs(file_tree.x + file_tree.w - mousex) <= 10) {
-    //     dragging = true;
-    // }
+    if (dragging) {
+        file_tree.w = mousex - left_bar.w;
+        tab_bar.x = file_view.x = file_tree.x + file_tree.w;
+        tab_bar.w = file_view.w = Config::window_w - left_bar.w - file_tree.w;
+        if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
+            dragging = false;
+            enable_iframe();
+        }
 
-    // if (dragging) {
-    //     file_tree.w = mousex - left_bar.w;
-    //     tab_bar.x = file_view.x = file_tree.x + file_tree.w;
-    //     tab_bar.w = file_view.w = Config::window_w - left_bar.w - file_tree.w;
-    //     if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
-    //         dragging = false;
-    //     }
-    //
-    //     move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
-    // }
+        move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
+    }
 
     update_iframe();
 
