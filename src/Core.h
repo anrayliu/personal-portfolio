@@ -19,6 +19,7 @@ class Core {
 
     void draw_background() const;
     void draw_outlines() const;
+    void draw_topleft() const;
 
     // recursive functions to interact with file buttons
     void recursive_align(int x, int y, int w, int h, int* offset, Button *button);
