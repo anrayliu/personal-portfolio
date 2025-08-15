@@ -330,7 +330,6 @@ void Core::set_cursor(const std::string &type) {
 #endif
 }
 
-
 void Core::init_sdl() {
     if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS)) {
         throw std::runtime_error(std::format("Error initializing SDL {}", SDL_GetError()));
@@ -413,7 +412,7 @@ void Core::update_dragging() {
     }
 
     if (dragging) {
-        file_tree.w = mousex - left_bar.w;
+        file_tree.w = std::max(Config::min_file_tree_w, mousex - left_bar.w);
         tab_bar.x = file_view.x = file_tree.x + file_tree.w;
         tab_bar.w = file_view.w = Config::window_w - left_bar.w - file_tree.w;
         if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
@@ -439,7 +438,6 @@ void Core::draw_topleft() const {
     SDL_RenderCopy(renderer.get(), project_name_text.get(), nullptr, &dest);
 }
 
-
 void Core::update() {
     // clear screen
     SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
@@ -447,24 +445,28 @@ void Core::update() {
 
     draw_background();
 
+    // get mouse position
     SDL_GetMouseState(&mousex, &mousey);
 
+    // handle resizing of file tree viewer
     update_dragging();
 
+    // handle resizing of iframe
     update_iframe();
 
-    // update elements
-
+    // re-position and update file buttons
     int offset = 10;
     recursive_align(file_tree.x + Config::file_button_spacing_x, file_tree.y + Config::file_button_spacing_x,
                     file_tree.w - Config::file_button_spacing_x * 2, Config::file_button_h, &offset, top_level.get());
-
     recursive_update(top_level.get());
+
+    SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g, Config::tab_bar_colour.b, 255);
+    SDL_RenderFillRect(renderer.get(), &tab_bar);
+    SDL_RenderFillRect(renderer.get(), &file_view);
 
     update_tabs();
 
     draw_outlines();
-
     draw_topleft();
 
     SDL_RenderPresent(renderer.get());
