@@ -25,6 +25,7 @@ class Core {
     void recursive_update(Button *button);
     void update_tabs();
     void update_iframe();
+    void update_dragging();
 
     void move_iframe(int x, int y, int w, int h);
     void load_iframe(const std::string &file);

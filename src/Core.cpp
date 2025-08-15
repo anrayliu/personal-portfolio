@@ -401,15 +401,7 @@ std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_
     return std::move(texture);
 }
 
-void Core::update() {
-    // clear screen
-    SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
-    SDL_RenderClear(renderer.get());
-
-    draw_background();
-
-    SDL_GetMouseState(&mousex, &mousey);
-
+void Core::update_dragging() {
     if (!dragging && abs(file_tree.x + file_tree.w - mousex) <= 8) {
         if (click) {
             dragging = true;
@@ -431,6 +423,19 @@ void Core::update() {
 
         move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
     }
+}
+
+
+void Core::update() {
+    // clear screen
+    SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
+    SDL_RenderClear(renderer.get());
+
+    draw_background();
+
+    SDL_GetMouseState(&mousex, &mousey);
+
+    update_dragging();
 
     update_iframe();
 
