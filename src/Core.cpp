@@ -443,13 +443,13 @@ void Core::update() {
     SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
     SDL_RenderClear(renderer.get());
 
-    draw_background();
-
     // get mouse position
     SDL_GetMouseState(&mousex, &mousey);
 
     // handle resizing of file tree viewer
     update_dragging();
+
+    draw_background(); // must come after dragging to prevent ghosting
 
     // handle resizing of iframe
     update_iframe();
