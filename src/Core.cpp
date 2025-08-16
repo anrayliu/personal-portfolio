@@ -415,13 +415,10 @@ void Core::update_aspect_ratio() {
         const windowW = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
         const windowH = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
 
-        const canvasW = document.getElementById('canvas').offsetWidth;
-        const canvasH = document.getElementById('canvas').offsetHeight;
-
-        if (Math.abs(windowW / windowH - canvasW / canvasH) > 0.01) {
-            location.reload();
+        if (Math.abs(windowW / windowH - $0 / $1) > 0.01) {
+            location.reload()
         }
-    });
+    }, Config::window_w, Config::window_h);
 #endif
 }
 
