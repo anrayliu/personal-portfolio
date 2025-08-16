@@ -28,6 +28,7 @@ class Core {
     void update_iframe();
     void update_dragging();
 
+    void update_aspect_ratio();
     void move_iframe(int x, int y, int w, int h);
     void load_iframe(const std::string &file);
     void show_iframe();

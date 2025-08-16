@@ -409,6 +409,22 @@ void Core::update_dragging() {
     }
 }
 
+void Core::update_aspect_ratio() {
+#ifdef __EMSCRIPTEN__
+    EM_ASM({
+        const windowW = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+        const windowH = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+
+        const canvasW = document.getElementById('canvas').offsetWidth;
+        const canvasH = document.getElementById('canvas').offsetHeight;
+
+        if (windowW / windowH !== canvasW / canvasH) {
+            location.reload();
+        }
+    });
+#endif
+}
+
 void Core::draw_topleft() const {
     // draw logo
     SDL_Rect dest{
@@ -424,6 +440,8 @@ void Core::draw_topleft() const {
 }
 
 void Core::update() {
+    update_aspect_ratio();
+
     // clear screen
     SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
     SDL_RenderClear(renderer.get());
