@@ -15,6 +15,8 @@ using std::string;
 
 // singleton class
 class Core {
+    bool check_aspect_ratio;
+
     void construct_file_tree();
 
     void draw_background() const;

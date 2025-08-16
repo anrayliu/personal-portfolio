@@ -11,9 +11,9 @@
 #endif
 
 
-Core::Core(): dragging(false), top_bar{}, bottom_bar{}, left_bar{},
-              file_tree{},
-              file_view{},
+Core::Core(): check_aspect_ratio(true), dragging(false), top_bar{}, bottom_bar{},
+              left_bar{},
+              file_tree{}, file_view{},
               tab_bar{}, top_level(nullptr),
               iframe_hidden(true),
               selected_tab(nullptr), project_name_text(nullptr, SDL_DestroyTexture),
@@ -411,15 +411,20 @@ void Core::update_dragging() {
 
 void Core::update_aspect_ratio() {
 #ifdef __EMSCRIPTEN__
-    EM_ASM({
-        const windowW = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
-        const windowH = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    int w = EM_ASM_INT({
+        return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    });
+    int h = EM_ASM_INT({
+        return Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    });
 
-        if (Math.abs(windowW / windowH - $0 / $1) > 0.01) {
-            console.log($0 / $1);
-            console.log(windowW / windowH);
-        }
-    }, Config::window_w, Config::window_h);
+    if (abs(w / static_cast<double>(h) - Config::window_w / static_cast<double>(Config::window_h)) > 0.01) {
+        EM_ASM({
+            location.reload();
+        });
+        // wait for page to reload
+        check_aspect_ratio = false;
+    }
 #endif
 }
 
@@ -438,7 +443,9 @@ void Core::draw_topleft() const {
 }
 
 void Core::update() {
-    update_aspect_ratio();
+    if (check_aspect_ratio) {
+        update_aspect_ratio();
+    }
 
     // clear screen
     SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
