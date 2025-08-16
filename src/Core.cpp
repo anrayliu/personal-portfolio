@@ -418,7 +418,7 @@ void Core::update_aspect_ratio() {
         const canvasW = document.getElementById('canvas').offsetWidth;
         const canvasH = document.getElementById('canvas').offsetHeight;
 
-        if (windowW / windowH !== canvasW / canvasH) {
+        if (Math.abs(windowW / windowH - canvasW / canvasH) > 0.01) {
             location.reload();
         }
     });
