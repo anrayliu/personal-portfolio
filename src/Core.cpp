@@ -416,7 +416,8 @@ void Core::update_aspect_ratio() {
         const windowH = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
 
         if (Math.abs(windowW / windowH - $0 / $1) > 0.01) {
-            location.reload()
+            console.log($0 / $1);
+            console.log(windowW / windowH);
         }
     }, Config::window_w, Config::window_h);
 #endif
