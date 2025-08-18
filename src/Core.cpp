@@ -92,10 +92,10 @@ void Core::init() {
     hide_iframe();
 
     std::shared_ptr<TabButton> tb = std::make_shared<TabButton>(
-                close_icon, renderer.get(), font.get(), "README");
+        close_icon, renderer.get(), font.get(), "README");
     tabs.push_back(std::move(tb));
     tb = std::make_shared<TabButton>(
-                    close_icon, renderer.get(), font.get(), "Resume");
+        close_icon, renderer.get(), font.get(), "Resume");
     tabs.push_back(std::move(tb));
     selected_tab = tabs[0];
 }
@@ -227,7 +227,7 @@ void Core::recursive_update(Button *button) {
                 }
                 selected_tab = tabs[tabs.size() - 1];
 
-            // if file clicked is open, select it
+                // if file clicked is open, select it
             } else {
                 if (tabs[index].get() != button) {
                     selected_tab.reset();
@@ -236,7 +236,6 @@ void Core::recursive_update(Button *button) {
             }
         }
     }
-
 }
 
 void Core::move_iframe(int x, int y, int w, int h) {
@@ -386,7 +385,8 @@ std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_
 }
 
 void Core::update_dragging() {
-    if (!dragging && mousey >= top_bar.h && mousey <= bottom_bar.y && abs(file_tree.x + file_tree.w - mousex) <= Config::drag_tolerance) {
+    if (!dragging && mousey >= top_bar.h && mousey <= bottom_bar.y && abs(file_tree.x + file_tree.w - mousex) <=
+        Config::drag_tolerance) {
         if (click) {
             dragging = true;
             disable_iframe();
@@ -397,7 +397,8 @@ void Core::update_dragging() {
     }
 
     if (dragging) {
-        file_tree.w = std::min(Config::window_w - left_bar.w - Config::min_file_tree_w * 2, std::max(Config::min_file_tree_w, mousex - left_bar.w));
+        file_tree.w = std::min(Config::window_w - left_bar.w - Config::min_file_tree_w * 2,
+                               std::max(Config::min_file_tree_w, mousex - left_bar.w));
         tab_bar.x = file_view.x = file_tree.x + file_tree.w;
         tab_bar.w = file_view.w = Config::window_w - left_bar.w - file_tree.w;
         if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
@@ -464,11 +465,13 @@ void Core::update() {
 
     // re-position and update file buttons
     int offset = 10;
-    recursive_align(file_tree.x + Config::file_button_spacing_x, file_tree.y + Config::file_button_spacing_x, &offset, top_level.get());
+    recursive_align(file_tree.x + Config::file_button_spacing_x, file_tree.y + Config::file_button_spacing_x, &offset,
+                    top_level.get());
     recursive_update(top_level.get());
 
     if (tabs.empty()) {
-        SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g, Config::left_bar_colour.b, 255);
+        SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g,
+                               Config::left_bar_colour.b, 255);
 
         SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_view.h};
         SDL_RenderFillRect(renderer.get(), &dest);
@@ -515,7 +518,6 @@ void Core::update_tabs() {
                     if (selected_tab.get() == tab.get()) {
                         selected_tab.reset();
                         if (!tabs.empty()) {
-
                             // probably an unnecessary check
                             selected_tab = tabs[tabs.size() - 1];
                         }
@@ -578,7 +580,6 @@ void mainloop(void *arg) {
                     core->click = true;
                 } else if (event.button.button == SDL_BUTTON_MIDDLE) {
                     core->middle_click = true;
-
                 }
                 break;
 

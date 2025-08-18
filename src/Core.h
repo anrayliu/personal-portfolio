@@ -20,34 +20,50 @@ class Core {
     void construct_file_tree();
 
     void draw_background() const;
+
     void draw_outlines() const;
+
     void draw_topleft() const;
 
     // recursive functions to interact with file buttons
-    void recursive_align(int x, int y, int* offset, Button *button);
+    void recursive_align(int x, int y, int *offset, Button *button);
+
     void recursive_update(Button *button);
+
     void update_tabs();
+
     void update_iframe();
+
     void update_dragging();
 
     void update_aspect_ratio();
+
     void move_iframe(int x, int y, int w, int h);
+
     void load_iframe(const std::string &file);
+
     void show_iframe();
+
     void hide_iframe();
+
     void disable_iframe();
+
     void enable_iframe();
+
     void set_cursor(const std::string &type);
 
     void init_rects();
+
     void init_textures();
 
     Core();
+
     ~Core();
 
 public:
     // delete copy constructor and copy assignment operator
     Core(Core &core) = delete;
+
     void operator=(const Core &) = delete;
 
     static Core* get_instance();
@@ -93,12 +109,14 @@ public:
     std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font;
 
     static void init_sdl();
+
     static void quit_sdl();
     static std::shared_ptr<SDL_Texture> load_texture(SDL_Renderer* renderer, const string &path, int w, int h);
     static std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> load_text(SDL_Renderer* renderer, TTF_Font* font,
         const string &text, SDL_Color bg);
 
     void init();
+
     void update();
 };
 
