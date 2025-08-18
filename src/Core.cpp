@@ -405,7 +405,7 @@ void Core::update_dragging() {
             enable_iframe();
         }
 
-        move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
+        move_iframe(file_view.x + 1, file_view.y + 1, file_view.w - 2, file_view.h - 2);
     }
 }
 
@@ -562,7 +562,7 @@ void Core::update_iframe() {
         loaded_iframe = "";
     }
 
-    move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
+    move_iframe(file_view.x + 1, file_view.y + 1, file_view.w - 2, file_view.h - 2);
 }
 
 void mainloop(void *arg) {
