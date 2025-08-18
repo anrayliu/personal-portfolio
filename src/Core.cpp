@@ -386,7 +386,7 @@ std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_
 }
 
 void Core::update_dragging() {
-    if (!dragging && abs(file_tree.x + file_tree.w - mousex) <= Config::drag_tolerance) {
+    if (!dragging && mousey >= top_bar.h && mousey <= bottom_bar.y && abs(file_tree.x + file_tree.w - mousex) <= Config::drag_tolerance) {
         if (click) {
             dragging = true;
             disable_iframe();
