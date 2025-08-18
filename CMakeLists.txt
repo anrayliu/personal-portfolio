@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.30)
-project(LearnSDL)
+project(PersonalPortfolio)
 
 set(CMAKE_CXX_STANDARD 20)
 
@@ -11,7 +11,7 @@ link_directories(${SDL2_LIB_DIR})
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/assets)
 
 aux_source_directory(src SRC_FILES)
-add_executable(LearnSDL ${SRC_FILES}
+add_executable(PersonalPortfolio ${SRC_FILES}
         src/Core.cpp
         src/Core.h
         src/Timer.cpp
