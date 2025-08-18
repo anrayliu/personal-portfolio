@@ -241,7 +241,7 @@ void Core::recursive_update(Button *button) {
 
 void Core::move_iframe(int x, int y, int w, int h) {
 #ifdef __EMSCRIPTEN__
-    EM_ASM({
+    EM_JS({
         const wasmCanvas = document.getElementById('canvas');
         const width = wasmCanvas.clientWidth;
         const height = wasmCanvas.clientHeight;
@@ -262,7 +262,7 @@ void Core::move_iframe(int x, int y, int w, int h) {
 
 void Core::load_iframe(const std::string &file) {
 #ifdef __EMSCRIPTEN__
-    EM_ASM({
+    EM_JS({
         let iFrame = document.getElementById('webpage-iframe');
         iFrame.src = UTF8ToString($0);
     }, ("static/" + file).c_str());
@@ -271,7 +271,7 @@ void Core::load_iframe(const std::string &file) {
 
 void Core::hide_iframe() {
 #ifdef __EMSCRIPTEN__
-    EM_ASM({
+    EM_JS({
         let iFrame = document.getElementById('webpage-iframe');
         iFrame.setAttribute("hidden", "hidden");
     });
@@ -280,7 +280,7 @@ void Core::hide_iframe() {
 
 void Core::show_iframe() {
 #ifdef __EMSCRIPTEN__
-    EM_ASM({
+    EM_JS({
         let iFrame = document.getElementById('webpage-iframe');
         iFrame.removeAttribute("hidden");
     });
@@ -289,7 +289,7 @@ void Core::show_iframe() {
 
 void Core::disable_iframe() {
 #ifdef __EMSCRIPTEN__
-    EM_ASM({
+    EM_JS({
         let iFrame = document.getElementById('webpage-iframe');
         iFrame.style.pointerEvents = 'none';
     });
@@ -298,7 +298,7 @@ void Core::disable_iframe() {
 
 void Core::enable_iframe() {
 #ifdef __EMSCRIPTEN__
-    EM_ASM({
+    EM_JS({
         let iFrame = document.getElementById('webpage-iframe');
         iFrame.style.pointerEvents = 'auto';
     });
@@ -307,7 +307,7 @@ void Core::enable_iframe() {
 
 void Core::set_cursor(const std::string &type) {
 #ifdef __EMSCRIPTEN__
-        EM_ASM({
+        EM_JS({
             document.getElementById('canvas').style.cursor = UTF8ToString($0);
             document.body.style.display = 'none';
             document.body.style.display = 'block';
@@ -419,7 +419,7 @@ void Core::update_aspect_ratio() {
     });
 
     if (abs(w / static_cast<double>(h) - Config::window_w / static_cast<double>(Config::window_h)) > 0.01) {
-        EM_ASM({
+        EM_JS({
             location.reload();
         });
         // wait for page to reload
