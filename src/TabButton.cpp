@@ -5,8 +5,8 @@
 
 TabButton::TabButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) :
 Button(icon, renderer, font, text), x_rect{0, 0, Config::tab_x_button_size, Config::tab_x_button_size}, x_button_hover(false) {
-    text_texture = Core::load_text(renderer, font, text, Config::tab_bar_colour);
-    hover_texture = Core::load_text(renderer, font, text, Config::left_bar_colour);
+    text_texture = Core::load_text(renderer, font, text);
+    hover_texture = Core::load_text(renderer, font, text);
 
     // get static file to load in iframe
     file = text;

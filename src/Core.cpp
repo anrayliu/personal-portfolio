@@ -83,11 +83,11 @@ void Core::init() {
     // load some text textures
     std::string text = "Click on a file from the left to view it.";
     TTF_SizeText(font.get(), text.c_str(), &empty_view_dimensions.x, &empty_view_dimensions.y);
-    empty_view_text = load_text(renderer.get(), font.get(), text, Config::left_bar_colour);
+    empty_view_text = load_text(renderer.get(), font.get(), text);
 
     text = "Anray Liu - Software Developer";
     TTF_SizeText(font.get(), text.c_str(), &project_name_dimensions.x, &project_name_dimensions.y);
-    project_name_text = load_text(renderer.get(), font.get(), text, Config::top_bar_colour);
+    project_name_text = load_text(renderer.get(), font.get(), text);
 
     hide_iframe();
 
@@ -374,9 +374,9 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer *renderer, const st
 }
 
 std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_Renderer *renderer, TTF_Font *font,
-                                                                            const string &text, SDL_Color bg) {
+                                                                            const string &text) {
     std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(
-        TTF_RenderText_Shaded(font, text.c_str(), Config::text_colour, bg),
+        TTF_RenderUTF8_Blended(font, text.c_str(), Config::text_colour),
         SDL_FreeSurface);
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(
         SDL_CreateTextureFromSurface(renderer, surf.get()), SDL_DestroyTexture);

@@ -4,8 +4,8 @@
 
 
 FileButton::FileButton(const std::shared_ptr<SDL_Texture> &icon, SDL_Renderer* renderer, TTF_Font* font, const std::string &text) : Button(icon, renderer, font, text) {
-    text_texture = Core::load_text(renderer, font, text, Config::left_bar_colour);
-    hover_texture = Core::load_text(renderer, font, text, Config::tab_bar_colour);
+    text_texture = Core::load_text(renderer, font, text);
+    hover_texture = Core::load_text(renderer, font, text);
     rect.w = texture_width + Config::file_button_h + Config::icon_spacing;
     rect.h = Config::file_button_h;
 }
