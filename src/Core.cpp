@@ -11,9 +11,9 @@
 #endif
 
 
-Core::Core(): dragging(false), top_bar{}, bottom_bar{}, left_bar{},
-              file_tree{},
-              file_view{},
+Core::Core(): check_aspect_ratio(true), dragging(false), top_bar{}, bottom_bar{},
+              left_bar{},
+              file_tree{}, file_view{},
               tab_bar{}, top_level(nullptr),
               iframe_hidden(true),
               selected_tab(nullptr), project_name_text(nullptr, SDL_DestroyTexture),
@@ -83,18 +83,21 @@ void Core::init() {
     // load some text textures
     std::string text = "Click on a file from the left to view it.";
     TTF_SizeText(font.get(), text.c_str(), &empty_view_dimensions.x, &empty_view_dimensions.y);
-    empty_view_text = load_text(renderer.get(), font.get(), text, Config::left_bar_colour);
+    empty_view_text = load_text(renderer.get(), font.get(), text);
 
     text = "Anray Liu - Software Developer";
     TTF_SizeText(font.get(), text.c_str(), &project_name_dimensions.x, &project_name_dimensions.y);
-    project_name_text = load_text(renderer.get(), font.get(), text, Config::top_bar_colour);
+    project_name_text = load_text(renderer.get(), font.get(), text);
 
     hide_iframe();
 
     std::shared_ptr<TabButton> tb = std::make_shared<TabButton>(
-                close_icon, renderer.get(), font.get(), "README");
+        close_icon, renderer.get(), font.get(), "README");
     tabs.push_back(std::move(tb));
-    selected_tab = tabs[tabs.size() - 1];
+    tb = std::make_shared<TabButton>(
+        close_icon, renderer.get(), font.get(), "Resume");
+    tabs.push_back(std::move(tb));
+    selected_tab = tabs[0];
 }
 
 void Core::init_textures() {
@@ -162,23 +165,6 @@ void Core::draw_background() const {
     SDL_RenderFillRect(renderer.get(), &left_bar);
     SDL_RenderFillRect(renderer.get(), &bottom_bar);
     SDL_RenderFillRect(renderer.get(), &file_tree);
-
-    if (tabs.empty()) {
-        SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_view.h};
-        SDL_RenderFillRect(renderer.get(), &dest);
-
-        dest = {
-            file_view.x + file_view.w / 2 - empty_view_dimensions.x / 2,
-            file_view.y + file_view.h / 2 - empty_view_dimensions.y / 2, empty_view_dimensions.x,
-            empty_view_dimensions.y
-        };
-        SDL_RenderCopy(renderer.get(), empty_view_text.get(), nullptr, &dest);
-    } else {
-        SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g,
-                               Config::tab_bar_colour.b, 0);
-        SDL_RenderFillRect(renderer.get(), &tab_bar);
-        SDL_RenderFillRect(renderer.get(), &file_view);
-    }
 }
 
 void Core::draw_outlines() const {
@@ -199,20 +185,21 @@ void Core::draw_outlines() const {
     }
 }
 
-void Core::recursive_align(int x, int y, int w, int h, int *offset, Button *button) {
-    button->rect = {x, y + *offset, w, h};
+void Core::recursive_align(int x, int y, int *offset, Button *button) {
+    button->rect.x = x;
+    button->rect.y = y + *offset;
     *offset += Config::file_button_h + Config::file_button_spacing_y;
 
     auto dir = dynamic_cast<DirButton *>(button);
     if (dir && !dir->collapsed) {
         for (auto &file: dir->files) {
-            recursive_align(x + Config::file_button_tab, y, w - Config::file_button_tab, h, offset, file.get());
+            recursive_align(x + Config::file_button_tab, y, offset, file.get());
         }
     }
 }
 
 void Core::recursive_update(Button *button) {
-    button->update(renderer.get(), mousex, mousey, click);
+    button->update(renderer.get(), mousex, mousey, click, file_tree.w);
 
     if (auto dir = dynamic_cast<DirButton *>(button)) {
         if (!dir->collapsed) {
@@ -240,7 +227,7 @@ void Core::recursive_update(Button *button) {
                 }
                 selected_tab = tabs[tabs.size() - 1];
 
-            // if file clicked is open, select it
+                // if file clicked is open, select it
             } else {
                 if (tabs[index].get() != button) {
                     selected_tab.reset();
@@ -296,6 +283,34 @@ void Core::show_iframe() {
         let iFrame = document.getElementById('webpage-iframe');
         iFrame.removeAttribute("hidden");
     });
+#endif
+}
+
+void Core::disable_iframe() {
+#ifdef __EMSCRIPTEN__
+    EM_ASM({
+        let iFrame = document.getElementById('webpage-iframe');
+        iFrame.style.pointerEvents = 'none';
+    });
+#endif
+}
+
+void Core::enable_iframe() {
+#ifdef __EMSCRIPTEN__
+    EM_ASM({
+        let iFrame = document.getElementById('webpage-iframe');
+        iFrame.style.pointerEvents = 'auto';
+    });
+#endif
+}
+
+void Core::set_cursor(const std::string &type) {
+#ifdef __EMSCRIPTEN__
+        EM_ASM({
+            document.getElementById('canvas').style.cursor = UTF8ToString($0);
+            document.body.style.display = 'none';
+            document.body.style.display = 'block';
+        }, type.c_str());
 #endif
 }
 
@@ -359,9 +374,9 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer *renderer, const st
 }
 
 std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_Renderer *renderer, TTF_Font *font,
-                                                                            const string &text, SDL_Color bg) {
+                                                                            const string &text) {
     std::unique_ptr<SDL_Surface, decltype(&SDL_FreeSurface)> surf(
-        TTF_RenderText_Shaded(font, text.c_str(), Config::text_colour, bg),
+        TTF_RenderUTF8_Blended(font, text.c_str(), Config::text_colour),
         SDL_FreeSurface);
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(
         SDL_CreateTextureFromSurface(renderer, surf.get()), SDL_DestroyTexture);
@@ -369,44 +384,52 @@ std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_
     return std::move(texture);
 }
 
-void Core::update() {
-    // clear screen
-    SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
-    SDL_RenderClear(renderer.get());
+void Core::update_dragging() {
+    if (!dragging && mousey >= top_bar.h && mousey <= bottom_bar.y && abs(file_tree.x + file_tree.w - mousex) <=
+        Config::drag_tolerance) {
+        if (click) {
+            dragging = true;
+            disable_iframe();
+        }
+        set_cursor("ew-resize");
+    } else {
+        set_cursor("auto");
+    }
 
-    draw_background();
+    if (dragging) {
+        file_tree.w = std::min(Config::window_w - left_bar.w - Config::min_file_tree_w * 2,
+                               std::max(Config::min_file_tree_w, mousex - left_bar.w));
+        tab_bar.x = file_view.x = file_tree.x + file_tree.w;
+        tab_bar.w = file_view.w = Config::window_w - left_bar.w - file_tree.w;
+        if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
+            dragging = false;
+            enable_iframe();
+        }
 
-    // disable dragging for now
+        move_iframe(file_view.x + 1, file_view.y + 1, file_view.w - 2, file_view.h - 2);
+    }
+}
 
-    // if (!dragging && click && abs(file_tree.x + file_tree.w - mousex) <= 10) {
-    //     dragging = true;
-    // }
+void Core::update_aspect_ratio() {
+#ifdef __EMSCRIPTEN__
+    int w = EM_ASM_INT({
+        return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+    });
+    int h = EM_ASM_INT({
+        return Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+    });
 
-    // if (dragging) {
-    //     file_tree.w = mousex - left_bar.w;
-    //     tab_bar.x = file_view.x = file_tree.x + file_tree.w;
-    //     tab_bar.w = file_view.w = Config::window_w - left_bar.w - file_tree.w;
-    //     if (!(SDL_GetMouseState(nullptr, nullptr) & SDL_BUTTON(SDL_BUTTON_LEFT))) {
-    //         dragging = false;
-    //     }
-    //
-    //     move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
-    // }
+    if (abs(w / static_cast<double>(h) - Config::window_w / static_cast<double>(Config::window_h)) > 0.01) {
+        EM_ASM({
+            location.reload();
+        });
+        // wait for page to reload
+        check_aspect_ratio = false;
+    }
+#endif
+}
 
-    update_iframe();
-
-    // update elements
-
-    int offset = 10;
-    recursive_align(file_tree.x + Config::file_button_spacing_x, file_tree.y + Config::file_button_spacing_x,
-                    file_tree.w - Config::file_button_spacing_x * 2, Config::file_button_h, &offset, top_level.get());
-
-    recursive_update(top_level.get());
-
-    update_tabs();
-
-    draw_outlines();
-
+void Core::draw_topleft() const {
     // draw logo
     SDL_Rect dest{
         (Config::top_bar_h - Config::logo_size) / 2, (Config::top_bar_h - Config::logo_size) / 2, Config::logo_size,
@@ -418,6 +441,58 @@ void Core::update() {
         project_name_dimensions.y
     };
     SDL_RenderCopy(renderer.get(), project_name_text.get(), nullptr, &dest);
+}
+
+void Core::update() {
+    if (check_aspect_ratio) {
+        update_aspect_ratio();
+    }
+
+    // clear screen
+    SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
+    SDL_RenderClear(renderer.get());
+
+    // get mouse position
+    SDL_GetMouseState(&mousex, &mousey);
+
+    // handle resizing of file tree viewer
+    update_dragging();
+
+    draw_background(); // must come after dragging to prevent ghosting
+
+    // handle resizing of iframe
+    update_iframe();
+
+    // re-position and update file buttons
+    int offset = 10;
+    recursive_align(file_tree.x + Config::file_button_spacing_x, file_tree.y + Config::file_button_spacing_x, &offset,
+                    top_level.get());
+    recursive_update(top_level.get());
+
+    if (tabs.empty()) {
+        SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g,
+                               Config::left_bar_colour.b, 255);
+
+        SDL_Rect dest{tab_bar.x, tab_bar.y, tab_bar.w, tab_bar.h + file_view.h};
+        SDL_RenderFillRect(renderer.get(), &dest);
+
+        dest = {
+            std::max(file_view.x + 10, file_view.x + file_view.w / 2 - empty_view_dimensions.x / 2),
+            file_view.y + file_view.h / 2 - empty_view_dimensions.y / 2, empty_view_dimensions.x,
+            empty_view_dimensions.y
+        };
+        SDL_RenderCopy(renderer.get(), empty_view_text.get(), nullptr, &dest);
+    } else {
+        SDL_SetRenderDrawColor(renderer.get(), Config::tab_bar_colour.r, Config::tab_bar_colour.g,
+                               Config::tab_bar_colour.b, 0);
+        SDL_RenderFillRect(renderer.get(), &tab_bar);
+        SDL_RenderFillRect(renderer.get(), &file_view);
+    }
+
+    update_tabs();
+
+    draw_outlines();
+    draw_topleft();
 
     SDL_RenderPresent(renderer.get());
 }
@@ -429,9 +504,36 @@ void Core::update_tabs() {
     const int w = tabs.empty() ? Config::tab_w : std::min(Config::tab_w, file_view.w / static_cast<int>(tabs.size()));
 
     for (int i = 0; i < tabs.size(); i++) {
-        tabs[i]->rect.x = tab_bar.x + i * w;
-        tabs[i]->rect.w = w;
-        tabs[i]->update(renderer.get(), mousex, mousey, click, selected_tab, tabs);
+        auto tab = tabs[i];
+
+        tab->rect.x = tab_bar.x + i * w;
+        tab->rect.w = w;
+        tab->update(renderer.get(), mousex, mousey, click);
+
+        if ((tab->x_button_hover && click) || (tab->hover && middle_click)) {
+            // delete tab button
+            for (int j = 0; j < tabs.size(); j++) {
+                if (tabs[j].get() == tab.get()) {
+                    tabs.erase(tabs.begin() + j);
+                    if (selected_tab.get() == tab.get()) {
+                        selected_tab.reset();
+                        if (!tabs.empty()) {
+                            // probably an unnecessary check
+                            selected_tab = tabs[tabs.size() - 1];
+                        }
+                    }
+                }
+            }
+        } else if (tab->click) {
+            // select tab button
+            for (auto &t: tabs) {
+                if (t.get() == tab.get()) {
+                    selected_tab.reset();
+                    selected_tab = t;
+                    break;
+                }
+            }
+        }
 
         SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g,
                                Config::left_bar_colour.b, 255);
@@ -462,14 +564,13 @@ void Core::update_iframe() {
         loaded_iframe = "";
     }
 
-    move_iframe(file_view.x, file_view.y, file_view.w, file_view.h);
+    move_iframe(file_view.x + 1, file_view.y + 1, file_view.w - 2, file_view.h - 2);
 }
 
 void mainloop(void *arg) {
-    Core *core = static_cast<Core *>(arg);
-
-    SDL_GetMouseState(&core->mousex, &core->mousey);
+    Core* core = static_cast<Core*>(arg);
     core->click = false;
+    core->middle_click = false;
 
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
@@ -477,6 +578,8 @@ void mainloop(void *arg) {
             case SDL_MOUSEBUTTONDOWN:
                 if (event.button.button == SDL_BUTTON_LEFT) {
                     core->click = true;
+                } else if (event.button.button == SDL_BUTTON_MIDDLE) {
+                    core->middle_click = true;
                 }
                 break;
 
@@ -504,7 +607,7 @@ int main(int argc, char *argv[]) { {
         core->init();
 
 #ifdef __EMSCRIPTEN__
-                emscripten_set_main_loop_arg(mainloop, core, static_cast<int>(Config::fps), 1);
+                emscripten_set_main_loop_arg(mainloop, core, 0, 1);
 #endif
 
 #ifndef __EMSCRIPTEN__

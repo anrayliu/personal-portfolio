@@ -26,10 +26,12 @@ struct Config {
     int constexpr static left_bar_w = 54;
     int constexpr static tab_bar_h = 54;
     int constexpr static tab_w = 240;
-    int constexpr static file_tree_w = 400;
+    int constexpr static file_tree_w = 320;
+    int constexpr static min_file_tree_w = 15;
     int constexpr static tab_x_button_size = 20;
     int constexpr static logo_size = 30;
     int constexpr static icon_spacing = 5;
+    int constexpr static drag_tolerance = 10;
 
     SDL_Color constexpr static top_bar_colour{60, 63, 65};
     SDL_Color constexpr static text_colour{207, 206, 196};
