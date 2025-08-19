@@ -419,7 +419,7 @@ void Core::update_aspect_ratio() {
         return Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     });
 
-    if (abs(w / static_cast<double>(h) - Config::window_w / static_cast<double>(Config::window_h)) > 0.01) {
+    if (abs(w / static_cast<double>(h) - Config::window_w / static_cast<double>(Config::window_h)) > 0.1) {
         EM_ASM({
             location.reload();
         });
