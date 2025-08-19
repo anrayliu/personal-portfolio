@@ -27,7 +27,7 @@ var ENVIRONMENT_IS_SHELL = !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !ENVIR
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
-// include: C:\Users\joewo\AppData\Local\Temp\tmptha6te0y.js
+// include: C:\Users\joewo\AppData\Local\Temp\tmp97hplafh.js
 
   Module['expectedDataFileDownloads'] ??= 0;
   Module['expectedDataFileDownloads']++;
@@ -204,25 +204,25 @@ Module['FS_createPath']("/", "assets", true, true);
     }
 
     }
-    loadPackage({"files": [{"filename": "/assets/close.png", "start": 0, "end": 31303}, {"filename": "/assets/collapse.png", "start": 31303, "end": 51757}, {"filename": "/assets/expand.png", "start": 51757, "end": 72690}, {"filename": "/assets/file.png", "start": 72690, "end": 87689}, {"filename": "/assets/headshot.jpg", "start": 87689, "end": 146972}, {"filename": "/assets/jetbrains-mono.ttf", "start": 146972, "end": 334180}, {"filename": "/assets/logo.png", "start": 334180, "end": 336272}, {"filename": "/assets/pyvidplayer2.gif", "start": 336272, "end": 1739248}, {"filename": "/assets/resume.pdf", "start": 1739248, "end": 1799100}, {"filename": "/assets/server.png", "start": 1799100, "end": 10445964}, {"filename": "/assets/testmycs.png", "start": 10445964, "end": 10555081}], "remote_package_size": 10555081});
+    loadPackage({"files": [{"filename": "/assets/close.png", "start": 0, "end": 31303}, {"filename": "/assets/collapse.png", "start": 31303, "end": 51757}, {"filename": "/assets/expand.png", "start": 51757, "end": 72690}, {"filename": "/assets/file.png", "start": 72690, "end": 87689}, {"filename": "/assets/headshot.jpg", "start": 87689, "end": 146972}, {"filename": "/assets/jetbrains-mono.ttf", "start": 146972, "end": 334180}, {"filename": "/assets/logo.png", "start": 334180, "end": 336272}, {"filename": "/assets/pyvidplayer2.gif", "start": 336272, "end": 1739248}, {"filename": "/assets/resume.pdf", "start": 1739248, "end": 1783669}, {"filename": "/assets/server.png", "start": 1783669, "end": 10430533}, {"filename": "/assets/testmycs.png", "start": 10430533, "end": 10539650}], "remote_package_size": 10539650});
 
   })();
 
-// end include: C:\Users\joewo\AppData\Local\Temp\tmptha6te0y.js
-// include: C:\Users\joewo\AppData\Local\Temp\tmp2tkzb_ym.js
+// end include: C:\Users\joewo\AppData\Local\Temp\tmp97hplafh.js
+// include: C:\Users\joewo\AppData\Local\Temp\tmpjexitgho.js
 
     // All the pre-js content up to here must remain later on, we need to run
     // it.
     if ((typeof ENVIRONMENT_IS_WASM_WORKER != 'undefined' && ENVIRONMENT_IS_WASM_WORKER) || (typeof ENVIRONMENT_IS_PTHREAD != 'undefined' && ENVIRONMENT_IS_PTHREAD) || (typeof ENVIRONMENT_IS_AUDIO_WORKLET != 'undefined' && ENVIRONMENT_IS_AUDIO_WORKLET)) Module['preRun'] = [];
     var necessaryPreJSTasks = Module['preRun'].slice();
-  // end include: C:\Users\joewo\AppData\Local\Temp\tmp2tkzb_ym.js
-// include: C:\Users\joewo\AppData\Local\Temp\tmpwp6o6xbn.js
+  // end include: C:\Users\joewo\AppData\Local\Temp\tmpjexitgho.js
+// include: C:\Users\joewo\AppData\Local\Temp\tmpurctydgk.js
 
     if (!Module['preRun']) throw 'Module.preRun should exist because file support used it; did a pre-js delete it?';
     necessaryPreJSTasks.forEach((task) => {
       if (Module['preRun'].indexOf(task) < 0) throw 'All preRun tasks that exist before user pre-js code should remain after; did you replace Module or modify Module.preRun?';
     });
-  // end include: C:\Users\joewo\AppData\Local\Temp\tmpwp6o6xbn.js
+  // end include: C:\Users\joewo\AppData\Local\Temp\tmpurctydgk.js
 
 
 var arguments_ = [];
@@ -11172,6 +11172,17 @@ function invoke_iiiii(index,a1,a2,a3,a4) {
   }
 }
 
+function invoke_viiii(index,a1,a2,a3,a4) {
+  var sp = stackSave();
+  try {
+    getWasmTableEntry(index)(a1,a2,a3,a4);
+  } catch(e) {
+    stackRestore(sp);
+    if (!(e instanceof EmscriptenEH)) throw e;
+    _setThrew(1, 0);
+  }
+}
+
 function invoke_viiiii(index,a1,a2,a3,a4,a5) {
   var sp = stackSave();
   try {
@@ -11209,17 +11220,6 @@ function invoke_iiiiiii(index,a1,a2,a3,a4,a5,a6) {
   var sp = stackSave();
   try {
     return getWasmTableEntry(index)(a1,a2,a3,a4,a5,a6);
-  } catch(e) {
-    stackRestore(sp);
-    if (!(e instanceof EmscriptenEH)) throw e;
-    _setThrew(1, 0);
-  }
-}
-
-function invoke_viiii(index,a1,a2,a3,a4) {
-  var sp = stackSave();
-  try {
-    getWasmTableEntry(index)(a1,a2,a3,a4);
   } catch(e) {
     stackRestore(sp);
     if (!(e instanceof EmscriptenEH)) throw e;
