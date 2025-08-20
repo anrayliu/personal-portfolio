@@ -38,6 +38,8 @@ class Core {
 
     void update_aspect_ratio();
 
+    bool check_mobile();
+
     void move_iframe(int x, int y, int w, int h);
 
     void load_iframe(const std::string &file);
@@ -70,6 +72,9 @@ class Core {
 
     bool dragging;
 
+    // mobile browser;
+    bool mobile;
+
     SDL_Rect top_bar;
     SDL_Rect bottom_bar;
     SDL_Rect left_bar;
@@ -94,7 +99,6 @@ class Core {
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> empty_view_text;
     SDL_Point empty_view_dimensions{};
     SDL_Point project_name_dimensions{};
-
 
     std::unique_ptr<SDL_Window, decltype(&SDL_DestroyWindow)> win;
     std::unique_ptr<SDL_Renderer, decltype(&SDL_DestroyRenderer)> renderer;
