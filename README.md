@@ -1,8 +1,8 @@
-## WIP
+## [https://www.anrayliu.ca](https://www.anrayliu.ca)
 
-Personal portfolio
+![cover.png](cover.png)
 
-## Serve Manually
+## Run Locally (Windows)
 
 1. Install and activate `emscripten`
 2. Start http server
