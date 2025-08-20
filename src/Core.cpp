@@ -52,6 +52,8 @@ void Core::init() {
     });
 #endif
 
+    mobile = check_mobile();
+
     // init sdl materials
 
     win.reset(SDL_CreateWindow(Config::title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -419,7 +421,7 @@ void Core::update_aspect_ratio() {
         return Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
     });
 
-    if (abs(w / static_cast<double>(h) - Config::window_w / static_cast<double>(Config::window_h)) > 0.01) {
+    if (!mobile && abs(w / static_cast<double>(h) - Config::window_w / static_cast<double>(Config::window_h)) > 0.1) {
         EM_ASM({
             location.reload();
         });
@@ -428,6 +430,25 @@ void Core::update_aspect_ratio() {
     }
 #endif
 }
+
+bool Core::check_mobile() {
+#ifdef __EMSCRIPTEN__
+    return static_cast<bool>(EM_ASM_INT({
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+        const isMobileUA = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent.toLowerCase());
+
+        const hasTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+        const isSmallScreen = window.innerWidth <= 768;
+        const isPortrait = window.innerHeight > window.innerWidth;
+
+        return isMobileUA || (hasTouch && isSmallScreen);
+    }));
+#endif
+    return false;
+}
+
 
 void Core::draw_topleft() const {
     // draw logo
