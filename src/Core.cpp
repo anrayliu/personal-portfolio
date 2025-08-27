@@ -11,14 +11,14 @@
 #endif
 
 
-Core::Core(): check_aspect_ratio(true), dragging(false), top_bar{}, bottom_bar{},
-              left_bar{},
-              file_tree{}, file_view{},
+Core::Core(): check_aspect_ratio(true), dragging(false), mobile(false), top_bar{},
+              bottom_bar{},
+              left_bar{}, file_tree{}, file_view{},
               tab_bar{}, top_level(nullptr),
               iframe_hidden(true),
               selected_tab(nullptr), project_name_text(nullptr, SDL_DestroyTexture),
-              empty_view_text(nullptr, SDL_DestroyTexture), quit(false), win(nullptr, SDL_DestroyWindow),
-              renderer(nullptr, SDL_DestroyRenderer), font(nullptr, TTF_CloseFont) {
+              empty_view_text(nullptr, SDL_DestroyTexture), win(nullptr, SDL_DestroyWindow), renderer(nullptr, SDL_DestroyRenderer),
+              font(nullptr, TTF_CloseFont), quit(false) {
     init_sdl();
 }
 

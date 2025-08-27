@@ -10,12 +10,12 @@ Button(icon, renderer, font, text), x_rect{0, 0, Config::tab_x_button_size, Conf
 
     // get static file to load in iframe
     file = text;
-    std::replace(file.begin(), file.end(), ' ', '-');
+    std::ranges::replace(file, ' ', '-');
     // convert to lower case
-    std::transform(file.begin(), file.end(), file.begin(),
-    [](unsigned char c) {
-        return std::tolower(c);
-    });
+    std::ranges::transform(file, file.begin(),
+                           [](const unsigned char c) {
+                               return std::tolower(c);
+                           });
     file += ".html";
 
     rect = {0, Config::top_bar_h, 0, Config::tab_bar_h};

@@ -11,7 +11,7 @@
 struct Config {
     Config() = delete;
 
-    inline std::string static title = "Anray Liu";
+    inline std::string static title = "Anray Liu | Software Developer | uOttawa Student";
     inline int static window_w;
     inline int static window_h;
     double constexpr static fps = 60.0;
