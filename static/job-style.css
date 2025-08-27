@@ -4,7 +4,7 @@
     --jb-bg-lighter: #3c4049;
     --jb-text: #abb2bf;
     --jb-text-light: #d7dae0;
-    --jb-primary: #61afef;
+    --jb-primary: #4A90E2;
     --jb-secondary: #56b6c2;
     --jb-accent: #e5c07b;
     --jb-success: #98c379;
@@ -299,7 +299,7 @@ body {
     margin: 0 0 15px;
     font-size: 20px;
     font-weight: 600;
-    color: var(--jb-primary);
+    color: var(--jb-text-light);
     display: flex;
     align-items: center;
     gap: 10px;
