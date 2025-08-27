@@ -2,7 +2,7 @@
 #include "Timer.h"
 
 
-Timer::Timer() : frame_time(SDL_GetTicks()), tick_time(frame_time), fps(0), ticks_called(0) {}
+Timer::Timer() : frame_time(SDL_GetTicks()), tick_time(frame_time), ticks_called(0), fps(0) {}
 
 // double fps_cap to allow for float division without casting
 int Timer::tick(double fps_cap)  {
