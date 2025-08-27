@@ -1,5 +1,4 @@
 :root {
-    /* JetBrains IDE Colors */
     --bg-primary: #1e1f22;
     --bg-secondary: #2b2d30;
     --bg-tertiary: #45494A;
@@ -38,7 +37,6 @@ body {
     min-height: 100vh;
 }
 
-/* Animated Background */
 .bg-animation {
     position: fixed;
     top: 0;
@@ -156,7 +154,6 @@ body {
     z-index: 1;
 }
 
-/* Hero Section */
 .hero {
     text-align: center;
     padding: 4rem 0;
@@ -201,7 +198,6 @@ body {
     display: block;
 }
 
-/* Section Styles */
 .section {
     margin: 5rem 0;
     animation: fadeInUp 0.8s ease-out forwards;
@@ -228,7 +224,6 @@ body {
     border-radius: 2px;
 }
 
-/* Features Grid */
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -280,7 +275,6 @@ body {
     color: var(--text-primary);
 }
 
-/* Code Section */
 .code-section {
     background: var(--bg-secondary);
     border-radius: 12px;
@@ -336,7 +330,6 @@ body {
     line-height: 1.6;
 }
 
-/* Skills Section */
 .skills-container {
     display: flex;
     flex-wrap: wrap;
@@ -405,7 +398,6 @@ body {
     transform: translateX(-50%) translateY(-10px);
 }
 
-/* Links Section */
 .links-container {
     display: flex;
     justify-content: center;
@@ -455,7 +447,6 @@ body {
     font-size: 1.5rem;
 }
 
-/* Testimonials */
 .testimonials-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -510,7 +501,6 @@ body {
     font-size: 0.9rem;
 }
 
-/* Footer */
 .footer {
     text-align: center;
     padding: 3rem 0;
@@ -547,7 +537,6 @@ body {
     color: var(--text-secondary);
 }
 
-/* Animations */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -565,7 +554,6 @@ body {
 .section:nth-child(4) { animation-delay: 0.7s; }
 .section:nth-child(5) { animation-delay: 0.9s; }
 
-/* Responsive */
 @media (max-width: 768px) {
     .hero h1 {
         font-size: 2.5rem;
