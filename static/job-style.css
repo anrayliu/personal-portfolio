@@ -183,11 +183,6 @@ body {
     box-shadow: 0 10px 20px rgba(97, 175, 239, 0.2);
 }
 
-.jb-project-icon:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(97, 175, 239, 0.3);
-}
-
 .jb-project-info {
     flex: 1;
     animation: fadeInUp 0.8s ease-out 0.2s forwards;
@@ -227,17 +222,9 @@ body {
     transition: all 0.2s ease;
 }
 
-.jb-meta-item:hover {
-    color: var(--jb-text-light);
-}
-
 .jb-meta-item i {
     color: var(--jb-accent);
     transition: all 0.2s ease;
-}
-
-.jb-meta-item:hover i {
-    transform: translateY(-2px);
 }
 
 .jb-tags {
@@ -267,15 +254,6 @@ body {
     background: rgba(255, 255, 255, 0.1);
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-}
-
-.jb-tag:hover::before {
-    transform: translateX(0);
-}
-
-.jb-tag:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
 .jb-tag.code {
@@ -308,10 +286,6 @@ body {
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
     border: 1px solid var(--jb-bg-lighter);
     transition: all 0.3s ease;
-}
-
-.jb-main:hover {
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
 }
 
 .jb-section {
@@ -349,10 +323,6 @@ body {
 .jb-section-title i {
     font-size: 18px;
     transition: all 0.2s ease;
-}
-
-.jb-section:hover .jb-section-title i {
-    transform: translateY(-3px);
 }
 
 .jb-section p {
@@ -447,9 +417,6 @@ body {
     transition: all 0.3s ease;
 }
 
-.jb-tech-card:hover {
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-}
 
 .jb-tech-title {
     margin: 0 0 20px;
@@ -465,9 +432,6 @@ body {
     transition: all 0.2s ease;
 }
 
-.jb-tech-card:hover .jb-tech-title i {
-    transform: translateY(-3px);
-}
 
 .jb-tech-stack {
     display: flex;
@@ -556,10 +520,6 @@ body {
     transition: all 0.3s ease;
 }
 
-.jb-links-card:hover {
-    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
-}
-
 .jb-links-title {
     margin: 0 0 20px;
     font-size: 18px;
@@ -572,10 +532,6 @@ body {
 .jb-links-title i {
     color: var(--jb-purple);
     transition: all 0.2s ease;
-}
-
-.jb-links-card:hover .jb-links-title i {
-    transform: translateY(-3px);
 }
 
 .jb-links {
