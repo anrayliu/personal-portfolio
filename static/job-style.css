@@ -446,6 +446,7 @@ body {
     font-size: 14px;
     position: relative;
     transition: all 0.3s ease;
+    cursor: default;
 }
 
 .jb-tech-item:hover {
