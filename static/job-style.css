@@ -306,17 +306,6 @@ body {
     position: relative;
 }
 
-.jb-section-title::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 40px;
-    height: 2px;
-    background: var(--jb-primary);
-    border-radius: 1px;
-}
-
 .jb-section-title i {
     font-size: 18px;
     transition: all 0.2s ease;
