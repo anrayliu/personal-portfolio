@@ -224,12 +224,6 @@ body {
     transition: all 0.2s ease;
 }
 
-.jb-tags {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
-}
-
 .jb-tag {
     padding: 6px 14px;
     background-color: var(--jb-bg-light);
@@ -435,7 +429,6 @@ body {
     font-size: 14px;
     position: relative;
     transition: all 0.3s ease;
-    cursor: default;
 }
 
 .jb-tech-item:hover {
