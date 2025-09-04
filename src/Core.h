@@ -62,11 +62,6 @@ class Core {
 
     ~Core();
 
-    // delete copy constructor and copy assignment operator
-    Core(Core &core) = delete;
-
-    void operator=(const Core &) = delete;
-
     int mousex{};
     int mousey{};
 
@@ -105,6 +100,10 @@ class Core {
     std::unique_ptr<TTF_Font, decltype(&TTF_CloseFont)> font;
 
 public:
+    // delete copy constructor and copy assignment operator
+    Core(Core &core) = delete;
+    void operator=(const Core &) = delete;
+
     bool click{};
     bool middle_click{};
     Timer timer;
