@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hi! I'm Anray Liu!</title>
-    <link rel="stylesheet" href="readme-style.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/readme-style.css')}}">
 </head>
 <body>
 
@@ -24,7 +24,7 @@
 <div class="container">
     <header class="header fade-in">
         <div class="profile-container">
-            <img src="../assets/headshot.avif" alt="Anray Liu" class="headshot" id="mainHeadshot">
+            <img src="../static/assets/headshot.avif" alt="Anray Liu" class="headshot" id="mainHeadshot">
             <div class="wave">
                 <svg viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
