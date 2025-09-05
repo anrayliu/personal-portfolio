@@ -1,22 +1,12 @@
 ---
 name: Lint
 
-on: # yamllint disable-line rule:truthy
-  push: null
-  pull_request: null
-
-permissions: {}
+on: [push, pull_request]
 
 jobs:
   build:
     name: Lint
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: read
-      packages: read
-      # To report GitHub Actions status checks
-      statuses: write
 
     steps:
       - name: Checkout code
@@ -27,7 +17,15 @@ jobs:
           fetch-depth: 0
 
       - name: Super-linter
-        uses: super-linter/super-linter@v8.1.0 # x-release-please-version
+        uses: super-linter/slim@v8.1.0 # x-release-please-version
         env:
+          DEFAULT_BRANCH: main
+          VALIDATE_ALL_CODEBASE: false
+          # VALIDATE_DOCKERFILE_HADOLINT: true
+          VALIDATE_GITHUB_ACTIONS: true
+          VALIDATE_GITLEAKS: true
+          VALIDATE_HTML: true
+          VALIDATE_CSS: true
+          VALIDATE_CPP: true
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
