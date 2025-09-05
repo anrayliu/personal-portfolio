@@ -2,13 +2,13 @@
 
 #include "SDL2/SDL_image.h"
 #include <format>
-#include <iostream>
 #include <memory>
 
 #include "Config.h"
 
 #ifdef __EMSCRIPTEN__
 #include "emscripten.h"
+#include "emscripten/val.h"
 #endif
 
 
@@ -101,6 +101,34 @@ void Core::init() {
         close_icon, renderer.get(), font.get(), "Resume");
     tabs.push_back(std::move(tb));
     selected_tab = tabs[0];
+
+    check_custom_index();
+
+}
+
+void Core::check_custom_index() {
+
+#ifdef __EMSCRIPTEN__
+    emscripten::val temp_val = emscripten::val::global("startingPage");
+    std::string starting_page = temp_val.as<std::string>();
+
+    if (starting_page.empty()) {
+        return;
+    }
+
+    std::shared_ptr<TabButton> tb = std::make_shared<TabButton>(
+    close_icon, renderer.get(), font.get(), starting_page);
+
+    for (int i = 0; i < tabs.size(); i++) {
+        if (tabs[i]->file == tb->file) {
+            selected_tab = tabs[i];
+            return;
+        }
+    }
+
+    tabs.push_back(std::move(tb));
+    selected_tab = tabs[tabs.size() - 1];
+#endif
 }
 
 void Core::init_textures() {
@@ -451,7 +479,6 @@ bool Core::check_mobile() {
 #endif
     return false;
 }
-
 
 void Core::draw_topleft() const {
     // draw logo

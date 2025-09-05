@@ -30,6 +30,8 @@ class Core {
 
     void recursive_update(Button *button);
 
+    void check_custom_index();
+
     void update_tabs();
 
     void update_iframe();
