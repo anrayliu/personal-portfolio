@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Job Title{% endblock %}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/job-style.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+<div class="bg-animation">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+</div>
+<div class="jb-showcase">
+    <div class="jb-header">
+        <div class="jb-project-icon">
+            <i class="fas fa-code"></i>
+        </div>
+        <div class="jb-project-info">
+            <h1 class="jb-project-title">{% block job_title %}Job Title{% endblock %}</h1>
+            <p class="jb-project-subtitle">{% block job_subtitle %}Organization{% endblock %}</p>
+            <div class="jb-project-meta">
+                <div class="jb-meta-item">
+                    <i class="far fa-calendar-alt"></i>
+                    <span>{% block job_dates %}Dates{% endblock %}</span>
+                </div>
+                <div class="jb-meta-item">
+                    <i class="fas fa-user-tie"></i>
+                    <span>{% block job_location %}Location{% endblock %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="jb-content">
+        <div class="jb-main">
+            <section class="jb-section">
+                <h3 class="jb-section-title"><i class="fas fa-info-circle"></i> Description</h3>
+                <p>{% block job_description %}Description{% endblock %}</p>
+            </section>
+            <section class="jb-section">
+                <h3 class="jb-section-title"><i class="fas fa-star"></i> Highlights</h3>
+                <div class="jb-features">
+                    {% block job_highlights %}{% endblock %}
+                </div>
+            </section>
+        </div>
+        <div class="jb-sidebar">
+            <div class="jb-tech-card">
+                <h3 class="jb-tech-title"><i class="fas fa-layer-group"></i> Tech Stack</h3>
+                <div class="jb-tech-stack">
+                    {% block job_tech %}{% endblock %}
+                </div>
+            </div>
+            <div class="jb-links-card">
+                <h3 class="jb-links-title"><i class="fas fa-external-link-alt"></i> Links</h3>
+                <div class="jb-links">
+                    {% block job_links %}{% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
