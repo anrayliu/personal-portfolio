@@ -1,6 +1,6 @@
 cmake-build-debug/*
-!cmake-build-debug/*.dll
 .idea/
 emsdk/
 .venv/
 .env
+PersonalPortfolio.exe

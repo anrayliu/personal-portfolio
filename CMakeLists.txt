@@ -10,6 +10,8 @@ include_directories(${SDL2_INCLUDE_DIR})
 link_directories(${SDL2_LIB_DIR})
 link_directories(${CMAKE_CURRENT_SOURCE_DIR}/assets)
 
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
+
 aux_source_directory(src SRC_FILES)
 add_executable(PersonalPortfolio ${SRC_FILES}
         src/Core.cpp
