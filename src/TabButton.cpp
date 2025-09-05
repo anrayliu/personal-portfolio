@@ -16,7 +16,6 @@ Button(icon, renderer, font, text), x_rect{0, 0, Config::tab_x_button_size, Conf
                            [](const unsigned char c) {
                                return std::tolower(c);
                            });
-    file += ".html";
 
     rect = {0, Config::top_bar_h, 0, Config::tab_bar_h};
 }
