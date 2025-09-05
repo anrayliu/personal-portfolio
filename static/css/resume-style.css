@@ -15,7 +15,7 @@ body, html {
 }
 @font-face {
     font-family: jetbrains-mono;
-    src: url(/assets/jetbrains-mono.ttf);
+    src: url(../assets/jetbrains-mono.ttf);
 }
 p {
     font-family: jetbrains-mono, monospace;

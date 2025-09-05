@@ -21,7 +21,7 @@
 
 @font-face {
     font-family: jetbrains-mono;
-    src: url(/assets/jetbrains-mono.ttf);
+    src: url(../assets/jetbrains-mono.ttf);
 }
 
 body {

@@ -1,4 +1,5 @@
 #include "Core.h"
+
 #include "SDL2/SDL_image.h"
 #include <format>
 #include <iostream>
@@ -71,7 +72,7 @@ void Core::init() {
     // linear interpolation
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1");
 
-    font.reset(TTF_OpenFont("../assets/jetbrains-mono.ttf", Config::font_size));
+    font.reset(TTF_OpenFont("static/assets/jetbrains-mono.ttf", Config::font_size));
     if (!font) {
         throw std::runtime_error(std::format("Error creating font {}", SDL_GetError()));
     }
@@ -103,13 +104,13 @@ void Core::init() {
 }
 
 void Core::init_textures() {
-    collapse_icon = load_texture(renderer.get(), "../assets/collapse.png", Config::file_button_h,
+    collapse_icon = load_texture(renderer.get(), "static/assets/collapse.png", Config::file_button_h,
                                  Config::file_button_h);
-    file_icon = load_texture(renderer.get(), "../assets/file.png", Config::file_button_h, Config::file_button_h);
-    expand_icon = load_texture(renderer.get(), "../assets/expand.png", Config::file_button_h, Config::file_button_h);
-    close_icon = load_texture(renderer.get(), "../assets/close.png", Config::tab_x_button_size,
+    file_icon = load_texture(renderer.get(), "static/assets/file.png", Config::file_button_h, Config::file_button_h);
+    expand_icon = load_texture(renderer.get(), "static/assets/expand.png", Config::file_button_h, Config::file_button_h);
+    close_icon = load_texture(renderer.get(), "static/assets/close.png", Config::tab_x_button_size,
                               Config::tab_x_button_size);
-    logo = load_texture(renderer.get(), "../assets/logo.png", 0, 0);
+    logo = load_texture(renderer.get(), "static/assets/logo.png", 0, 0);
 }
 
 void Core::init_rects() {
