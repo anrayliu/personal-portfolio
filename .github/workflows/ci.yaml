@@ -20,12 +20,6 @@ jobs:
         uses: super-linter/super-linter@v8.1.0 # x-release-please-version
         env:
           DEFAULT_BRANCH: main
-          VALIDATE_ALL_CODEBASE: false
-          # VALIDATE_DOCKERFILE_HADOLINT: true
-          VALIDATE_GITHUB_ACTIONS: true
-          VALIDATE_GITLEAKS: true
-          VALIDATE_HTML: true
-          VALIDATE_CSS: true
-          VALIDATE_CPP: true
+          VALIDATE_ALL_CODEBASE: true
           # To report GitHub Actions status checks
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
