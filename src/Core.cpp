@@ -269,7 +269,7 @@ void Core::load_iframe(const std::string &file) {
     EM_ASM({
         let iFrame = document.getElementById('webpage-iframe');
         iFrame.src = UTF8ToString($0);
-    }, ("http://localhost:8000/html/" + file).c_str());
+    }, ("http://localhost:8000/page/" + file).c_str());
 #endif
 }
 

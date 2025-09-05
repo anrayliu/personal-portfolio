@@ -7,7 +7,7 @@ app = Flask(__name__)
 def index():
     return render_template("index.html")
 
-@app.route("/html/<page>")
+@app.route("/page/<page>")
 def iframe_page(page: str):
     return render_template(page + ".html")
 
