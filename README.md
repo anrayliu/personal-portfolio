@@ -1,3 +1,5 @@
+## This branch uses a service layer instead of a static site.
+
 ## [https://www.anrayliu.ca](https://www.anrayliu.ca)
 
 ![cover.png](cover.png)
