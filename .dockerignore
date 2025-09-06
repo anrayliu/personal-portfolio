@@ -1,0 +1,5 @@
+.env
+.venv/
+emsdk/
+cmake-build-debug/
+.github/
