@@ -71,7 +71,6 @@ class Core {
     bool mobile;
 
     SDL_Rect top_bar;
-    SDL_Rect bottom_bar;
     SDL_Rect left_bar;
     SDL_Rect file_tree;
     SDL_Rect file_view;

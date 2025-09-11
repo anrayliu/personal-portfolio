@@ -12,7 +12,6 @@
 
 
 Core::Core(): check_aspect_ratio(true), dragging(false), mobile(false), top_bar{},
-              bottom_bar{},
               left_bar{}, file_tree{}, file_view{},
               tab_bar{}, top_level(nullptr),
               iframe_hidden(true),
@@ -114,8 +113,7 @@ void Core::init_textures() {
 
 void Core::init_rects() {
     top_bar = {0, 0, Config::window_w, Config::top_bar_h};
-    bottom_bar = {top_bar.x, Config::window_h - Config::bottom_bar_h, top_bar.w, Config::bottom_bar_h};
-    left_bar = {top_bar.x, top_bar.y + top_bar.h, Config::left_bar_w, Config::window_h - top_bar.h - bottom_bar.h};
+    left_bar = {top_bar.x, top_bar.y + top_bar.h, Config::left_bar_w, Config::window_h - top_bar.h};
     file_tree = {left_bar.x + left_bar.w, left_bar.y, Config::file_tree_w, left_bar.h};
     tab_bar = {file_tree.x + file_tree.w, left_bar.y, Config::window_w - left_bar.w - file_tree.w, Config::tab_bar_h};
     file_view = {tab_bar.x, tab_bar.y + top_bar.h, tab_bar.w, left_bar.h - tab_bar.h};
@@ -167,7 +165,6 @@ void Core::draw_background() const {
     SDL_SetRenderDrawColor(renderer.get(), Config::left_bar_colour.r, Config::left_bar_colour.g,
                            Config::left_bar_colour.b, 0);
     SDL_RenderFillRect(renderer.get(), &left_bar);
-    SDL_RenderFillRect(renderer.get(), &bottom_bar);
     SDL_RenderFillRect(renderer.get(), &file_tree);
 }
 
@@ -176,7 +173,6 @@ void Core::draw_outlines() const {
                            0);
 
     SDL_RenderDrawRect(renderer.get(), &top_bar);
-    SDL_RenderDrawRect(renderer.get(), &bottom_bar);
     SDL_RenderDrawRect(renderer.get(), &left_bar);
     SDL_RenderDrawRect(renderer.get(), &file_tree);
 
@@ -389,7 +385,7 @@ std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_
 }
 
 void Core::update_dragging() {
-    if (!dragging && mousey >= top_bar.h && mousey <= bottom_bar.y && abs(file_tree.x + file_tree.w - mousex) <=
+    if (!dragging && mousey >= top_bar.h && abs(file_tree.x + file_tree.w - mousex) <=
         Config::drag_tolerance) {
         if (click) {
             dragging = true;
