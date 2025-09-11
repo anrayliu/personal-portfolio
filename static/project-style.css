@@ -254,15 +254,6 @@ body {
     transition: transform 0.3s ease;
 }
 
-.feature-card:hover::before {
-    transform: translateX(0);
-}
-
-.feature-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
-}
-
 .feature-icon {
     font-size: 3rem;
     margin-bottom: 1rem;
