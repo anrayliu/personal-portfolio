@@ -263,6 +263,7 @@ void Core::load_iframe(const std::string &file) {
 #ifdef __EMSCRIPTEN__
     EM_ASM({
         let iFrame = document.getElementById('webpage-iframe');
+        iFrame.src = '';
         iFrame.src = UTF8ToString($0);
     }, ("static/" + file).c_str());
 #endif
@@ -272,6 +273,7 @@ void Core::hide_iframe() {
 #ifdef __EMSCRIPTEN__
     EM_ASM({
         let iFrame = document.getElementById('webpage-iframe');
+        iFrame.src = '';
         iFrame.setAttribute("hidden", "hidden");
     });
 #endif
