@@ -27,7 +27,7 @@ var ENVIRONMENT_IS_SHELL = !ENVIRONMENT_IS_WEB && !ENVIRONMENT_IS_NODE && !ENVIR
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
-// include: C:\Users\joewo\AppData\Local\Temp\tmpct_0ny5q.js
+// include: C:\Users\joewo\AppData\Local\Temp\tmpl6y1mjek.js
 
   Module['expectedDataFileDownloads'] ??= 0;
   Module['expectedDataFileDownloads']++;
@@ -156,25 +156,25 @@ Module['FS_createPath']("/", "assets", true, true);
     }
 
     }
-    loadPackage({"files": [{"filename": "/assets/close.png", "start": 0, "end": 31303}, {"filename": "/assets/collapse.png", "start": 31303, "end": 51757}, {"filename": "/assets/expand.png", "start": 51757, "end": 72690}, {"filename": "/assets/file.png", "start": 72690, "end": 87689}, {"filename": "/assets/headshot.avif", "start": 87689, "end": 104655}, {"filename": "/assets/jetbrains-mono.ttf", "start": 104655, "end": 291863}, {"filename": "/assets/logo.png", "start": 291863, "end": 293955}, {"filename": "/assets/portfolio.avif", "start": 293955, "end": 358917}, {"filename": "/assets/pyvidplayer2.gif", "start": 358917, "end": 1761893}, {"filename": "/assets/resume.pdf", "start": 1761893, "end": 1807321}, {"filename": "/assets/server.avif", "start": 1807321, "end": 1959148}, {"filename": "/assets/testmycs.avif", "start": 1959148, "end": 1974716}, {"filename": "/assets/volume_cleaner.avif", "start": 1974716, "end": 1995984}], "remote_package_size": 1995984});
+    loadPackage({"files": [{"filename": "/assets/close.png", "start": 0, "end": 31303}, {"filename": "/assets/collapse.png", "start": 31303, "end": 51757}, {"filename": "/assets/expand.png", "start": 51757, "end": 72690}, {"filename": "/assets/file.png", "start": 72690, "end": 87689}, {"filename": "/assets/headshot.avif", "start": 87689, "end": 104655}, {"filename": "/assets/jetbrains-mono.ttf", "start": 104655, "end": 291863}, {"filename": "/assets/logo.png", "start": 291863, "end": 293955}, {"filename": "/assets/portfolio.avif", "start": 293955, "end": 358917}, {"filename": "/assets/pyvidplayer2.gif", "start": 358917, "end": 1761893}, {"filename": "/assets/resume.pdf", "start": 1761893, "end": 1807820}, {"filename": "/assets/server.avif", "start": 1807820, "end": 1959647}, {"filename": "/assets/testmycs.avif", "start": 1959647, "end": 1975215}, {"filename": "/assets/volume_cleaner.avif", "start": 1975215, "end": 1996483}], "remote_package_size": 1996483});
 
   })();
 
-// end include: C:\Users\joewo\AppData\Local\Temp\tmpct_0ny5q.js
-// include: C:\Users\joewo\AppData\Local\Temp\tmp387v7ug7.js
+// end include: C:\Users\joewo\AppData\Local\Temp\tmpl6y1mjek.js
+// include: C:\Users\joewo\AppData\Local\Temp\tmplv0v0do2.js
 
     // All the pre-js content up to here must remain later on, we need to run
     // it.
     if ((typeof ENVIRONMENT_IS_WASM_WORKER != 'undefined' && ENVIRONMENT_IS_WASM_WORKER) || (typeof ENVIRONMENT_IS_PTHREAD != 'undefined' && ENVIRONMENT_IS_PTHREAD) || (typeof ENVIRONMENT_IS_AUDIO_WORKLET != 'undefined' && ENVIRONMENT_IS_AUDIO_WORKLET)) Module['preRun'] = [];
     var necessaryPreJSTasks = Module['preRun'].slice();
-  // end include: C:\Users\joewo\AppData\Local\Temp\tmp387v7ug7.js
-// include: C:\Users\joewo\AppData\Local\Temp\tmpyldzkmv5.js
+  // end include: C:\Users\joewo\AppData\Local\Temp\tmplv0v0do2.js
+// include: C:\Users\joewo\AppData\Local\Temp\tmpzg7svm9s.js
 
     if (!Module['preRun']) throw 'Module.preRun should exist because file support used it; did a pre-js delete it?';
     necessaryPreJSTasks.forEach((task) => {
       if (Module['preRun'].indexOf(task) < 0) throw 'All preRun tasks that exist before user pre-js code should remain after; did you replace Module or modify Module.preRun?';
     });
-  // end include: C:\Users\joewo\AppData\Local\Temp\tmpyldzkmv5.js
+  // end include: C:\Users\joewo\AppData\Local\Temp\tmpzg7svm9s.js
 
 
 var arguments_ = [];
