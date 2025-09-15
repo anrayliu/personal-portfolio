@@ -347,7 +347,7 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer *renderer, const st
     }
 
     if (w <= 0 || h <= 0) {
-        return std::move(texture);
+        return texture;
     }
 
     // lossy texture resampling
@@ -372,7 +372,7 @@ std::shared_ptr<SDL_Texture> Core::load_texture(SDL_Renderer *renderer, const st
     // reset render target
     SDL_SetRenderTarget(renderer, nullptr);
 
-    return std::move(new_texture);
+    return new_texture;
 }
 
 std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_Renderer *renderer, TTF_Font *font,
@@ -383,7 +383,7 @@ std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> Core::load_text(SDL_
     std::unique_ptr<SDL_Texture, decltype(&SDL_DestroyTexture)> texture(
         SDL_CreateTextureFromSurface(renderer, surf.get()), SDL_DestroyTexture);
 
-    return std::move(texture);
+    return texture;
 }
 
 void Core::update_dragging() {
