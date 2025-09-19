@@ -1,5 +1,3 @@
-## This is a staging branch to consolidate changes before merging into main
-
 ## [https://www.anrayliu.ca](https://www.anrayliu.ca)
 
 ![cover.png](cover.png)
