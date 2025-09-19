@@ -438,3 +438,75 @@ body {
         margin: 3rem 0;
     }
 }
+.update-tab {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100px;
+    height: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+
+.update-tab:hover {
+    width: 400px;
+    height: 100px;
+}
+
+.update-tab-content {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0;
+    transition: padding 0.3s ease;
+}
+
+.update-tab:hover {
+    padding: 15px;
+    flex-wrap: wrap;
+}
+
+.update-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 50px;
+    background: var(--gradient-1);
+    color: white;
+    font-size: 0.9rem;
+    font-weight: bold;
+    flex-shrink: 0;
+    border-radius: 8px;
+}
+
+.update-details {
+    padding: 0 0 0 15px;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.1s;
+    flex: 1;
+    min-width: 0;
+}
+
+:hover .update-details {
+    opacity: 1;
+}
+
+.update-details h3 {
+    color: var(--accent-primary);
+    font-size: 1rem;
+    margin-bottom: 5px;
+    word-wrap: break-word;
+}
+
+.update-details p {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    margin: 0;
+    word-wrap: break-word;
+}
