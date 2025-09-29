@@ -7,7 +7,6 @@
     --jb-primary: #4A90E2;
     --jb-secondary: #56b6c2;
     --jb-accent: #e5c07b;
-    --jb-success: #98c379;
     --jb-purple: #c678dd;
 }
 
@@ -191,7 +190,7 @@ body {
     font-size: 32px;
     font-weight: 700;
     color: var(--jb-text-light);
-    background: linear-gradient(135deg, var(--jb-primary), var(--jb-secondary));
+    background: var(--jb-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

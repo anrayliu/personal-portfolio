@@ -1,19 +1,11 @@
 :root {
     --bg-primary: #1e1f22;
     --bg-secondary: #2b2d30;
-    --bg-tertiary: #45494A;
-    --bg-code: #2E2E2E;
-    --text-primary: #A9B7C6;
-    --text-secondary: #8C8C8C;
-    --text-dim: #606366;
+    --text-color: #A9B7C6;
     --accent-primary: #4A90E2;
     --accent-secondary: #62B543;
-    --accent-tertiary: #FF9E44;
     --border-color: #555555;
-    --selection-bg: #214283;
     --shadow-color: rgba(0, 0, 0, 0.4);
-    --gradient-1: linear-gradient(135deg, #4A90E2, #3A7BC8);
-    --gradient-2: linear-gradient(135deg, #62B543, #4A9E34);
 }
 
 * {
@@ -30,7 +22,7 @@
 body {
     font-family: jetbrains-mono, monospace;
     background-color: var(--bg-primary);
-    color: var(--text-primary);
+    color: var(--text-color);
     line-height: 1.6;
     overflow-x: hidden;
     position: relative;
@@ -163,7 +155,7 @@ body {
 .hero h1 {
     font-size: 3.5rem;
     font-weight: 700;
-    background: var(--gradient-1);
+    background: var(--accent-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -220,7 +212,7 @@ body {
     transform: translateX(-50%);
     width: 80px;
     height: 3px;
-    background: var(--gradient-1);
+    background: var(--accent-primary);
     border-radius: 2px;
 }
 
@@ -249,7 +241,7 @@ body {
     left: 0;
     width: 100%;
     height: 4px;
-    background: var(--gradient-1);
+    background: var(--accent-primary);
     transform: translateX(-100%);
     transition: transform 0.3s ease;
 }
@@ -263,7 +255,7 @@ body {
 .feature-card h3 {
     font-size: 1.3rem;
     margin-bottom: 1rem;
-    color: var(--text-primary);
+    color: var(--text-color);
 }
 
 .skills-container {
@@ -294,7 +286,7 @@ body {
 
 .skill-name {
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--text-color);
 }
 
 .skill-tooltip {
@@ -303,7 +295,7 @@ body {
     left: 50%;
     transform: translateX(-50%);
     background: var(--bg-secondary);
-    color: var(--text-primary);
+    color: var(--text-color);
     padding: 1rem;
     border-radius: 8px;
     border: 1px solid var(--border-color);
@@ -346,7 +338,7 @@ body {
     align-items: center;
     gap: 0.75rem;
     padding: 1rem 2rem;
-    background: var(--gradient-1);
+    background: var(--accent-primary);
     color: white;
     text-decoration: none;
     border-radius: 50px;
@@ -395,13 +387,6 @@ body {
     gap: 2rem;
     margin-top: 2rem;
     flex-wrap: wrap;
-}
-
-.meta-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-secondary);
 }
 
 @keyframes fadeInUp {
@@ -477,7 +462,7 @@ body {
     justify-content: center;
     width: 100px;
     height: 50px;
-    background: var(--gradient-1);
+    background: var(--accent-primary);
     color: white;
     font-size: 0.9rem;
     font-weight: bold;
@@ -505,7 +490,7 @@ body {
 }
 
 .update-details p {
-    color: var(--text-secondary);
+    color: var(--text-color);
     font-size: 0.85rem;
     margin: 0;
     word-wrap: break-word;
