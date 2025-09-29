@@ -341,7 +341,7 @@ body {
     background: var(--accent-primary);
     color: white;
     text-decoration: none;
-    border-radius: 50px;
+    border-radius: 8px;
     font-weight: 700;
     transition: all 0.3s ease;
     position: relative;
@@ -368,10 +368,6 @@ body {
 .link-button:hover {
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(74, 144, 226, 0.4);
-}
-
-.link-icon {
-    font-size: 1.5rem;
 }
 
 .footer {
