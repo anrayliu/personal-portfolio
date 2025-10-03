@@ -14,21 +14,30 @@
             position: absolute;
             border: none;
         }
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* Internet Explorer 10+ */
+            scrollbar-width: none;  /* Firefox, Safari 18.2+, Chromium 121+ */
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;  /* Older Safari and Chromium */
+        }
     </style>
 </head>
 <body>
-<canvas id="canvas"></canvas>
-<iframe id="webpage-iframe" src=""></iframe>
-<script type='text/javascript'>
-    var Module = {
-        canvas: (function() {
-            var canvas = document.getElementById('canvas');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            return canvas;
-        })()
-    };
-</script>
-<script async type="text/javascript" src="index.js"></script>
+<div class="no-scrollbar">
+    <canvas id="canvas"></canvas>
+    <iframe id="webpage-iframe" src=""></iframe>
+    <script type='text/javascript'>
+        var Module = {
+            canvas: (function() {
+                var canvas = document.getElementById('canvas');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+                return canvas;
+            })()
+        };
+    </script>
+    <script async type="text/javascript" src="index.js"></script>
+</div>
 </body>
 </html>
