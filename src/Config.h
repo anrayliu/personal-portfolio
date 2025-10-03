@@ -11,7 +11,7 @@
 struct Config {
     Config() = delete;
 
-    inline std::string static title = "Anray Liu | Software Developer | uOttawa Student";
+    inline std::string static title = "Anray Liu | Cloud Engineer | uOttawa Student";
     inline int static window_w;
     inline int static window_h;
     double constexpr static fps = 60.0;
@@ -25,7 +25,7 @@ struct Config {
     int constexpr static left_bar_w = 54;
     int constexpr static tab_bar_h = 54;
     int constexpr static tab_w = 240;
-    int constexpr static file_tree_w = 320;
+    int constexpr static file_tree_w = 380;
     int constexpr static min_file_tree_w = 15;
     int constexpr static tab_x_button_size = 20;
     int constexpr static logo_size = 30;
