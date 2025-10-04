@@ -130,8 +130,6 @@ void Core::construct_file_tree() {
     work_exp->add_file(std::move(item));
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Research Assistant");
     work_exp->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "GIS Technician");
-    work_exp->add_file(std::move(item));
 
     std::unique_ptr<DirButton> projects = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(),
                                                                       font.get(), "Projects");
@@ -141,10 +139,6 @@ void Core::construct_file_tree() {
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Bare-Metal Server");
     projects->add_file(std::move(item));
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Cloud Resume Challenge");
-    projects->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Volume Cleaner");
-    projects->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "TestMyCS");
     projects->add_file(std::move(item));
 
     top_level->add_dir(std::move(work_exp));
