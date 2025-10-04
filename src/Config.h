@@ -25,7 +25,7 @@ struct Config {
     int constexpr static left_bar_w = 54;
     int constexpr static tab_bar_h = 54;
     int constexpr static tab_w = 240;
-    int constexpr static file_tree_w = 380;
+    int constexpr static file_tree_w = 340;
     int constexpr static min_file_tree_w = 15;
     int constexpr static tab_x_button_size = 20;
     int constexpr static logo_size = 30;
