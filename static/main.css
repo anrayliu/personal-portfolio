@@ -61,6 +61,7 @@ header h2 {
     padding: 1rem 3rem;
     border: 2px solid var(--border);
     flex: 1;
+    line-height: 1.6rem;
 }
 
 .desc li::marker {
