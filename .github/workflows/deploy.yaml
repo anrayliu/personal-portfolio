@@ -29,6 +29,7 @@ jobs:
             done
 
             az storage blob upload-batch --account-name "${{ secrets.STORAGE_ACCOUNT }}" --auth-mode key -d '$web/static' -s ./static --overwrite true
+            az storage blob upload-batch --account-name "${{ secrets.STORAGE_ACCOUNT }}" --auth-mode key -d '$web/assets' -s ./assets --overwrite true
 
     - name: Purge CDN endpoint
       uses: azure/CLI@v1
