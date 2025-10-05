@@ -3,13 +3,6 @@ name: CI with OpenID Connect
 on:
     push:
         branches: [ feat-deploy-azure ]
-        paths:
-          - "static/"
-          - "assets/"
-          - "index.data"
-          - "index.wasm"
-          - "index.js"
-          - "index.html"
     workflow_dispatch:
 
 permissions:
