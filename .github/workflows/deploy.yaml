@@ -35,12 +35,7 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-        az afd endpoint purge \
-        --resource-group ${{ secrets.CDN_RESOURCE_GROUP }} \
-        --profile-name ${{ secrets.PROFILE }} \
-        --endpoint-name personalportfolio-dvgfemd6brd2d7f6.z01.azurefd.net \
-        --domains anrayliu.ca, www.anrayliu.ca \
-        --content-paths '/*'
+          az afd endpoint purge --resource-group ${{ secrets.CDN_RESOURCE_GROUP }} --profile-name ${{ secrets.PROFILE }} --endpoint-name personalportfolio-dvgfemd6brd2d7f6.z01.azurefd.net --domains anrayliu.ca, www.anrayliu.ca --content-paths '/*'
 
   # Azure logout
     - name: logout
