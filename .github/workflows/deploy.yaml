@@ -35,7 +35,7 @@ jobs:
       uses: azure/CLI@v1
       with:
         inlineScript: |
-           az cdn endpoint purge --content-paths  "/*" --profile-name ${{ secrets.CDN_PROFILE }} --name personalportfolio-dvgfemd6brd2d7f6.z01.azurefd.net --resource-group ${{ secrets.CDN_RESOURCE_GROUP }}
+           az cdn endpoint purge --content-paths  "/*" --profile-name ${{ secrets.CDN_PROFILE }} --name personalportfolio --resource-group ${{ secrets.CDN_RESOURCE_GROUP }}
 
   # Azure logout
     - name: logout
