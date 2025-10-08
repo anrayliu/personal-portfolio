@@ -6,6 +6,14 @@
     <title>Anray Liu | Enhanced Cloud Resume Challenge</title>
     <link rel="stylesheet" href="background.css">
     <link rel="stylesheet" href="main.css">
+    <script>
+        // will be an api call
+        let count = 0;
+
+        window.onload = function() {
+            document.getElementById("visitCount").innerHTML = count;
+        }
+    </script>
 </head>
 <body>
 
@@ -31,6 +39,11 @@
     <ul class="desc">
         <li>Coming soon.</li>
     </ul>
+
+    <h2>
+        <span>Visitor counter: </span><span id="visitCount" style="color: var(--jb-primary)"></span>
+    </h2>
+
     <div class="desc buttons">
         <div class="links">
             <a href="https://cloudresumechallenge.dev/docs/the-challenge/azure/" target="_blank" class="button">
