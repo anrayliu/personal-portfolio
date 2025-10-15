@@ -86,7 +86,7 @@ void Core::init() {
     TTF_SizeText(font.get(), text.c_str(), &empty_view_dimensions.x, &empty_view_dimensions.y);
     empty_view_text = load_text(renderer.get(), font.get(), text);
 
-    text = "Anray Liu - Software Developer";
+    text = "Anray Liu - Cloud Engineer";
     TTF_SizeText(font.get(), text.c_str(), &project_name_dimensions.x, &project_name_dimensions.y);
     project_name_text = load_text(renderer.get(), font.get(), text);
 
@@ -128,9 +128,7 @@ void Core::construct_file_tree() {
     std::unique_ptr<FileButton> item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(),
                                                                     "Cloud Engineer");
     work_exp->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Research Intern");
-    work_exp->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "GIS Technician");
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Research Assistant");
     work_exp->add_file(std::move(item));
 
     std::unique_ptr<DirButton> projects = std::make_unique<DirButton>(collapse_icon, expand_icon, renderer.get(),
@@ -138,13 +136,9 @@ void Core::construct_file_tree() {
 
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Pyvidplayer2");
     projects->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Home Lab");
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Bare-Metal Server");
     projects->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "TestMyCS");
-    projects->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Portfolio");
-    projects->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Volume Cleaner");
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Cloud Resume");
     projects->add_file(std::move(item));
 
     top_level->add_dir(std::move(work_exp));
