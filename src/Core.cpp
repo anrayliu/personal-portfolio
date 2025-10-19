@@ -138,7 +138,7 @@ void Core::construct_file_tree() {
     projects->add_file(std::move(item));
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Bare-Metal Server");
     projects->add_file(std::move(item));
-    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Cloud Resume");
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "TestMyCS");
     projects->add_file(std::move(item));
 
     top_level->add_dir(std::move(work_exp));
@@ -147,6 +147,8 @@ void Core::construct_file_tree() {
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "README");
     top_level->add_file(std::move(item));
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Resume");
+    top_level->add_file(std::move(item));
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Current Projects");
     top_level->add_file(std::move(item));
 }
 
