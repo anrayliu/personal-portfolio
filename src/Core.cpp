@@ -148,6 +148,8 @@ void Core::construct_file_tree() {
     top_level->add_file(std::move(item));
     item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Resume");
     top_level->add_file(std::move(item));
+    item = std::make_unique<FileButton>(file_icon, renderer.get(), font.get(), "Current Projects");
+    top_level->add_file(std::move(item));
 }
 
 void Core::draw_background() const {
