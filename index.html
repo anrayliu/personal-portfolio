@@ -31,8 +31,10 @@
         var Module = {
             canvas: (function() {
                 var canvas = document.getElementById('canvas');
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
+                var dpr = window.devicePixelRatio || 1;
+                canvas.width = window.innerWidth * dpr;
+                canvas.height = window.innerHeight * dpr;
+
                 return canvas;
             })()
         };
