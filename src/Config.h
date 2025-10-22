@@ -16,21 +16,21 @@ struct Config {
     inline int static window_h;
     double constexpr static fps = 60.0;
 
-    int constexpr static file_button_h = 32;
-    int constexpr static file_button_spacing_y = 5;
-    int constexpr static file_button_spacing_x = 15;
-    int constexpr static file_button_tab = 30;
-    int constexpr static font_size = 18;
-    int constexpr static top_bar_h = 54;
-    int constexpr static left_bar_w = 54;
-    int constexpr static tab_bar_h = 54;
-    int constexpr static tab_w = 240;
-    int constexpr static file_tree_w = 340;
-    int constexpr static min_file_tree_w = 15;
-    int constexpr static tab_x_button_size = 20;
-    int constexpr static logo_size = 30;
-    int constexpr static icon_spacing = 5;
-    int constexpr static drag_tolerance = 10;
+    int constexpr static file_button_h = 38;
+    int constexpr static file_button_spacing_y = 6;
+    int constexpr static file_button_spacing_x = 18;
+    int constexpr static file_button_tab = 36;
+    int constexpr static font_size = 21;
+    int constexpr static top_bar_h = 64;
+    int constexpr static left_bar_w = 64;
+    int constexpr static tab_bar_h = 64;
+    int constexpr static tab_w = 288;
+    int constexpr static file_tree_w = 408;
+    int constexpr static min_file_tree_w = 18;
+    int constexpr static tab_x_button_size = 24;
+    int constexpr static logo_size = 36;
+    int constexpr static icon_spacing = 6;
+    int constexpr static drag_tolerance = 12;
 
     SDL_Color constexpr static top_bar_colour{60, 63, 65};
     SDL_Color constexpr static text_colour{207, 206, 196};
