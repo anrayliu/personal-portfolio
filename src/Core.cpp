@@ -56,13 +56,22 @@ void Core::init() {
     // init sdl materials
 
     win.reset(SDL_CreateWindow(Config::title.c_str(), SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                               Config::window_w, Config::window_h, SDL_RENDERER_ACCELERATED));
+                               Config::window_w, Config::window_h, SDL_WINDOW_ALLOW_HIGHDPI));
     if (!win) {
         throw std::runtime_error(std::format("Error creating window {}", SDL_GetError()));
     }
 
+    // get coordinate correction scale
+    int drawable_w, drawable_h;
+    SDL_GL_GetDrawableSize(win.get(), &drawable_w, &drawable_h);
+    scale_x = static_cast<double>(drawable_w) / Config::window_w;
+    scale_y = static_cast<double>(drawable_h) / Config::window_h;
+
+    Config::window_w = drawable_w;
+    Config::window_h = drawable_h;
+
     // index -1 automatically chooses driver
-    renderer.reset(SDL_CreateRenderer(win.get(), -1, 0));
+    renderer.reset(SDL_CreateRenderer(win.get(), -1, SDL_RENDERER_ACCELERATED));
     if (!renderer) {
         throw std::runtime_error(std::format("Error creating renderer {}", SDL_GetError()));
     }
@@ -469,8 +478,10 @@ void Core::update() {
     SDL_SetRenderDrawColor(renderer.get(), 0, 0, 0, 0);
     SDL_RenderClear(renderer.get());
 
-    // get mouse position
+    // get mouse position and apply coordinate correction
     SDL_GetMouseState(&mousex, &mousey);
+    mousex *= scale_x;
+    mousey *= scale_y;
 
     // handle resizing of file tree viewer
     update_dragging();

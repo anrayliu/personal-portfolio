@@ -62,6 +62,8 @@ class Core {
 
     ~Core();
 
+    double scale_x{};
+    double scale_y{};
     int mousex{};
     int mousey{};
 
