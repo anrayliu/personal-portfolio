@@ -1,8 +1,8 @@
 var $Module$$;
 $Module$$ ||= typeof Module != 'undefined' ? Module : {};
 var $ENVIRONMENT_IS_WEB$$ = "object" == typeof window, $ENVIRONMENT_IS_WORKER$$ = "undefined" != typeof WorkerGlobalScope, $ENVIRONMENT_IS_NODE$$ = "object" == typeof process && process.versions?.node && "renderer" != process.type, $ENVIRONMENT_IS_SHELL$$ = !$ENVIRONMENT_IS_WEB$$ && !$ENVIRONMENT_IS_NODE$$ && !$ENVIRONMENT_IS_WORKER$$;
-let $$jscomp$logical$assign$tmpm1766559117$0$$;
-($$jscomp$logical$assign$tmpm1766559117$0$$ = $Module$$).expectedDataFileDownloads ?? ($$jscomp$logical$assign$tmpm1766559117$0$$.expectedDataFileDownloads = 0);
+let $$jscomp$logical$assign$tmp745725642$0$$;
+($$jscomp$logical$assign$tmp745725642$0$$ = $Module$$).expectedDataFileDownloads ?? ($$jscomp$logical$assign$tmp745725642$0$$.expectedDataFileDownloads = 0);
 $Module$$.expectedDataFileDownloads++;
 (() => {
   var $isWasmWorker$$ = "undefined" != typeof ENVIRONMENT_IS_WASM_WORKER && ENVIRONMENT_IS_WASM_WORKER;
@@ -13,8 +13,8 @@ $Module$$.expectedDataFileDownloads++;
         if ($isNode$$) {
           return (await require("fs/promises").readFile($packageData_packageName$$)).buffer;
         }
-        var $$jscomp$logical$assign$tmpm1766559117$1_chunks$$;
-        ($$jscomp$logical$assign$tmpm1766559117$1_chunks$$ = $Module$$).dataFileDownloads ?? ($$jscomp$logical$assign$tmpm1766559117$1_chunks$$.dataFileDownloads = {});
+        var $$jscomp$logical$assign$tmp745725642$1_chunks$$;
+        ($$jscomp$logical$assign$tmp745725642$1_chunks$$ = $Module$$).dataFileDownloads ?? ($$jscomp$logical$assign$tmp745725642$1_chunks$$.dataFileDownloads = {});
         try {
           var $reader_response$jscomp$2$$ = await fetch($packageData_packageName$$);
         } catch ($e$jscomp$7$$) {
@@ -23,7 +23,7 @@ $Module$$.expectedDataFileDownloads++;
         if (!$reader_response$jscomp$2$$.ok) {
           throw Error(`${$reader_response$jscomp$2$$.status}: ${$reader_response$jscomp$2$$.url}`);
         }
-        $$jscomp$logical$assign$tmpm1766559117$1_chunks$$ = [];
+        $$jscomp$logical$assign$tmp745725642$1_chunks$$ = [];
         $packageSize_total$$ = Number($reader_response$jscomp$2$$.headers.get("Content-Length") ?? $packageSize_total$$);
         let $loaded$$ = 0;
         $Module$$.setStatus?.("Downloading data...");
@@ -32,7 +32,7 @@ $Module$$.expectedDataFileDownloads++;
           if ($done$$) {
             break;
           }
-          $$jscomp$logical$assign$tmpm1766559117$1_chunks$$.push($value$jscomp$110$$);
+          $$jscomp$logical$assign$tmp745725642$1_chunks$$.push($value$jscomp$110$$);
           $loaded$$ += $value$jscomp$110$$.length;
           $Module$$.dataFileDownloads[$packageData_packageName$$] = {loaded:$loaded$$, total:$packageSize_total$$};
           let $totalLoaded$$ = 0, $totalSize$$ = 0;
@@ -41,9 +41,9 @@ $Module$$.expectedDataFileDownloads++;
           }
           $Module$$.setStatus?.(`Downloading data... (${$totalLoaded$$}/${$totalSize$$})`);
         }
-        $packageData_packageName$$ = new Uint8Array($$jscomp$logical$assign$tmpm1766559117$1_chunks$$.map($c$$ => $c$$.length).reduce(($a$jscomp$1$$, $b$jscomp$1$$) => $a$jscomp$1$$ + $b$jscomp$1$$, 0));
+        $packageData_packageName$$ = new Uint8Array($$jscomp$logical$assign$tmp745725642$1_chunks$$.map($c$$ => $c$$.length).reduce(($a$jscomp$1$$, $b$jscomp$1$$) => $a$jscomp$1$$ + $b$jscomp$1$$, 0));
         $download_offset$jscomp$67$$ = 0;
-        for (const $chunk$jscomp$14$$ of $$jscomp$logical$assign$tmpm1766559117$1_chunks$$) {
+        for (const $chunk$jscomp$14$$ of $$jscomp$logical$assign$tmp745725642$1_chunks$$) {
           $packageData_packageName$$.set($chunk$jscomp$14$$, $download_offset$jscomp$67$$), $download_offset$jscomp$67$$ += $chunk$jscomp$14$$.length;
         }
         return $packageData_packageName$$.buffer;
@@ -79,8 +79,8 @@ $Module$$.expectedDataFileDownloads++;
       if ($Module$$.calledRun) {
         $runWithFS$$($Module$$);
       } else {
-        let $$jscomp$logical$assign$tmpm1766559117$3$$;
-        (($$jscomp$logical$assign$tmpm1766559117$3$$ = $Module$$).preRun ?? ($$jscomp$logical$assign$tmpm1766559117$3$$.preRun = [])).push($runWithFS$$);
+        let $$jscomp$logical$assign$tmp745725642$3$$;
+        (($$jscomp$logical$assign$tmp745725642$3$$ = $Module$$).preRun ?? ($$jscomp$logical$assign$tmp745725642$3$$.preRun = [])).push($runWithFS$$);
       }
     })({files:[{filename:"/assets/close.png", start:0, end:31303}, {filename:"/assets/collapse.png", start:31303, end:51757}, {filename:"/assets/expand.png", start:51757, end:72690}, {filename:"/assets/file.png", start:72690, end:87689}, {filename:"/assets/jetbrains-mono.ttf", start:87689, end:274897}, {filename:"/assets/logo.png", start:274897, end:276989}], remote_package_size:276989});
   }
@@ -2021,8 +2021,8 @@ var $MainLoop$$ = {}, $MainLoop$runner$$, $MainLoop$remainingBlockers$$, $MainLo
           $MainLoop$setImmediate$$ = $func$jscomp$17$$ => {
             $setImmediates$$.push($func$jscomp$17$$);
             if ($ENVIRONMENT_IS_WORKER$$) {
-              let $$jscomp$logical$assign$tmpm1766559117$9$$;
-              ($$jscomp$logical$assign$tmpm1766559117$9$$ = $Module$$).setImmediates ?? ($$jscomp$logical$assign$tmpm1766559117$9$$.setImmediates = []);
+              let $$jscomp$logical$assign$tmp745725642$9$$;
+              ($$jscomp$logical$assign$tmp745725642$9$$ = $Module$$).setImmediates ?? ($$jscomp$logical$assign$tmp745725642$9$$.setImmediates = []);
               $Module$$.setImmediates.push($func$jscomp$17$$);
               postMessage({target:"setimmediate"});
             } else {
