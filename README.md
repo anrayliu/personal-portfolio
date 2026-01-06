@@ -1,4 +1,6 @@
-## [https://www.anrayliu.ca](https://www.anrayliu.ca)
+## My personal website
+
+While using C++ and WASM to make a website was super cool, it doesn't lead to a practical experience. At least not with my current WASM skillset. Therefore, I've decided to pull the website down.
 
 ![cover.png](cover.png)
 
